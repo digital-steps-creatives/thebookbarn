@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit5d753bda87eb9d2267cf7a9b28282b12
+class ComposerStaticInit0a7a9b5f0bd1d0a0f4ae759a09abcbe2
 {
     public static $files = array (
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
@@ -98,6 +98,8 @@ class ComposerStaticInit5d753bda87eb9d2267cf7a9b28282b12
         ),
         'R' => 
         array (
+            'RyanChandler\\BladeCaptureDirective\\Database\\Factories\\' => 54,
+            'RyanChandler\\BladeCaptureDirective\\' => 35,
             'Ramsey\\Uuid\\' => 12,
             'Ramsey\\Collection\\' => 18,
         ),
@@ -170,7 +172,6 @@ class ComposerStaticInit5d753bda87eb9d2267cf7a9b28282b12
             'Filament\\Forms\\' => 15,
             'Filament\\' => 9,
             'Faker\\' => 6,
-            'Facade\\IgnitionContracts\\' => 25,
         ),
         'E' => 
         array (
@@ -362,6 +363,14 @@ class ComposerStaticInit5d753bda87eb9d2267cf7a9b28282b12
         array (
             0 => __DIR__ . '/..' . '/spatie/backtrace/src',
         ),
+        'RyanChandler\\BladeCaptureDirective\\Database\\Factories\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/ryangjchandler/blade-capture-directive/database/factories',
+        ),
+        'RyanChandler\\BladeCaptureDirective\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/ryangjchandler/blade-capture-directive/src',
+        ),
         'Ramsey\\Uuid\\' => 
         array (
             0 => __DIR__ . '/..' . '/ramsey/uuid/src',
@@ -384,8 +393,8 @@ class ComposerStaticInit5d753bda87eb9d2267cf7a9b28282b12
         ),
         'Psr\\Http\\Message\\' => 
         array (
-            0 => __DIR__ . '/..' . '/psr/http-factory/src',
-            1 => __DIR__ . '/..' . '/psr/http-message/src',
+            0 => __DIR__ . '/..' . '/psr/http-message/src',
+            1 => __DIR__ . '/..' . '/psr/http-factory/src',
         ),
         'Psr\\Http\\Client\\' => 
         array (
@@ -545,10 +554,6 @@ class ComposerStaticInit5d753bda87eb9d2267cf7a9b28282b12
         array (
             0 => __DIR__ . '/..' . '/fakerphp/faker/src/Faker',
         ),
-        'Facade\\IgnitionContracts\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/facade/ignition-contracts/src',
-        ),
         'Egulias\\EmailValidator\\' => 
         array (
             0 => __DIR__ . '/..' . '/egulias/email-validator/src',
@@ -670,8 +675,11 @@ class ComposerStaticInit5d753bda87eb9d2267cf7a9b28282b12
         'Akaunting\\Money\\View\\Components\\Currency' => __DIR__ . '/..' . '/akaunting/laravel-money/src/View/Components/Currency.php',
         'Akaunting\\Money\\View\\Components\\Money' => __DIR__ . '/..' . '/akaunting/laravel-money/src/View/Components/Money.php',
         'App\\Console\\Kernel' => __DIR__ . '/../..' . '/app/Console/Kernel.php',
+        'App\\Dsc\\Helper' => __DIR__ . '/../..' . '/app/Dsc/Helper.php',
+        'App\\Dsc\\OrderHandler' => __DIR__ . '/../..' . '/app/Dsc/OrderHandler.php',
         'App\\Enums\\OrderStatus' => __DIR__ . '/../..' . '/app/Enums/OrderStatus.php',
         'App\\Exceptions\\Handler' => __DIR__ . '/../..' . '/app/Exceptions/Handler.php',
+        'App\\Facades\\Helper' => __DIR__ . '/../..' . '/app/Facades/Helper.php',
         'App\\Filament\\Resources\\BookResource' => __DIR__ . '/../..' . '/app/Filament/Resources/BookResource.php',
         'App\\Filament\\Resources\\BookResource\\Pages\\ManageBooks' => __DIR__ . '/../..' . '/app/Filament/Resources/BookResource/Pages/ManageBooks.php',
         'App\\Filament\\Resources\\BookShopResource' => __DIR__ . '/../..' . '/app/Filament/Resources/BookShopResource.php',
@@ -684,9 +692,11 @@ class ComposerStaticInit5d753bda87eb9d2267cf7a9b28282b12
         'App\\Filament\\Resources\\SubjectResource\\Pages\\ManageSubjects' => __DIR__ . '/../..' . '/app/Filament/Resources/SubjectResource/Pages/ManageSubjects.php',
         'App\\Filament\\Resources\\UserResource' => __DIR__ . '/../..' . '/app/Filament/Resources/UserResource.php',
         'App\\Filament\\Resources\\UserResource\\Pages\\ManageUsers' => __DIR__ . '/../..' . '/app/Filament/Resources/UserResource/Pages/ManageUsers.php',
+        'App\\Filters\\OrderFilter' => __DIR__ . '/../..' . '/app/Filters/OrderFilter.php',
         'App\\Http\\Controllers\\Api\\AuthController' => __DIR__ . '/../..' . '/app/Http/Controllers/Api/AuthController.php',
         'App\\Http\\Controllers\\Api\\BaseController' => __DIR__ . '/../..' . '/app/Http/Controllers/Api/BaseController.php',
         'App\\Http\\Controllers\\Api\\BookController' => __DIR__ . '/../..' . '/app/Http/Controllers/Api/BookController.php',
+        'App\\Http\\Controllers\\Api\\OrderController' => __DIR__ . '/../..' . '/app/Http/Controllers/Api/OrderController.php',
         'App\\Http\\Controllers\\Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/Controller.php',
         'App\\Http\\Kernel' => __DIR__ . '/../..' . '/app/Http/Kernel.php',
         'App\\Http\\Middleware\\Authenticate' => __DIR__ . '/../..' . '/app/Http/Middleware/Authenticate.php',
@@ -699,6 +709,7 @@ class ComposerStaticInit5d753bda87eb9d2267cf7a9b28282b12
         'App\\Http\\Middleware\\TrustProxies' => __DIR__ . '/../..' . '/app/Http/Middleware/TrustProxies.php',
         'App\\Http\\Middleware\\ValidateSignature' => __DIR__ . '/../..' . '/app/Http/Middleware/ValidateSignature.php',
         'App\\Http\\Middleware\\VerifyCsrfToken' => __DIR__ . '/../..' . '/app/Http/Middleware/VerifyCsrfToken.php',
+        'App\\Http\\Requests\\OrderRequest' => __DIR__ . '/../..' . '/app/Http/Requests/OrderRequest.php',
         'App\\Models\\Book' => __DIR__ . '/../..' . '/app/Models/Book.php',
         'App\\Models\\BookShop' => __DIR__ . '/../..' . '/app/Models/BookShop.php',
         'App\\Models\\ClassLevel' => __DIR__ . '/../..' . '/app/Models/ClassLevel.php',
@@ -710,7 +721,11 @@ class ComposerStaticInit5d753bda87eb9d2267cf7a9b28282b12
         'App\\Providers\\AuthServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AuthServiceProvider.php',
         'App\\Providers\\BroadcastServiceProvider' => __DIR__ . '/../..' . '/app/Providers/BroadcastServiceProvider.php',
         'App\\Providers\\EventServiceProvider' => __DIR__ . '/../..' . '/app/Providers/EventServiceProvider.php',
+        'App\\Providers\\FacadeServiceProvider' => __DIR__ . '/../..' . '/app/Providers/FacadeServiceProvider.php',
         'App\\Providers\\RouteServiceProvider' => __DIR__ . '/../..' . '/app/Providers/RouteServiceProvider.php',
+        'App\\Traits\\CreateCustomer' => __DIR__ . '/../..' . '/app/Traits/CreateCustomer.php',
+        'App\\Traits\\HasInvoiceNo' => __DIR__ . '/../..' . '/app/Traits/HasInvoiceNo.php',
+        'App\\Traits\\InteractsWithOrder' => __DIR__ . '/../..' . '/app/Traits/InteractsWithOrder.php',
         'Attribute' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Attribute.php',
         'BaconQrCode\\Common\\BitArray' => __DIR__ . '/..' . '/bacon/bacon-qr-code/src/Common/BitArray.php',
         'BaconQrCode\\Common\\BitMatrix' => __DIR__ . '/..' . '/bacon/bacon-qr-code/src/Common/BitMatrix.php',
@@ -1419,12 +1434,6 @@ class ComposerStaticInit5d753bda87eb9d2267cf7a9b28282b12
         'Egulias\\EmailValidator\\Warning\\QuotedString' => __DIR__ . '/..' . '/egulias/email-validator/src/Warning/QuotedString.php',
         'Egulias\\EmailValidator\\Warning\\TLD' => __DIR__ . '/..' . '/egulias/email-validator/src/Warning/TLD.php',
         'Egulias\\EmailValidator\\Warning\\Warning' => __DIR__ . '/..' . '/egulias/email-validator/src/Warning/Warning.php',
-        'Facade\\IgnitionContracts\\BaseSolution' => __DIR__ . '/..' . '/facade/ignition-contracts/src/BaseSolution.php',
-        'Facade\\IgnitionContracts\\HasSolutionsForThrowable' => __DIR__ . '/..' . '/facade/ignition-contracts/src/HasSolutionsForThrowable.php',
-        'Facade\\IgnitionContracts\\ProvidesSolution' => __DIR__ . '/..' . '/facade/ignition-contracts/src/ProvidesSolution.php',
-        'Facade\\IgnitionContracts\\RunnableSolution' => __DIR__ . '/..' . '/facade/ignition-contracts/src/RunnableSolution.php',
-        'Facade\\IgnitionContracts\\Solution' => __DIR__ . '/..' . '/facade/ignition-contracts/src/Solution.php',
-        'Facade\\IgnitionContracts\\SolutionProviderRepository' => __DIR__ . '/..' . '/facade/ignition-contracts/src/SolutionProviderRepository.php',
         'Faker\\Calculator\\Ean' => __DIR__ . '/..' . '/fakerphp/faker/src/Faker/Calculator/Ean.php',
         'Faker\\Calculator\\Iban' => __DIR__ . '/..' . '/fakerphp/faker/src/Faker/Calculator/Iban.php',
         'Faker\\Calculator\\Inn' => __DIR__ . '/..' . '/fakerphp/faker/src/Faker/Calculator/Inn.php',
@@ -1989,12 +1998,15 @@ class ComposerStaticInit5d753bda87eb9d2267cf7a9b28282b12
         'Filament\\Forms\\Components\\Concerns\\CanBeAutocompleted' => __DIR__ . '/..' . '/filament/forms/src/Components/Concerns/CanBeAutocompleted.php',
         'Filament\\Forms\\Components\\Concerns\\CanBeAutofocused' => __DIR__ . '/..' . '/filament/forms/src/Components/Concerns/CanBeAutofocused.php',
         'Filament\\Forms\\Components\\Concerns\\CanBeCollapsed' => __DIR__ . '/..' . '/filament/forms/src/Components/Concerns/CanBeCollapsed.php',
+        'Filament\\Forms\\Components\\Concerns\\CanBeCompacted' => __DIR__ . '/..' . '/filament/forms/src/Components/Concerns/CanBeCompacted.php',
         'Filament\\Forms\\Components\\Concerns\\CanBeConcealed' => __DIR__ . '/..' . '/filament/forms/src/Components/Concerns/CanBeConcealed.php',
         'Filament\\Forms\\Components\\Concerns\\CanBeDisabled' => __DIR__ . '/..' . '/filament/forms/src/Components/Concerns/CanBeDisabled.php',
         'Filament\\Forms\\Components\\Concerns\\CanBeHidden' => __DIR__ . '/..' . '/filament/forms/src/Components/Concerns/CanBeHidden.php',
         'Filament\\Forms\\Components\\Concerns\\CanBeInline' => __DIR__ . '/..' . '/filament/forms/src/Components/Concerns/CanBeInline.php',
         'Filament\\Forms\\Components\\Concerns\\CanBeLengthConstrained' => __DIR__ . '/..' . '/filament/forms/src/Components/Concerns/CanBeLengthConstrained.php',
         'Filament\\Forms\\Components\\Concerns\\CanBeValidated' => __DIR__ . '/..' . '/filament/forms/src/Components/Concerns/CanBeValidated.php',
+        'Filament\\Forms\\Components\\Concerns\\CanDisableOptions' => __DIR__ . '/..' . '/filament/forms/src/Components/Concerns/CanDisableOptions.php',
+        'Filament\\Forms\\Components\\Concerns\\CanDisablePlaceholderSelection' => __DIR__ . '/..' . '/filament/forms/src/Components/Concerns/CanDisablePlaceholderSelection.php',
         'Filament\\Forms\\Components\\Concerns\\CanLimitItemsLength' => __DIR__ . '/..' . '/filament/forms/src/Components/Concerns/CanLimitItemsLength.php',
         'Filament\\Forms\\Components\\Concerns\\CanSpanColumns' => __DIR__ . '/..' . '/filament/forms/src/Components/Concerns/CanSpanColumns.php',
         'Filament\\Forms\\Components\\Concerns\\Cloneable' => __DIR__ . '/..' . '/filament/forms/src/Components/Concerns/Cloneable.php',
@@ -2012,6 +2024,7 @@ class ComposerStaticInit5d753bda87eb9d2267cf7a9b28282b12
         'Filament\\Forms\\Components\\Concerns\\HasHint' => __DIR__ . '/..' . '/filament/forms/src/Components/Concerns/HasHint.php',
         'Filament\\Forms\\Components\\Concerns\\HasId' => __DIR__ . '/..' . '/filament/forms/src/Components/Concerns/HasId.php',
         'Filament\\Forms\\Components\\Concerns\\HasInlineLabel' => __DIR__ . '/..' . '/filament/forms/src/Components/Concerns/HasInlineLabel.php',
+        'Filament\\Forms\\Components\\Concerns\\HasInputMode' => __DIR__ . '/..' . '/filament/forms/src/Components/Concerns/HasInputMode.php',
         'Filament\\Forms\\Components\\Concerns\\HasLabel' => __DIR__ . '/..' . '/filament/forms/src/Components/Concerns/HasLabel.php',
         'Filament\\Forms\\Components\\Concerns\\HasMaxWidth' => __DIR__ . '/..' . '/filament/forms/src/Components/Concerns/HasMaxWidth.php',
         'Filament\\Forms\\Components\\Concerns\\HasMeta' => __DIR__ . '/..' . '/filament/forms/src/Components/Concerns/HasMeta.php',
@@ -2019,6 +2032,9 @@ class ComposerStaticInit5d753bda87eb9d2267cf7a9b28282b12
         'Filament\\Forms\\Components\\Concerns\\HasOptions' => __DIR__ . '/..' . '/filament/forms/src/Components/Concerns/HasOptions.php',
         'Filament\\Forms\\Components\\Concerns\\HasPlaceholder' => __DIR__ . '/..' . '/filament/forms/src/Components/Concerns/HasPlaceholder.php',
         'Filament\\Forms\\Components\\Concerns\\HasState' => __DIR__ . '/..' . '/filament/forms/src/Components/Concerns/HasState.php',
+        'Filament\\Forms\\Components\\Concerns\\HasStep' => __DIR__ . '/..' . '/filament/forms/src/Components/Concerns/HasStep.php',
+        'Filament\\Forms\\Components\\Concerns\\HasToggleColors' => __DIR__ . '/..' . '/filament/forms/src/Components/Concerns/HasToggleColors.php',
+        'Filament\\Forms\\Components\\Concerns\\HasToggleIcons' => __DIR__ . '/..' . '/filament/forms/src/Components/Concerns/HasToggleIcons.php',
         'Filament\\Forms\\Components\\Concerns\\InteractsWithToolbarButtons' => __DIR__ . '/..' . '/filament/forms/src/Components/Concerns/InteractsWithToolbarButtons.php',
         'Filament\\Forms\\Components\\Concerns\\ListensToEvents' => __DIR__ . '/..' . '/filament/forms/src/Components/Concerns/ListensToEvents.php',
         'Filament\\Forms\\Components\\Contracts\\CanBeLengthConstrained' => __DIR__ . '/..' . '/filament/forms/src/Components/Contracts/CanBeLengthConstrained.php',
@@ -2083,6 +2099,8 @@ class ComposerStaticInit5d753bda87eb9d2267cf7a9b28282b12
         'Filament\\Forms\\Contracts\\HasForms' => __DIR__ . '/..' . '/filament/forms/src/Contracts/HasForms.php',
         'Filament\\Forms\\FormsComponent' => __DIR__ . '/..' . '/filament/forms/src/FormsComponent.php',
         'Filament\\Forms\\FormsServiceProvider' => __DIR__ . '/..' . '/filament/forms/src/FormsServiceProvider.php',
+        'Filament\\Forms\\Testing\\TestsForms' => __DIR__ . '/..' . '/filament/forms/src/Testing/TestsForms.php',
+        'Filament\\GlobalSearch\\Actions\\Action' => __DIR__ . '/..' . '/filament/filament/src/GlobalSearch/Actions/Action.php',
         'Filament\\GlobalSearch\\Contracts\\GlobalSearchProvider' => __DIR__ . '/..' . '/filament/filament/src/GlobalSearch/Contracts/GlobalSearchProvider.php',
         'Filament\\GlobalSearch\\DefaultGlobalSearchProvider' => __DIR__ . '/..' . '/filament/filament/src/GlobalSearch/DefaultGlobalSearchProvider.php',
         'Filament\\GlobalSearch\\GlobalSearchResult' => __DIR__ . '/..' . '/filament/filament/src/GlobalSearch/GlobalSearchResult.php',
@@ -2091,6 +2109,7 @@ class ComposerStaticInit5d753bda87eb9d2267cf7a9b28282b12
         'Filament\\Http\\Livewire\\Auth\\Login' => __DIR__ . '/..' . '/filament/filament/src/Http/Livewire/Auth/Login.php',
         'Filament\\Http\\Livewire\\Concerns\\CanNotify' => __DIR__ . '/..' . '/filament/filament/src/Http/Livewire/Concerns/CanNotify.php',
         'Filament\\Http\\Livewire\\GlobalSearch' => __DIR__ . '/..' . '/filament/filament/src/Http/Livewire/GlobalSearch.php',
+        'Filament\\Http\\Livewire\\Notifications' => __DIR__ . '/..' . '/filament/filament/src/Http/Livewire/Notifications.php',
         'Filament\\Http\\Middleware\\Authenticate' => __DIR__ . '/..' . '/filament/filament/src/Http/Middleware/Authenticate.php',
         'Filament\\Http\\Middleware\\DispatchServingFilamentEvent' => __DIR__ . '/..' . '/filament/filament/src/Http/Middleware/DispatchServingFilamentEvent.php',
         'Filament\\Http\\Middleware\\MirrorConfigToSubpackages' => __DIR__ . '/..' . '/filament/filament/src/Http/Middleware/MirrorConfigToSubpackages.php',
@@ -2106,16 +2125,21 @@ class ComposerStaticInit5d753bda87eb9d2267cf7a9b28282b12
         'Filament\\Navigation\\NavigationItem' => __DIR__ . '/..' . '/filament/filament/src/Navigation/NavigationItem.php',
         'Filament\\Navigation\\UserMenuItem' => __DIR__ . '/..' . '/filament/filament/src/Navigation/UserMenuItem.php',
         'Filament\\Notifications\\Actions\\Action' => __DIR__ . '/..' . '/filament/notifications/src/Actions/Action.php',
+        'Filament\\Notifications\\Actions\\ActionGroup' => __DIR__ . '/..' . '/filament/notifications/src/Actions/ActionGroup.php',
         'Filament\\Notifications\\Actions\\Concerns\\CanCloseNotification' => __DIR__ . '/..' . '/filament/notifications/src/Actions/Concerns/CanCloseNotification.php',
-        'Filament\\Notifications\\Actions\\Concerns\\CanEmitEvent' => __DIR__ . '/..' . '/filament/notifications/src/Actions/Concerns/CanEmitEvent.php',
+        'Filament\\Notifications\\BroadcastNotification' => __DIR__ . '/..' . '/filament/notifications/src/BroadcastNotification.php',
         'Filament\\Notifications\\Collection' => __DIR__ . '/..' . '/filament/notifications/src/Collection.php',
         'Filament\\Notifications\\Commands\\InstallCommand' => __DIR__ . '/..' . '/filament/notifications/src/Commands/InstallCommand.php',
+        'Filament\\Notifications\\Concerns\\CanBeInline' => __DIR__ . '/..' . '/filament/notifications/src/Concerns/CanBeInline.php',
         'Filament\\Notifications\\Concerns\\HasActions' => __DIR__ . '/..' . '/filament/notifications/src/Concerns/HasActions.php',
         'Filament\\Notifications\\Concerns\\HasBody' => __DIR__ . '/..' . '/filament/notifications/src/Concerns/HasBody.php',
+        'Filament\\Notifications\\Concerns\\HasDate' => __DIR__ . '/..' . '/filament/notifications/src/Concerns/HasDate.php',
         'Filament\\Notifications\\Concerns\\HasDuration' => __DIR__ . '/..' . '/filament/notifications/src/Concerns/HasDuration.php',
         'Filament\\Notifications\\Concerns\\HasIcon' => __DIR__ . '/..' . '/filament/notifications/src/Concerns/HasIcon.php',
         'Filament\\Notifications\\Concerns\\HasId' => __DIR__ . '/..' . '/filament/notifications/src/Concerns/HasId.php',
         'Filament\\Notifications\\Concerns\\HasTitle' => __DIR__ . '/..' . '/filament/notifications/src/Concerns/HasTitle.php',
+        'Filament\\Notifications\\DatabaseNotification' => __DIR__ . '/..' . '/filament/notifications/src/DatabaseNotification.php',
+        'Filament\\Notifications\\Events\\DatabaseNotificationsSent' => __DIR__ . '/..' . '/filament/notifications/src/Events/DatabaseNotificationsSent.php',
         'Filament\\Notifications\\Http\\Livewire\\Notifications' => __DIR__ . '/..' . '/filament/notifications/src/Http/Livewire/Notifications.php',
         'Filament\\Notifications\\Notification' => __DIR__ . '/..' . '/filament/notifications/src/Notification.php',
         'Filament\\Notifications\\NotificationsServiceProvider' => __DIR__ . '/..' . '/filament/notifications/src/NotificationsServiceProvider.php',
@@ -2184,6 +2208,7 @@ class ComposerStaticInit5d753bda87eb9d2267cf7a9b28282b12
         'Filament\\Support\\Actions\\Concerns\\CanBeMounted' => __DIR__ . '/..' . '/filament/support/src/Actions/Concerns/CanBeMounted.php',
         'Filament\\Support\\Actions\\Concerns\\CanBeOutlined' => __DIR__ . '/..' . '/filament/support/src/Actions/Concerns/CanBeOutlined.php',
         'Filament\\Support\\Actions\\Concerns\\CanCustomizeProcess' => __DIR__ . '/..' . '/filament/support/src/Actions/Concerns/CanCustomizeProcess.php',
+        'Filament\\Support\\Actions\\Concerns\\CanEmitEvent' => __DIR__ . '/..' . '/filament/support/src/Actions/Concerns/CanEmitEvent.php',
         'Filament\\Support\\Actions\\Concerns\\CanNotify' => __DIR__ . '/..' . '/filament/support/src/Actions/Concerns/CanNotify.php',
         'Filament\\Support\\Actions\\Concerns\\CanOpenModal' => __DIR__ . '/..' . '/filament/support/src/Actions/Concerns/CanOpenModal.php',
         'Filament\\Support\\Actions\\Concerns\\CanOpenUrl' => __DIR__ . '/..' . '/filament/support/src/Actions/Concerns/CanOpenUrl.php',
@@ -2212,6 +2237,10 @@ class ComposerStaticInit5d753bda87eb9d2267cf7a9b28282b12
         'Filament\\Support\\Actions\\Modal\\Actions\\Action' => __DIR__ . '/..' . '/filament/support/src/Actions/Modal/Actions/Action.php',
         'Filament\\Support\\Actions\\Modal\\Actions\\Concerns\\CanCancelAction' => __DIR__ . '/..' . '/filament/support/src/Actions/Modal/Actions/Concerns/CanCancelAction.php',
         'Filament\\Support\\Actions\\Modal\\Actions\\Concerns\\HasAction' => __DIR__ . '/..' . '/filament/support/src/Actions/Modal/Actions/Concerns/HasAction.php',
+        'Filament\\Support\\Commands\\CheckTranslationsCommand' => __DIR__ . '/..' . '/filament/support/src/Commands/CheckTranslationsCommand.php',
+        'Filament\\Support\\Commands\\Concerns\\CanIndentStrings' => __DIR__ . '/..' . '/filament/support/src/Commands/Concerns/CanIndentStrings.php',
+        'Filament\\Support\\Commands\\Concerns\\CanManipulateFiles' => __DIR__ . '/..' . '/filament/support/src/Commands/Concerns/CanManipulateFiles.php',
+        'Filament\\Support\\Commands\\Concerns\\CanValidateInput' => __DIR__ . '/..' . '/filament/support/src/Commands/Concerns/CanValidateInput.php',
         'Filament\\Support\\Commands\\UpgradeCommand' => __DIR__ . '/..' . '/filament/support/src/Commands/UpgradeCommand.php',
         'Filament\\Support\\Components\\Component' => __DIR__ . '/..' . '/filament/support/src/Components/Component.php',
         'Filament\\Support\\Components\\ViewComponent' => __DIR__ . '/..' . '/filament/support/src/Components/ViewComponent.php',
@@ -2252,6 +2281,8 @@ class ComposerStaticInit5d753bda87eb9d2267cf7a9b28282b12
         'Filament\\Tables\\Actions\\ViewAction' => __DIR__ . '/..' . '/filament/tables/src/Actions/ViewAction.php',
         'Filament\\Tables\\Columns\\BadgeColumn' => __DIR__ . '/..' . '/filament/tables/src/Columns/BadgeColumn.php',
         'Filament\\Tables\\Columns\\BooleanColumn' => __DIR__ . '/..' . '/filament/tables/src/Columns/BooleanColumn.php',
+        'Filament\\Tables\\Columns\\CheckboxColumn' => __DIR__ . '/..' . '/filament/tables/src/Columns/CheckboxColumn.php',
+        'Filament\\Tables\\Columns\\ColorColumn' => __DIR__ . '/..' . '/filament/tables/src/Columns/ColorColumn.php',
         'Filament\\Tables\\Columns\\Column' => __DIR__ . '/..' . '/filament/tables/src/Columns/Column.php',
         'Filament\\Tables\\Columns\\Concerns\\BelongsToTable' => __DIR__ . '/..' . '/filament/tables/src/Columns/Concerns/BelongsToTable.php',
         'Filament\\Tables\\Columns\\Concerns\\CanAggregateRelatedModels' => __DIR__ . '/..' . '/filament/tables/src/Columns/Concerns/CanAggregateRelatedModels.php',
@@ -2260,6 +2291,7 @@ class ComposerStaticInit5d753bda87eb9d2267cf7a9b28282b12
         'Filament\\Tables\\Columns\\Concerns\\CanBeSearchable' => __DIR__ . '/..' . '/filament/tables/src/Columns/Concerns/CanBeSearchable.php',
         'Filament\\Tables\\Columns\\Concerns\\CanBeSortable' => __DIR__ . '/..' . '/filament/tables/src/Columns/Concerns/CanBeSortable.php',
         'Filament\\Tables\\Columns\\Concerns\\CanBeToggled' => __DIR__ . '/..' . '/filament/tables/src/Columns/Concerns/CanBeToggled.php',
+        'Filament\\Tables\\Columns\\Concerns\\CanBeValidated' => __DIR__ . '/..' . '/filament/tables/src/Columns/Concerns/CanBeValidated.php',
         'Filament\\Tables\\Columns\\Concerns\\CanCallAction' => __DIR__ . '/..' . '/filament/tables/src/Columns/Concerns/CanCallAction.php',
         'Filament\\Tables\\Columns\\Concerns\\CanFormatState' => __DIR__ . '/..' . '/filament/tables/src/Columns/Concerns/CanFormatState.php',
         'Filament\\Tables\\Columns\\Concerns\\CanOpenUrl' => __DIR__ . '/..' . '/filament/tables/src/Columns/Concerns/CanOpenUrl.php',
@@ -2275,10 +2307,14 @@ class ComposerStaticInit5d753bda87eb9d2267cf7a9b28282b12
         'Filament\\Tables\\Columns\\Concerns\\HasState' => __DIR__ . '/..' . '/filament/tables/src/Columns/Concerns/HasState.php',
         'Filament\\Tables\\Columns\\Concerns\\HasTooltip' => __DIR__ . '/..' . '/filament/tables/src/Columns/Concerns/HasTooltip.php',
         'Filament\\Tables\\Columns\\Concerns\\InteractsWithTableQuery' => __DIR__ . '/..' . '/filament/tables/src/Columns/Concerns/InteractsWithTableQuery.php',
+        'Filament\\Tables\\Columns\\Contracts\\Editable' => __DIR__ . '/..' . '/filament/tables/src/Columns/Contracts/Editable.php',
         'Filament\\Tables\\Columns\\IconColumn' => __DIR__ . '/..' . '/filament/tables/src/Columns/IconColumn.php',
         'Filament\\Tables\\Columns\\ImageColumn' => __DIR__ . '/..' . '/filament/tables/src/Columns/ImageColumn.php',
+        'Filament\\Tables\\Columns\\SelectColumn' => __DIR__ . '/..' . '/filament/tables/src/Columns/SelectColumn.php',
         'Filament\\Tables\\Columns\\TagsColumn' => __DIR__ . '/..' . '/filament/tables/src/Columns/TagsColumn.php',
         'Filament\\Tables\\Columns\\TextColumn' => __DIR__ . '/..' . '/filament/tables/src/Columns/TextColumn.php',
+        'Filament\\Tables\\Columns\\TextInputColumn' => __DIR__ . '/..' . '/filament/tables/src/Columns/TextInputColumn.php',
+        'Filament\\Tables\\Columns\\ToggleColumn' => __DIR__ . '/..' . '/filament/tables/src/Columns/ToggleColumn.php',
         'Filament\\Tables\\Columns\\ViewColumn' => __DIR__ . '/..' . '/filament/tables/src/Columns/ViewColumn.php',
         'Filament\\Tables\\Commands\\Aliases\\MakeColumnCommand' => __DIR__ . '/..' . '/filament/tables/src/Commands/Aliases/MakeColumnCommand.php',
         'Filament\\Tables\\Commands\\Concerns\\CanManipulateFiles' => __DIR__ . '/..' . '/filament/tables/src/Commands/Concerns/CanManipulateFiles.php',
@@ -2785,6 +2821,7 @@ class ComposerStaticInit5d753bda87eb9d2267cf7a9b28282b12
         'Illuminate\\Console\\Concerns\\CreatesMatchingTest' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Console/Concerns/CreatesMatchingTest.php',
         'Illuminate\\Console\\Concerns\\HasParameters' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Console/Concerns/HasParameters.php',
         'Illuminate\\Console\\Concerns\\InteractsWithIO' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Console/Concerns/InteractsWithIO.php',
+        'Illuminate\\Console\\Concerns\\InteractsWithSignals' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Console/Concerns/InteractsWithSignals.php',
         'Illuminate\\Console\\ConfirmableTrait' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Console/ConfirmableTrait.php',
         'Illuminate\\Console\\ContainerCommandLoader' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Console/ContainerCommandLoader.php',
         'Illuminate\\Console\\Contracts\\NewLineAware' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Console/Contracts/NewLineAware.php',
@@ -2816,6 +2853,7 @@ class ComposerStaticInit5d753bda87eb9d2267cf7a9b28282b12
         'Illuminate\\Console\\Scheduling\\ScheduleTestCommand' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Console/Scheduling/ScheduleTestCommand.php',
         'Illuminate\\Console\\Scheduling\\ScheduleWorkCommand' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Console/Scheduling/ScheduleWorkCommand.php',
         'Illuminate\\Console\\Scheduling\\SchedulingMutex' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Console/Scheduling/SchedulingMutex.php',
+        'Illuminate\\Console\\Signals' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Console/Signals.php',
         'Illuminate\\Console\\View\\Components\\Alert' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Console/View/Components/Alert.php',
         'Illuminate\\Console\\View\\Components\\BulletList' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Console/View/Components/BulletList.php',
         'Illuminate\\Console\\View\\Components\\Choice' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Console/View/Components/Choice.php',
@@ -3035,6 +3073,8 @@ class ComposerStaticInit5d753bda87eb9d2267cf7a9b28282b12
         'Illuminate\\Database\\Eloquent\\Concerns\\HasGlobalScopes' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Database/Eloquent/Concerns/HasGlobalScopes.php',
         'Illuminate\\Database\\Eloquent\\Concerns\\HasRelationships' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Database/Eloquent/Concerns/HasRelationships.php',
         'Illuminate\\Database\\Eloquent\\Concerns\\HasTimestamps' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Database/Eloquent/Concerns/HasTimestamps.php',
+        'Illuminate\\Database\\Eloquent\\Concerns\\HasUlids' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Database/Eloquent/Concerns/HasUlids.php',
+        'Illuminate\\Database\\Eloquent\\Concerns\\HasUuids' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Database/Eloquent/Concerns/HasUuids.php',
         'Illuminate\\Database\\Eloquent\\Concerns\\HidesAttributes' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Database/Eloquent/Concerns/HidesAttributes.php',
         'Illuminate\\Database\\Eloquent\\Concerns\\QueriesRelationships' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Database/Eloquent/Concerns/QueriesRelationships.php',
         'Illuminate\\Database\\Eloquent\\Factories\\BelongsToManyRelationship' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Database/Eloquent/Factories/BelongsToManyRelationship.php',
@@ -3132,6 +3172,7 @@ class ComposerStaticInit5d753bda87eb9d2267cf7a9b28282b12
         'Illuminate\\Database\\Query\\Processors\\SqlServerProcessor' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Database/Query/Processors/SqlServerProcessor.php',
         'Illuminate\\Database\\RecordsNotFoundException' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Database/RecordsNotFoundException.php',
         'Illuminate\\Database\\SQLiteConnection' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Database/SQLiteConnection.php',
+        'Illuminate\\Database\\SQLiteDatabaseDoesNotExistException' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Database/SQLiteDatabaseDoesNotExistException.php',
         'Illuminate\\Database\\Schema\\Blueprint' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Database/Schema/Blueprint.php',
         'Illuminate\\Database\\Schema\\Builder' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Database/Schema/Builder.php',
         'Illuminate\\Database\\Schema\\ColumnDefinition' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Database/Schema/ColumnDefinition.php',
@@ -4158,6 +4199,7 @@ class ComposerStaticInit5d753bda87eb9d2267cf7a9b28282b12
         'League\\Flysystem\\UnableToCreateDirectory' => __DIR__ . '/..' . '/league/flysystem/src/UnableToCreateDirectory.php',
         'League\\Flysystem\\UnableToDeleteDirectory' => __DIR__ . '/..' . '/league/flysystem/src/UnableToDeleteDirectory.php',
         'League\\Flysystem\\UnableToDeleteFile' => __DIR__ . '/..' . '/league/flysystem/src/UnableToDeleteFile.php',
+        'League\\Flysystem\\UnableToListContents' => __DIR__ . '/..' . '/league/flysystem/src/UnableToListContents.php',
         'League\\Flysystem\\UnableToMountFilesystem' => __DIR__ . '/..' . '/league/flysystem/src/UnableToMountFilesystem.php',
         'League\\Flysystem\\UnableToMoveFile' => __DIR__ . '/..' . '/league/flysystem/src/UnableToMoveFile.php',
         'League\\Flysystem\\UnableToReadFile' => __DIR__ . '/..' . '/league/flysystem/src/UnableToReadFile.php',
@@ -5590,6 +5632,7 @@ class ComposerStaticInit5d753bda87eb9d2267cf7a9b28282b12
         'Ramsey\\Uuid\\Converter\\Time\\DegradedTimeConverter' => __DIR__ . '/..' . '/ramsey/uuid/src/Converter/Time/DegradedTimeConverter.php',
         'Ramsey\\Uuid\\Converter\\Time\\GenericTimeConverter' => __DIR__ . '/..' . '/ramsey/uuid/src/Converter/Time/GenericTimeConverter.php',
         'Ramsey\\Uuid\\Converter\\Time\\PhpTimeConverter' => __DIR__ . '/..' . '/ramsey/uuid/src/Converter/Time/PhpTimeConverter.php',
+        'Ramsey\\Uuid\\Converter\\Time\\UnixTimeConverter' => __DIR__ . '/..' . '/ramsey/uuid/src/Converter/Time/UnixTimeConverter.php',
         'Ramsey\\Uuid\\DegradedUuid' => __DIR__ . '/..' . '/ramsey/uuid/src/DegradedUuid.php',
         'Ramsey\\Uuid\\DeprecatedUuidInterface' => __DIR__ . '/..' . '/ramsey/uuid/src/DeprecatedUuidInterface.php',
         'Ramsey\\Uuid\\DeprecatedUuidMethodsTrait' => __DIR__ . '/..' . '/ramsey/uuid/src/DeprecatedUuidMethodsTrait.php',
@@ -5625,6 +5668,7 @@ class ComposerStaticInit5d753bda87eb9d2267cf7a9b28282b12
         'Ramsey\\Uuid\\Generator\\RandomLibAdapter' => __DIR__ . '/..' . '/ramsey/uuid/src/Generator/RandomLibAdapter.php',
         'Ramsey\\Uuid\\Generator\\TimeGeneratorFactory' => __DIR__ . '/..' . '/ramsey/uuid/src/Generator/TimeGeneratorFactory.php',
         'Ramsey\\Uuid\\Generator\\TimeGeneratorInterface' => __DIR__ . '/..' . '/ramsey/uuid/src/Generator/TimeGeneratorInterface.php',
+        'Ramsey\\Uuid\\Generator\\UnixTimeGenerator' => __DIR__ . '/..' . '/ramsey/uuid/src/Generator/UnixTimeGenerator.php',
         'Ramsey\\Uuid\\Guid\\Fields' => __DIR__ . '/..' . '/ramsey/uuid/src/Guid/Fields.php',
         'Ramsey\\Uuid\\Guid\\Guid' => __DIR__ . '/..' . '/ramsey/uuid/src/Guid/Guid.php',
         'Ramsey\\Uuid\\Guid\\GuidBuilder' => __DIR__ . '/..' . '/ramsey/uuid/src/Guid/GuidBuilder.php',
@@ -5649,8 +5693,11 @@ class ComposerStaticInit5d753bda87eb9d2267cf7a9b28282b12
         'Ramsey\\Uuid\\Provider\\Time\\SystemTimeProvider' => __DIR__ . '/..' . '/ramsey/uuid/src/Provider/Time/SystemTimeProvider.php',
         'Ramsey\\Uuid\\Rfc4122\\Fields' => __DIR__ . '/..' . '/ramsey/uuid/src/Rfc4122/Fields.php',
         'Ramsey\\Uuid\\Rfc4122\\FieldsInterface' => __DIR__ . '/..' . '/ramsey/uuid/src/Rfc4122/FieldsInterface.php',
+        'Ramsey\\Uuid\\Rfc4122\\MaxTrait' => __DIR__ . '/..' . '/ramsey/uuid/src/Rfc4122/MaxTrait.php',
+        'Ramsey\\Uuid\\Rfc4122\\MaxUuid' => __DIR__ . '/..' . '/ramsey/uuid/src/Rfc4122/MaxUuid.php',
         'Ramsey\\Uuid\\Rfc4122\\NilTrait' => __DIR__ . '/..' . '/ramsey/uuid/src/Rfc4122/NilTrait.php',
         'Ramsey\\Uuid\\Rfc4122\\NilUuid' => __DIR__ . '/..' . '/ramsey/uuid/src/Rfc4122/NilUuid.php',
+        'Ramsey\\Uuid\\Rfc4122\\TimeTrait' => __DIR__ . '/..' . '/ramsey/uuid/src/Rfc4122/TimeTrait.php',
         'Ramsey\\Uuid\\Rfc4122\\UuidBuilder' => __DIR__ . '/..' . '/ramsey/uuid/src/Rfc4122/UuidBuilder.php',
         'Ramsey\\Uuid\\Rfc4122\\UuidInterface' => __DIR__ . '/..' . '/ramsey/uuid/src/Rfc4122/UuidInterface.php',
         'Ramsey\\Uuid\\Rfc4122\\UuidV1' => __DIR__ . '/..' . '/ramsey/uuid/src/Rfc4122/UuidV1.php',
@@ -5658,6 +5705,8 @@ class ComposerStaticInit5d753bda87eb9d2267cf7a9b28282b12
         'Ramsey\\Uuid\\Rfc4122\\UuidV3' => __DIR__ . '/..' . '/ramsey/uuid/src/Rfc4122/UuidV3.php',
         'Ramsey\\Uuid\\Rfc4122\\UuidV4' => __DIR__ . '/..' . '/ramsey/uuid/src/Rfc4122/UuidV4.php',
         'Ramsey\\Uuid\\Rfc4122\\UuidV5' => __DIR__ . '/..' . '/ramsey/uuid/src/Rfc4122/UuidV5.php',
+        'Ramsey\\Uuid\\Rfc4122\\UuidV6' => __DIR__ . '/..' . '/ramsey/uuid/src/Rfc4122/UuidV6.php',
+        'Ramsey\\Uuid\\Rfc4122\\UuidV7' => __DIR__ . '/..' . '/ramsey/uuid/src/Rfc4122/UuidV7.php',
         'Ramsey\\Uuid\\Rfc4122\\Validator' => __DIR__ . '/..' . '/ramsey/uuid/src/Rfc4122/Validator.php',
         'Ramsey\\Uuid\\Rfc4122\\VariantTrait' => __DIR__ . '/..' . '/ramsey/uuid/src/Rfc4122/VariantTrait.php',
         'Ramsey\\Uuid\\Rfc4122\\VersionTrait' => __DIR__ . '/..' . '/ramsey/uuid/src/Rfc4122/VersionTrait.php',
@@ -5674,6 +5723,8 @@ class ComposerStaticInit5d753bda87eb9d2267cf7a9b28282b12
         'Ramsey\\Uuid\\Validator\\GenericValidator' => __DIR__ . '/..' . '/ramsey/uuid/src/Validator/GenericValidator.php',
         'Ramsey\\Uuid\\Validator\\ValidatorInterface' => __DIR__ . '/..' . '/ramsey/uuid/src/Validator/ValidatorInterface.php',
         'ReturnTypeWillChange' => __DIR__ . '/..' . '/symfony/polyfill-php81/Resources/stubs/ReturnTypeWillChange.php',
+        'RyanChandler\\BladeCaptureDirective\\BladeCaptureDirective' => __DIR__ . '/..' . '/ryangjchandler/blade-capture-directive/src/BladeCaptureDirective.php',
+        'RyanChandler\\BladeCaptureDirective\\BladeCaptureDirectiveServiceProvider' => __DIR__ . '/..' . '/ryangjchandler/blade-capture-directive/src/BladeCaptureDirectiveServiceProvider.php',
         'SebastianBergmann\\CliParser\\AmbiguousOptionException' => __DIR__ . '/..' . '/sebastian/cli-parser/src/exceptions/AmbiguousOptionException.php',
         'SebastianBergmann\\CliParser\\Exception' => __DIR__ . '/..' . '/sebastian/cli-parser/src/exceptions/Exception.php',
         'SebastianBergmann\\CliParser\\OptionDoesNotAllowArgumentException' => __DIR__ . '/..' . '/sebastian/cli-parser/src/exceptions/OptionDoesNotAllowArgumentException.php',
@@ -5862,10 +5913,12 @@ class ComposerStaticInit5d753bda87eb9d2267cf7a9b28282b12
         'SebastianBergmann\\Type\\NeverType' => __DIR__ . '/..' . '/sebastian/type/src/type/NeverType.php',
         'SebastianBergmann\\Type\\NullType' => __DIR__ . '/..' . '/sebastian/type/src/type/NullType.php',
         'SebastianBergmann\\Type\\ObjectType' => __DIR__ . '/..' . '/sebastian/type/src/type/ObjectType.php',
+        'SebastianBergmann\\Type\\Parameter' => __DIR__ . '/..' . '/sebastian/type/src/Parameter.php',
         'SebastianBergmann\\Type\\ReflectionMapper' => __DIR__ . '/..' . '/sebastian/type/src/ReflectionMapper.php',
         'SebastianBergmann\\Type\\RuntimeException' => __DIR__ . '/..' . '/sebastian/type/src/exception/RuntimeException.php',
         'SebastianBergmann\\Type\\SimpleType' => __DIR__ . '/..' . '/sebastian/type/src/type/SimpleType.php',
         'SebastianBergmann\\Type\\StaticType' => __DIR__ . '/..' . '/sebastian/type/src/type/StaticType.php',
+        'SebastianBergmann\\Type\\TrueType' => __DIR__ . '/..' . '/sebastian/type/src/type/TrueType.php',
         'SebastianBergmann\\Type\\Type' => __DIR__ . '/..' . '/sebastian/type/src/type/Type.php',
         'SebastianBergmann\\Type\\TypeName' => __DIR__ . '/..' . '/sebastian/type/src/TypeName.php',
         'SebastianBergmann\\Type\\UnionType' => __DIR__ . '/..' . '/sebastian/type/src/type/UnionType.php',
@@ -6023,6 +6076,7 @@ class ComposerStaticInit5d753bda87eb9d2267cf7a9b28282b12
         'Spatie\\LaravelIgnition\\Support\\StringComparator' => __DIR__ . '/..' . '/spatie/laravel-ignition/src/Support/StringComparator.php',
         'Spatie\\LaravelIgnition\\Views\\BladeSourceMapCompiler' => __DIR__ . '/..' . '/spatie/laravel-ignition/src/Views/BladeSourceMapCompiler.php',
         'Spatie\\LaravelIgnition\\Views\\ViewExceptionMapper' => __DIR__ . '/..' . '/spatie/laravel-ignition/src/Views/ViewExceptionMapper.php',
+        'Spatie\\LaravelPackageTools\\Commands\\InstallCommand' => __DIR__ . '/..' . '/spatie/laravel-package-tools/src/Commands/InstallCommand.php',
         'Spatie\\LaravelPackageTools\\Exceptions\\InvalidPackage' => __DIR__ . '/..' . '/spatie/laravel-package-tools/src/Exceptions/InvalidPackage.php',
         'Spatie\\LaravelPackageTools\\Package' => __DIR__ . '/..' . '/spatie/laravel-package-tools/src/Package.php',
         'Spatie\\LaravelPackageTools\\PackageServiceProvider' => __DIR__ . '/..' . '/spatie/laravel-package-tools/src/PackageServiceProvider.php',
@@ -6948,10 +7002,10 @@ class ComposerStaticInit5d753bda87eb9d2267cf7a9b28282b12
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit5d753bda87eb9d2267cf7a9b28282b12::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit5d753bda87eb9d2267cf7a9b28282b12::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInit5d753bda87eb9d2267cf7a9b28282b12::$prefixesPsr0;
-            $loader->classMap = ComposerStaticInit5d753bda87eb9d2267cf7a9b28282b12::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit0a7a9b5f0bd1d0a0f4ae759a09abcbe2::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit0a7a9b5f0bd1d0a0f4ae759a09abcbe2::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInit0a7a9b5f0bd1d0a0f4ae759a09abcbe2::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInit0a7a9b5f0bd1d0a0f4ae759a09abcbe2::$classMap;
 
         }, null, ClassLoader::class);
     }

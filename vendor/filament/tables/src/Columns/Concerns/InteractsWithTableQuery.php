@@ -52,10 +52,6 @@ trait InteractsWithTableQuery
             return $query;
         }
 
-        if (! $this->isSearchable()) {
-            return $query;
-        }
-
         if ($isIndividual && (! $this->isIndividuallySearchable())) {
             return $query;
         }
@@ -191,12 +187,12 @@ trait InteractsWithTableQuery
         return $relationship;
     }
 
-    protected function getRelationshipTitleColumnName(): string
+    public function getRelationshipTitleColumnName(): string
     {
         return (string) Str::of($this->getName())->afterLast('.');
     }
 
-    protected function getRelationshipName(): string
+    public function getRelationshipName(): string
     {
         return (string) Str::of($this->getName())->beforeLast('.');
     }

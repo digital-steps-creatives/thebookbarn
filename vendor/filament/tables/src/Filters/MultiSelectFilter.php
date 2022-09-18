@@ -4,6 +4,7 @@ namespace Filament\Tables\Filters;
 
 use Closure;
 use Filament\Forms\Components\MultiSelect;
+use Filament\Forms\Components\Select;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
 
@@ -13,7 +14,7 @@ class MultiSelectFilter extends BaseFilter
     use Concerns\HasPlaceholder;
     use Concerns\HasRelationship;
 
-    protected string | Closure | null $column = null;
+    protected string | Closure | null $attribute = null;
 
     protected bool | Closure $isStatic = false;
 
@@ -24,7 +25,7 @@ class MultiSelectFilter extends BaseFilter
         $this->placeholder(__('tables::table.filters.multi_select.placeholder'));
 
         $this->indicateUsing(function (array $state): array {
-            if (! ($state['values'] ?? false)) {
+            if (blank($state['values'] ?? null)) {
                 return [];
             }
 
@@ -65,14 +66,24 @@ class MultiSelectFilter extends BaseFilter
         }
 
         /** @var Builder $query */
-        $query = $query->whereIn($this->getColumn(), $data['values']);
+        $query = $query->whereIn($this->getAttribute(), $data['values']);
 
         return $query;
     }
 
+    public function attribute(string | Closure | null $name): static
+    {
+        $this->attribute = $name;
+
+        return $this;
+    }
+
+    /**
+     * @deprecated Use `attribute()` instead.
+     */
     public function column(string | Closure | null $name): static
     {
-        $this->column = $name;
+        $this->attribute($name);
 
         return $this;
     }
@@ -84,20 +95,32 @@ class MultiSelectFilter extends BaseFilter
         return $this;
     }
 
-    public function getColumn(): string
+    public function getAttribute(): string
     {
-        return $this->evaluate($this->column) ?? $this->getName();
+        return $this->evaluate($this->attribute) ?? $this->getName();
     }
 
-    public function getFormSchema(): array
+    /**
+     * @deprecated Use `getAttribute()` instead.
+     */
+    public function getColumn(): string
     {
-        return $this->formSchema ?? [
-            MultiSelect::make('values')
-                ->label($this->getLabel())
-                ->options($this->getOptions())
-                ->placeholder($this->getPlaceholder())
-                ->default($this->getDefaultState())
-                ->columnSpan($this->getColumnSpan()),
-        ];
+        return $this->getAttribute();
+    }
+
+    protected function getFormField(): Select
+    {
+        $field = MultiSelect::make('values')
+            ->label($this->getLabel())
+            ->options($this->getOptions())
+            ->placeholder($this->getPlaceholder())
+            ->default($this->getDefaultState())
+            ->columnSpan($this->getColumnSpan());
+
+        if (filled($defaultState = $this->getDefaultState())) {
+            $field->default($defaultState);
+        }
+
+        return $field;
     }
 }

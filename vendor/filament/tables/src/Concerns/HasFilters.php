@@ -83,9 +83,13 @@ trait HasFilters
         }
 
         foreach ($fields as $field) {
-            $field->state(
-                is_array($field->getState()) ? [] : null,
-            );
+            $state = $field->getState();
+
+            $field->state(match (true) {
+                is_array($state) => [],
+                $state === true => false,
+                default => null,
+            });
         }
 
         $this->updatedTableFilters();
@@ -94,9 +98,13 @@ trait HasFilters
     public function removeTableFilters(): void
     {
         foreach ($this->getTableFiltersForm()->getFlatFields(withAbsolutePathKeys: true) as $field) {
-            $field->state(
-                is_array($field->getState()) ? [] : null,
-            );
+            $state = $field->getState();
+
+            $field->state(match (true) {
+                is_array($state) => [],
+                $state === true => false,
+                default => null,
+            });
         }
 
         $this->updatedTableFilters();
@@ -135,10 +143,28 @@ trait HasFilters
         return [];
     }
 
+    public function getTableFilterState(string $name): ?array
+    {
+        return $this->getTableFiltersForm()->getRawState()[$this->parseFilterName($name)] ?? null;
+    }
+
+    public function parseFilterName(string $name): string
+    {
+        if (! class_exists($name)) {
+            return $name;
+        }
+
+        if (! is_subclass_of($name, BaseFilter::class)) {
+            return $name;
+        }
+
+        return $name::getDefaultName();
+    }
+
     protected function getTableFiltersFormColumns(): int | array
     {
         return match ($this->getTableFiltersLayout()) {
-            Layout::AboveContent => [
+            Layout::AboveContent, Layout::BelowContent => [
                 'sm' => 2,
                 'lg' => 3,
                 'xl' => 4,

@@ -1,6 +1,5 @@
 import Alpine from 'alpinejs'
 import Chart from 'chart.js/auto'
-
 import Collapse from '@alpinejs/collapse'
 import Focus from '@alpinejs/focus'
 import FormsAlpinePlugin from '../../../forms/dist/module.esm'
@@ -18,7 +17,7 @@ Alpine.plugin(Persist)
 Alpine.plugin(Tooltip)
 
 Alpine.store('sidebar', {
-    isOpen: Alpine.$persist(false).as('isOpen'),
+    isOpen: Alpine.$persist(true).as('isOpen'),
 
     collapsedGroups: Alpine.$persist([]).as('collapsedGroups'),
 

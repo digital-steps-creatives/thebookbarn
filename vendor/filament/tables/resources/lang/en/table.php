@@ -4,6 +4,14 @@ return [
 
     'columns' => [
 
+        'color' => [
+
+            'messages' => [
+                'copied' => 'Copied',
+            ],
+
+        ],
+
         'tags' => [
             'more' => 'and :count more',
         ],
@@ -100,10 +108,6 @@ return [
 
             'reset' => [
                 'label' => 'Reset filters',
-            ],
-
-            'close' => [
-                'label' => 'Close',
             ],
 
         ],

@@ -2,7 +2,7 @@
 
 return [
     "login" => [
-        "username_or_email" => "Username ou Email",
+        "username_or_email" => "Username or Email",
         "forgot_password_link" => "Forgot password?",
         "create_an_account" => "create an account",
     ],
@@ -95,7 +95,7 @@ return [
             ],
             "enabled"=>[
                 "title"=>"You have enabled two factor authentication!",
-                "description"=>"Two factor authentication is now enabled. Scan the following QR code using your phone's authenticator application or enter the setup key.",
+                "description"=>"Two factor authentication is now enabled. This helps make your account more secure.",
                 "store_codes"=>"Store these recovery codes in a secure password manager. They can be used to recover access to your account if your two factor authentication device is lost.",
                 "show_codes"=>'Show Recovery Codes',
                 "hide_codes" => 'Hide Recovery Codes'

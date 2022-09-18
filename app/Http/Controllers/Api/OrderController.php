@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\Order;
 use App\Dsc\OrderHandler;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\OrderRequest;
-use App\Models\Order;
+use Illuminate\Support\Facades\Auth;
 
 class OrderController extends BaseController
 {
@@ -20,10 +21,10 @@ class OrderController extends BaseController
     public function index(Request $request)
     {
         if ($request->has('perPage')) {
-            $success['listOrders'] = Order::with('customer')->get();
+            $success['listOrders'] = Order::with('customer')->where('customer_id',  Auth::user()->id)->get();
             return $this->sendResponse($success, 'successfully loaded');
         }
-        $success['listOrders'] = Order::with('customer', 'orderItems')->get();
+        $success['listOrders'] = Order::with('customer', 'orderItems')->where('customer_id', Auth::user()->id)->get();
         return $this->sendResponse($success, 'successfully loaded');
     }
 

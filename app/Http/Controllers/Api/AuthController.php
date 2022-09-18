@@ -7,7 +7,9 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\API\BaseController as BaseController;
+use App\Http\Controllers\Api\BaseController as BaseController;
+use App\Notifications\CustomerWelcomeNotification;
+use Illuminate\Auth\Events\Registered;
 
 class AuthController extends BaseController
 {
@@ -33,6 +35,7 @@ class AuthController extends BaseController
             'email' => 'required|email',
             'password' => 'required',
             'confirm_password' => 'required|same:password',
+
         ]);
 
         if($validator->fails()){
@@ -40,8 +43,10 @@ class AuthController extends BaseController
         }
 
         $input = $request->all();
+        $input['role'] = 'customer';
         $input['password'] = bcrypt($input['password']);
         $user = User::create($input);
+        event( new Registered($user));
         $success['token'] =  $user->createToken('Mybookbarn')->plainTextToken;
         $success['name'] =  $user->name;
 

@@ -3,6 +3,7 @@
 namespace App\Traits;
 
 use App\Models\User;
+use App\Models\Customer;
 
 trait CreateCustomer
 {
@@ -14,7 +15,7 @@ trait CreateCustomer
      */
     public function createCustomer($request)
     {
-        $customer = User::create(array_merge(
+        $customer = Customer::create(array_merge(
             $request->only('name', 'role', 'email', 'phone'),
             ['password' => bcrypt($request->password)]
         ));

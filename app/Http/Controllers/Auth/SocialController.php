@@ -51,7 +51,7 @@ class SocialController extends Controller
             $newUser->save();
             auth()->login($newUser, true);
         }
-        return redirect()->to(route('dashboard'));
+        return redirect()->to(route('cart'));
     }
 
 
@@ -98,6 +98,6 @@ class SocialController extends Controller
             $newUser->save();
             auth()->login($newUser, true);
         }
-        return redirect()->to(route('dashboard'));
+        return redirect()->to(route('cart'));
     }
 }

@@ -5,7 +5,7 @@
     "background_color": "#6777ef",
     "description": "The Book Barn",
     "display": "fullscreen",
-    "theme_color": "#6777ef",
+    "theme_color": "#fff",
     "icons": [
         {
             "src": "images/logo.png",

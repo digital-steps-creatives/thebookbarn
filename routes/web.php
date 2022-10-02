@@ -18,6 +18,7 @@ use App\Http\Controllers\Auth\SocialController;
 */
 
 Route::get('/', [FrontController::class, 'home']);
+Route::get('/cart', [FrontController::class, 'cart'])->name('cart');
 Route::prefix('auth')->group( function(){
     Route::prefix('google')->group( function(){
         Route::get('/redirect', [SocialController::class, 'googleRedirectToProvider'])->name('google.redirect');
@@ -28,12 +29,7 @@ Route::prefix('auth')->group( function(){
         Route::get('/callback', [SocialController::class, 'handleFacebookCallback']);
     });
 });
-Route::middleware([
-    'auth:sanctum',
-    config('jetstream.auth_session'),
-    'verified',
-])->group(function () {
-    Route::get('/dashboard', function () {
-        return Inertia::render('Dashboard');
-    })->name('dashboard');
+Route::middleware(['auth:sanctum',config('jetstream.auth_session'),'verified'])->group(function () {
+    Route::get('/dashboard', function () {return Inertia::render('Dashboard');})->name('dashboard');
+    Route::get('/orders', [FrontController::class, 'orders'])->name('myorders');
 });

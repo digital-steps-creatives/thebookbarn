@@ -9,6 +9,7 @@ import DropdownLink from '@/Components/DropdownLink.vue';
 import NavLink from '@/Components/NavLink.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
 import TheFooter from '@/Components/TheFooter.vue';
+import CartDropdown from '@/frontend/components/partials/CartDropdown.vue';
 
 defineProps({
     title: String,
@@ -43,13 +44,13 @@ const logout = () => {
                         <div class="col-sm-3">
                             <!-- Logo -->
                             <div class="shrink-0 flex items-center mr-8">
-                                <Link :href="route('dashboard')">
+                                <Link href="/">
                                     <ApplicationMark class="block w-auto" style="height:90px" />
                                 </Link>
                             </div>
                         </div>
                         <!-- Navigation Links -->
-                        <div class="col-sm-7">
+                        <div class="col-sm-6">
                                 <div class="relative mt-4">
                                     <input type="text" id="email-address-icon" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-3 py-3" placeholder="search over 100s book titles">
                                     <button type="submit" class="absolute right-0 top-0 mt-3 mr-2">
@@ -60,15 +61,12 @@ const logout = () => {
                                 </div>
                         </div>
 
-                        <div class="col-sm-2">
+                        <div class="col-sm-3">
+                            <div class="flex justify-between">
                             <div class="mt-4 relative">
                                 <div class="flex justify-between">
-                                    <Link class="border p-3 rounded-lg inline-flex">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-gray-600">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
-                                        </svg>
-                                    </Link>
-                                    <Link class="border p-3 rounded-lg inline-flex" :href="route('login')">
+                                    <CartDropdown />
+                                    <Link class="border p-3 rounded-lg inline-flex" :href="route('login')"  v-if="!$page.props.user">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-gray-600">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
                                         </svg>
@@ -144,7 +142,7 @@ const logout = () => {
                             </div>
 
                             <!-- Settings Dropdown -->
-                            <div class="ml-3 relative" v-if="$page.props.user">
+                            <div class="ml-3 mt-4 relative" v-if="$page.props.user">
                                 <Dropdown align="right" width="48">
                                     <template #trigger>
                                         <button v-if="$page.props.jetstream.managesProfilePhotos" class="flex text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-gray-300 transition">
@@ -176,6 +174,9 @@ const logout = () => {
                                         <DropdownLink :href="route('profile.show')">
                                             Profile
                                         </DropdownLink>
+                                        <DropdownLink :href="route('myorders')">
+                                           My Orders
+                                        </DropdownLink>
 
                                         <DropdownLink v-if="$page.props.jetstream.hasApiFeatures" :href="route('api-tokens.index')">
                                             API Tokens
@@ -192,6 +193,7 @@ const logout = () => {
                                     </template>
                                 </Dropdown>
                             </div>
+                        </div>
                         </div>
 
                         <!-- Hamburger -->

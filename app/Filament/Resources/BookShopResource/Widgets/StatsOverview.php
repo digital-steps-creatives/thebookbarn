@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Order;
 use App\Models\BookShop;
+use App\Models\Customer;
 use App\Enums\OrderStatus;
 use Filament\Widgets\StatsOverviewWidget\Card;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
@@ -14,7 +15,7 @@ class StatsOverview extends BaseWidget
 {
     protected function getCards(): array
     {
-        $newcustomers = User::where('role', 'customer')->get()->groupBy(function($user) {
+        $newcustomers = Customer::where('role', 'customer')->get()->groupBy(function($user) {
             return Carbon::parse($user->created_at)->format('m');
         });
         return [
@@ -25,7 +26,7 @@ class StatsOverview extends BaseWidget
             ->descriptionIcon('heroicon-s-trending-up')
             ->chart([7, 2, 10, 3, 15, 4, 17])
             ->color('success'),
-            Card::make('New Customers', User::where('role', 'customer')->count())
+            Card::make('New Customers', Customer::where('role', 'customer')->count())
             ->description('32k increase')
             ->descriptionIcon('heroicon-s-trending-up')
             ->chart([$newcustomers])

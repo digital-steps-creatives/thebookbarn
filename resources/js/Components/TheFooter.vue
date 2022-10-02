@@ -5,7 +5,7 @@
                 <div class="col-sm-4">
                     <div class="module__social">
                         <div class="module__social__content">
-                            <img src="/images/logo.png" alt="The Book Barn" width="200px" height="105px">
+                            <img src="/images/logo.png" alt="The Book Barn" style="height:95px">
                         </div>
                     </div>
                     <div class="module">
@@ -41,6 +41,14 @@
                 </div>
                 <div class="col-sm-8">
 
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="container">
+            <div class="row py-3">
+                <div class="col-12">
+                    <span>The Bookbarn | © 2022 All Rights Reserved</span>
                 </div>
             </div>
         </div>

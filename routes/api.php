@@ -25,10 +25,11 @@ Route::post('register', [AuthController::class, 'signup']);
 Route::prefix('content')->group( function(){
     Route::get('books/list', [BookController::class, 'getBooks']);
 });
+Route::prefix('orders')->group( function() {
+    Route::post('create', [OrderController::class, 'store'])->name('orders.store');
+    Route::get('list', [OrderController::class, 'index']);
+});
 Route::middleware('auth:sanctum')->group( function () {
     Route::post('logout', [AuthController::class, 'logout']);
-    Route::prefix('orders')->group( function() {
-        Route::post('create', [OrderController::class, 'store']);
-        Route::get('list', [OrderController::class, 'index']);
-    });
+    
 });

@@ -4,6 +4,7 @@ use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
 use App\Http\Controllers\FrontController;
+use App\Http\Controllers\Auth\SocialController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,7 +18,16 @@ use App\Http\Controllers\FrontController;
 */
 
 Route::get('/', [FrontController::class, 'home']);
-
+Route::prefix('auth')->group( function(){
+    Route::prefix('google')->group( function(){
+        Route::get('/redirect', [SocialController::class, 'googleRedirectToProvider'])->name('google.redirect');
+        Route::get('/callback', [SocialController::class, 'handleGoogleCallback']);
+    });
+    Route::prefix('facebook')->group( function(){
+        Route::get('/redirect', [SocialController::class, 'facebookRedirectToProvider'])->name('facebook.redirect');
+        Route::get('/callback', [SocialController::class, 'handleFacebookCallback']);
+    });
+});
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),

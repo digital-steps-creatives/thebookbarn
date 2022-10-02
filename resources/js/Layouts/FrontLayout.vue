@@ -8,6 +8,7 @@ import Dropdown from '@/Components/Dropdown.vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
 import NavLink from '@/Components/NavLink.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
+import TheFooter from '@/Components/TheFooter.vue';
 
 defineProps({
     title: String,
@@ -37,9 +38,9 @@ const logout = () => {
         <div class="min-h-screen bg-gray-100">
             <nav class="bg-white border-b border-gray-100 py-3">
                 <!-- Primary Navigation Menu -->
-                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div class="flex justify-between h-auto">
-                        <div class="flex">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm-3">
                             <!-- Logo -->
                             <div class="shrink-0 flex items-center mr-8">
                                 <Link :href="route('dashboard')">
@@ -48,24 +49,30 @@ const logout = () => {
                             </div>
                         </div>
                         <!-- Navigation Links -->
-                        <div class="grow mx-auto my-auto">
-                                <div class="relative">
-                                    <input type="text" id="email-address-icon" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="search over 100s book titles">
-                                    <button type="submit" class="absolute right-0 top-0 mt-2 mr-2">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                        <div class="col-sm-7">
+                                <div class="relative mt-4">
+                                    <input type="text" id="email-address-icon" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-3 py-3" placeholder="search over 100s book titles">
+                                    <button type="submit" class="absolute right-0 top-0 mt-3 mr-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-green-600">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
                                         </svg>
                                     </button>
                                 </div>
                         </div>
 
-                        <div class="hidden sm:flex sm:items-center sm:ml-6">
-                            <div class="ml-3 relative">
-                                <div>
+                        <div class="col-sm-2">
+                            <div class="mt-4 relative">
+                                <div class="flex justify-between">
                                     <Link class="border p-3 rounded-lg inline-flex">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-gray-600">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
                                         </svg>
+                                    </Link>
+                                    <Link class="border p-3 rounded-lg inline-flex" :href="route('login')">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-gray-600">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
+                                        </svg>
+
                                     </Link>
                                 </div>
                                 <!-- Teams Dropdown -->
@@ -317,6 +324,7 @@ const logout = () => {
             <main>
                 <slot />
             </main>
+            <TheFooter />
         </div>
     </div>
 </template>

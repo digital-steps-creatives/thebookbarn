@@ -4,14 +4,14 @@ namespace App\Models;
 
 use Laravel\Sanctum\HasApiTokens;
 use Laravel\Jetstream\HasProfilePhoto;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Laravel\Fortify\TwoFactorAuthenticatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use JeffGreco13\FilamentBreezy\Traits\TwoFactorAuthenticatable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class User extends Authenticatable
+class Customer extends Authenticatable
 {
     use HasApiTokens;
     use HasFactory;
@@ -29,6 +29,9 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
+        'google_id',
+        'facebook_id',
     ];
 
     /**

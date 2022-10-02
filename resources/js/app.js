@@ -7,9 +7,7 @@ import { createInertiaApp } from '@inertiajs/inertia-vue3';
 import { InertiaProgress } from '@inertiajs/progress';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { ZiggyVue } from '../../vendor/tightenco/ziggy/dist/vue.m';
-import 'flowbite';
-import ElementPlus from 'element-plus'
-import 'element-plus/dist/index.css'
+import * as bootstrap from 'bootstrap';
 
 const appName = window.document.getElementsByTagName('title')[0]?.innerText || 'Laravel';
 
@@ -20,9 +18,21 @@ createInertiaApp({
         return createApp({ render: () => h(app, props) })
             .use(plugin)
             .use(ZiggyVue, Ziggy)
-            .use(ElementPlus)
             .mount(el);
     },
 });
 
-InertiaProgress.init({ color: '#4B5563' });
+InertiaProgress.init({
+    // The delay after which the progress bar will
+  // appear during navigation, in milliseconds.
+  delay: 250,
+
+  // The color of the progress bar.
+  color: '#29d',
+
+  // Whether to include the default NProgress styles.
+  includeCSS: true,
+
+  // Whether the NProgress spinner will be shown.
+  showSpinner: true,
+})

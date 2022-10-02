@@ -17,7 +17,7 @@ class ClassLevelResource extends Resource
 {
     protected static ?string $model = ClassLevel::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-collection';
+    protected static ?string $navigationIcon = 'heroicon-o-academic-cap';
 
     public static function form(Form $form): Form
     {
@@ -31,7 +31,8 @@ class ClassLevelResource extends Resource
     {
         return $table
             ->columns([
-                //
+                Tables\Columns\TextColumn::make('class')->sortable(),
+                Tables\Columns\TextColumn::make('level')->sortable(),
             ])
             ->filters([
                 //

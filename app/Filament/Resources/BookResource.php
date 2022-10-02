@@ -11,6 +11,7 @@ use Filament\Resources\Resource;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ImageColumn;
 use Illuminate\Database\Eloquent\Builder;
+use Filament\Tables\Columns\BooleanColumn;
 use App\Filament\Resources\BookResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\BookResource\RelationManagers;
@@ -19,7 +20,7 @@ class BookResource extends Resource
 {
     protected static ?string $model = Book::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-collection';
+    protected static ?string $navigationIcon = 'heroicon-o-clipboard-list';
 
     public static function form(Form $form): Form
     {
@@ -37,8 +38,12 @@ class BookResource extends Resource
                 TextColumn::make('name')->sortable(),
                 TextColumn::make('subject.name')->sortable()->label('Subject'),
                 TextColumn::make('classlevel.class')->sortable()->label('Class'),
-                TextColumn::make('availability')->sortable(),
-                TextColumn::make('status')->sortable()
+                BooleanColumn::make('availability')
+                ->trueColor('primary')
+                ->falseColor('warning')->sortable(),
+                BooleanColumn::make('status')
+                ->trueColor('primary')
+                ->falseColor('warning')->sortable()
             ])
             ->filters([
                 //

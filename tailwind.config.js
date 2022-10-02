@@ -1,23 +1,32 @@
-const defaultTheme = require('tailwindcss/defaultTheme');
+const colors = require('tailwindcss/colors')
 
-/** @type {import('tailwindcss').Config} */
 module.exports = {
-    content: [
-        './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',
-        './vendor/laravel/jetstream/**/*.blade.php',
-        './storage/framework/views/*.php',
-        './resources/views/**/*.blade.php',
-        './resources/js/**/*.vue',
-        './node_modules/flowbite/**/*.js'
-    ],
-
+    content: ['./resources/**/*.blade.php', './vendor/filament/**/*.blade.php'],
     theme: {
         extend: {
-            fontFamily: {
-                sans: ['Nunito', ...defaultTheme.fontFamily.sans],
+            colors: {
+                danger: colors.rose,
+                "primary": {
+                    "50": "#67e752",
+                    "100": "#5ddd48",
+                    "200": "#53d33e",
+                    "300": "#49c934",
+                    "400": "#3fbf2a",
+                    "500": "#35b520",
+                    "600": "#2bab16",
+                    "700": "#21a10c",
+                    "800": "#179702",
+                    "900": "#0d8d00"
+                },
+                success: colors.green,
+                warning: colors.yellow,
             },
         },
     },
-
-    plugins: [require('@tailwindcss/forms'), require('@tailwindcss/typography'), require('flowbite/plugin')],
-};
+    plugins: [
+        require('flowbite/plugin'), 
+        require('@tailwindcss/forms'),
+        require('@tailwindcss/aspect-ratio'),
+        require('@tailwindcss/typography')
+    ],
+}

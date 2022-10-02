@@ -6,13 +6,8 @@
     </script>
     
     <template>
-        <AppLayout title="Dashboard">
-            <template #header>
-                <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                    Dashboard
-                </h2>
-            </template>
-            <Hero></Hero>
+        <AppLayout title="Dashboard" class="home">
+            <Hero class="my-5"></Hero>
         </AppLayout>
     </template>
     

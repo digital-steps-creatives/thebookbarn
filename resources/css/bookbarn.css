@@ -1,12 +1,13 @@
 @import '../../vendor/filament/filament/resources/css/app.css';
 :root {
+    --color-primary-600: #35B520;
     /*
     --f-primary-100: #;
     --f-primary-200: #;
     --f-primary-300: #;
     --f-primary-400: #;
     --f-primary-500: #;
-    --f-primary-600: #;
+    --f-primary-600: #35B520;
     --f-primary-700: #;
     --f-primary-800: #;
     --f-primary-900: #;

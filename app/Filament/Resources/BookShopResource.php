@@ -21,7 +21,7 @@ class BookShopResource extends Resource
 {
     protected static ?string $model = BookShop::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-collection';
+    protected static ?string $navigationIcon = 'heroicon-o-library';
 
     public static function form(Form $form): Form
     {
@@ -69,6 +69,7 @@ class BookShopResource extends Resource
     {
         return [
             'index' => Pages\ManageBookShops::route('/'),
+            'view' => Pages\ShowBookshop::route('/{record}'),
         ];
     }    
     

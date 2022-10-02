@@ -42,7 +42,7 @@ class Order extends Model
      */
     public function customer()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Customer::class);
     }
 
     /**
@@ -64,6 +64,6 @@ class Order extends Model
      */
     public function scopeCustomer($query)
     {
-        return $query->where('user_id', auth()->user()->id);
+        return $query->where('customer_id', auth()->user()->id);
     }
 }

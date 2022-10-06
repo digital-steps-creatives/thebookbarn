@@ -98,6 +98,8 @@ return [
         "pages" => [
             "login" =>
                 \JeffGreco13\FilamentBreezy\Http\Livewire\Auth\Login::class,
+            "forgot-password" =>
+            \JeffGreco13\FilamentBreezy\Http\Livewire\Auth\ResetPassword::class
         ],
     ],
 

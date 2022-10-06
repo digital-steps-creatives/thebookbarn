@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Laravel\Fortify\Fortify;
 use Filament\Facades\Filament;
 use Illuminate\Foundation\Vite;
 use Illuminate\Support\Facades\URL;
@@ -33,5 +34,6 @@ class AppServiceProvider extends ServiceProvider
                 app(Vite::class)('resources/css/bookbarn.css'),
             );
         });
+       
     }
 }

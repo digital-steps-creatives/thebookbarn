@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\AuthController;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
@@ -28,6 +29,12 @@ Route::prefix('auth')->group( function(){
         Route::get('/redirect', [SocialController::class, 'facebookRedirectToProvider'])->name('facebook.redirect');
         Route::get('/callback', [SocialController::class, 'handleFacebookCallback']);
     });
+    Route::middleware('web')
+    ->prefix('customer')
+    ->group(base_path('routes/auth.php'));
+});
+Route::prefix('backoffice')->group( function(){
+    Route::get('forgot-password', [AuthController::class, 'resetpassword'])->name('admin.reset.password');
 });
 Route::middleware(['auth:sanctum',config('jetstream.auth_session'),'verified'])->group(function () {
     Route::get('/dashboard', function () {return Inertia::render('Dashboard');})->name('dashboard');

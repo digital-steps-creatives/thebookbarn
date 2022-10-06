@@ -13,6 +13,9 @@ use Illuminate\Auth\Events\Registered;
 
 class AuthController extends BaseController
 {
+    public bool $isResetting = false;
+    public bool $hasBeenSent = false;
+
     public function signin(Request $request)
     {
         //Log::info($request->all());
@@ -58,5 +61,11 @@ class AuthController extends BaseController
         Auth::user()->tokens()->where('id', $request->user_id)->delete();
         $success['status'] = 200;
         return $this->sendResponse($success, 'User logged out successfully.');
+    }
+
+    public function resetpassword()
+    {   
+        $hasBeenSent = false;
+        return view('vendor.filament-breezy.reset-password', compact('hasBeenSent'));
     }
 }

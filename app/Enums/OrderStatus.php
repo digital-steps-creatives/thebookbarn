@@ -14,12 +14,13 @@ use MyCLabs\Enum\Enum;
  */
 class OrderStatus extends Enum
 {
-    private const PENDINGPAYMENT    = 'pending payment';
+    public const PENDINGPAYMENT    = 'pending payment';
     public const WAITINGQUOTATIONS = 'waiting quotations from vendors';
-    private const APPROVED   = 'approved';
-    private const PROCESSING = 'processing';
-    private const SHIPPED    = 'shipped';
-    private const DELIVERED  = 'delivered';
-    private const REJECTED   = 'rejected';
-    private const CANCELED   = 'canceled';
+    public const APPROVED   = 'approved';
+    public const PENDINGCUSTOMER = 'pending acceptance';
+    public const PROCESSING = 'processing';
+    public const SHIPPED    = 'shipped';
+    public const DELIVERED  = 'delivered';
+    public const REJECTED   = 'rejected';
+    public const CANCELED   = 'canceled';
 }

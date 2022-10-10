@@ -20,10 +20,11 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password')->nullable();
             $table->rememberToken();
-            $table->enum('role', ['prospect', 'business', 'customer'])->default('prospect');
+            $table->enum('role', ['prospect', 'customer'])->default('prospect');
             $table->string('profile_photo_path', 2048)->nullable();
             $table->string('google_id')->nullable();
             $table->string('facebook_id')->nullable();
+            $table->enum('status', ['active', 'inactive']);
             $table->softDeletes();
             $table->timestamps();
         });

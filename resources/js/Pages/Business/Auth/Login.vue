@@ -23,7 +23,7 @@ const submit = () => {
     form.transform(data => ({
         ...data,
         remember_token: form.remember_token ? 'on' : '',
-    })).post(route('signin.customer.vendor'), {
+    })).post(route('signin.vendor'), {
         onFinish: () => form.reset('password'),
     });
 };
@@ -40,26 +40,15 @@ const socialLoginfacebook = () => {
 
     <AuthenticationCard>
         <div class="container my-5">
-            <div class="row justify-content-center">
+            <div class="row">
                 <div class="col-sm-5">
                     <div class="bg-white p-5 shadow rounded">
-                        <h4 class="text-primary">Welcome back! Sign in to continue!</h4>
-                        <hr>
-                        <div class="mb-4">
-                            <button @click="socialLogingoogle" class="social__auths px-6 py-3 mb-4 mx-auto rounded-md text-decoration-none">
-                                <img src="/images/google-logo.png" alt="Log in with Google" width="28" height="28" class="">
-                                <span class="text-secondary ml-3 mb-4 text-base font-medium">Log in with Google</span>
-                            </button>
-                            <button @click="socialLoginfacebook" class="social__auths px-6 py-3 rounded-md text-decoration-none">
-                                <img src="/images/facebook-logo.png" alt="Log in with Facebook" width="28" height="28" class="">
-                                <span class="text-secondary ml-3 mb-4 text-base font-medium">Log in with Facebook</span>
-                            </button>
-                        </div>
+                        <h4 class="text-red-600">Welcome back! Login to continue!</h4>
+                        
                         <hr>
                         <div v-if="status" class="mb-4 font-medium text-sm text-green-600">
                             {{ status }}
                         </div>
-                        <h5 class="my-4 text-center">or</h5>
                         <form @submit.prevent="submit">
                             <div>
                                 <InputLabel for="email" value="Email" />
@@ -92,18 +81,22 @@ const socialLoginfacebook = () => {
                                     <Checkbox v-model:checked="form.remember_token" name="remember" />
                                     <span class="ml-2 text-sm text-gray-600">Remember me</span>
                                 </label>
-                                <Link v-if="canResetPassword" :href="route('password.request')" class="underline text-sm text-gray-600 hover:text-gray-900">
+                                <Link :href="route('password.request')" class="underline text-sm text-gray-600 hover:text-gray-900">
                                     Forgot your password?
                                 </Link>
                             </div>
                            
+                            
                             <div class="flex items-center justify-end mt-4">
+                                <Link :href="route('register.vendor')" class="underline text-sm text-gray-600 hover:text-gray-900">
+                                    Don't have an account?
+                                </Link>
 
                                 <PrimaryButton class="ml-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
                                     Log in
                                 </PrimaryButton>
                             </div>
-                            <hr>
+                            
                             <div class="flex justify-content-center">
                                 <Link v-if="canResetPassword" :href="route('register')" class="underline text-sm text-gray-600 hover:text-gray-900">
                                    Dont have an Account? Register
@@ -113,6 +106,9 @@ const socialLoginfacebook = () => {
                        
 
                     </div>
+                </div>
+                <div class="col-sm-7">
+                    <img src="/images/illustration.svg" alt="" class="flex mx-auto">
                 </div>
             </div>
         </div>

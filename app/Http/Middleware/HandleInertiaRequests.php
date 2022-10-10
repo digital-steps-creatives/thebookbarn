@@ -2,9 +2,10 @@
 
 namespace App\Http\Middleware;
 
-use Illuminate\Http\Request;
 use Inertia\Middleware;
 use Tightenco\Ziggy\Ziggy;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HandleInertiaRequests extends Middleware
 {
@@ -34,12 +35,25 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request)
     {
+        if (Auth::guard('vendors')->check()){
+            $unreadNotifications = Auth::guard('vendors')->user()->unreadNotifications()->count();
+            $notifications = Auth::guard('vendors')->user()->notifications()->get();
+            $userObject = Auth::guard('vendors')->user();
+        }else{
+            $unreadNotifications =0;
+            $notifications = [];
+            $userObject = Auth::user();
+        }
+        
         return array_merge(parent::share($request), [
             'ziggy' => function () use ($request) {
                 return array_merge((new Ziggy)->toArray(), [
                     'location' => $request->url(),
                 ]);
             },
+            'unreadNotifications' =>  $unreadNotifications,
+            'notifications' =>   $notifications,
+            'userObject' => $userObject
         ]);
     }
 }

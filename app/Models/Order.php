@@ -16,7 +16,9 @@ class Order extends Model
      *
      * @var string[]
      */
-    protected $fillable = ['invoice_no', 'customer_id', 'status', 'note'];
+    protected $fillable = ['invoice_no', 'customer_id', 'status', 'note', 'grand_total', 'sub_total', 'total_discount'];
+
+  
 
     /**
      * Set the model readable id length
@@ -52,9 +54,18 @@ class Order extends Model
      */
     public function orderItems()
     {
-        return $this->hasMany(OrderItem::class);
+        return $this->hasMany(OrderItem::class, 'order_id');
     }
 
+    /**
+     * Update order totals
+     */
+    public function updateTotals()
+    {
+        $this->sub_total   = $this->orderItems()->sum('amount');
+        $this->grand_total = $this->sub_total - $this->total_discount;
+        $this->save();
+    }
 
     /**
      * Scope a query to only the logged in custoemr.

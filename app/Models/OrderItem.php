@@ -14,8 +14,7 @@ class OrderItem extends Model
      *
      * @var string[]
      */
-    protected $fillable = ['order_id', 'book_id', 'quantity'];
-
+    protected $fillable = ['order_id', 'book_id', 'quantity', 'rate','amount'];
     /**
      * Determines one-to-many relation
      *
@@ -33,6 +32,6 @@ class OrderItem extends Model
      */
     public function product()
     {
-        return $this->belongsTo(Book::class);
+        return $this->belongsTo(Book::class, 'book_id');
     }
 }

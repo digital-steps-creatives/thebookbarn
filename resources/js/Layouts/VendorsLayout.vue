@@ -1,5 +1,5 @@
-<script setup>
-import { ref } from 'vue';
+<script>
+import { ref, onBeforeMount } from 'vue';
 import { Inertia } from '@inertiajs/inertia';
 import { Head, Link } from '@inertiajs/inertia-vue3';
 import ApplicationMark from '@/Components/ApplicationMark.vue';
@@ -8,26 +8,53 @@ import Dropdown from '@/Components/Dropdown.vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
 import NavLink from '@/Components/NavLink.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
-import TheFooter from '@/Components/TheFooter.vue';
-import CartDropdown from '@/frontend/components/partials/CartDropdown.vue';
 
-defineProps({
-    title: String,
-});
+export default {
+    props: {
+        title: String,
+    },
+    components:{
+        Head,
+        Link,
+        ApplicationMark,
+        Banner,
+        Dropdown,
+        DropdownLink,
+        NavLink,
+        ResponsiveNavLink
+    },
+    data() {
+        return {
+            showingNavigationDropdown: false
+        }
+    },
+    methods: {
+        switchToTeam(team){
+            this.Inertia.put(route('current-team.update'), {
+                team_id: team.id,
+            }, {
+                preserveState: false,
+            });
+        },
+        clearAll() {
+            Inertia.post(route('mark.read.all'))
+        },
+        logout() {
+            this.Inertia.post(route('logout'));
+        }
+    },
+    created() {
+        Echo.private(`private-App.Models.BookShop.${this.$page.props.user.id}`).notification((notification) => {
+            console.log(notification)
+            switch (notification.type) {
+                case 'App\\Notifications\\NewOrderNotification':
+                this.$page.props.unreadNotifications++;
+                break;
+            }
+        })
+    }
+}
 
-const showingNavigationDropdown = ref(false);
-
-const switchToTeam = (team) => {
-    Inertia.put(route('current-team.update'), {
-        team_id: team.id,
-    }, {
-        preserveState: false,
-    });
-};
-
-const logout = () => {
-    Inertia.post(route('logout'));
-};
 </script>
 
 <template>
@@ -37,41 +64,32 @@ const logout = () => {
         <Banner />
 
         <div class="min-h-screen bg-gray-100">
-            <nav class="bg-white border-b border-gray-100 py-3">
+            <nav class="bg-white border-b border-gray-100">
                 <!-- Primary Navigation Menu -->
-                <div class="container">
-                    <div class="row">
-                        <div class="col-sm-3">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="flex justify-between h-16">
+                        <div class="flex">
                             <!-- Logo -->
-                            <div class="shrink-0 flex items-center mr-8">
-                                <Link href="/">
-                                    <ApplicationMark class="block w-auto" style="height:90px" />
+                            <div class="shrink-0 flex items-center">
+                                <Link :href="route('dashboard')">
+                                    <ApplicationMark class="block h-9 w-auto" />
                                 </Link>
                             </div>
-                        </div>
-                        <!-- Navigation Links -->
-                        <div class="col-sm-6">
-                                <div class="relative mt-4">
-                                    <input type="text" id="email-address-icon" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-3 py-3" placeholder="search over 100s book titles">
-                                    <button type="submit" class="absolute right-0 top-0 mt-3 mr-2">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-green-600">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
-                                        </svg>
-                                    </button>
-                                </div>
+
+                            <!-- Navigation Links -->
+                            <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                                <NavLink :href="route('dashboard')" :active="route().current('dashboard')" class="text-decoration-none">
+                                    Dashboard
+                                </NavLink>
+                                <NavLink :href="route('orders.index')" :active="route().current('orders.index')" class="text-decoration-none">
+                                    Orders
+                                </NavLink>
+                            </div>
                         </div>
 
-                        <div class="col-sm-3">
-                            <div class="flex justify-between">
-                            <div class="mt-4 relative">
-                                <div class="flex justify-between">
-                                    <CartDropdown />
-                                    <Link class="border p-3 rounded-lg inline-flex" :href="route('login')"  v-if="!$page.props.user">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-gray-600">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
-                                        </svg>
-                                    </Link>
-                                </div>
+                        <div class="hidden sm:flex sm:items-center sm:ml-6">
+                            <div class="ml-3 relative">
+                                
                                 <!-- Teams Dropdown -->
                                 <Dropdown v-if="$page.props.jetstream.hasTeamFeatures" align="right" width="60">
                                     <template #trigger>
@@ -141,16 +159,69 @@ const logout = () => {
                             </div>
 
                             <!-- Settings Dropdown -->
-                            <div class="ml-3 mt-4 relative" v-if="$page.props.user">
+                            <div class="ml-3 relative flex">
+                               
+                                <Dropdown width="80">
+                                    <template #trigger>
+                                        <button class="ti-bell px-4 relative text-xl text-gray-800 rounded-full hover:text-primary-500 focus:outline-none focus:text-primary-600 transition duration-150 ease-in-out mt-2">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0M3.124 7.5A8.969 8.969 0 015.292 3m13.416 0a8.969 8.969 0 012.168 4.5" />
+                                            </svg>
+
+                                            <span class="bg-primary text-white text-xs absolute w-5 h-5 rounded-full flex items-center justify-center border border-white" style="top:-10px; right: 15px" v-if="$page.props.unreadNotifications">{{$page.props.unreadNotifications}}</span>
+                                        </button>
+                                    </template>
+
+                                    <template #content>
+                                        <div class="md:w-64">
+                                        <!-- Header -->
+                                        <div class="p-3 border-b">
+                                            <div class="flex items-center">
+                                                <span class="font-semibold text-sm mr-3">
+                                                    Notifications ({{ $page.props.unreadNotifications }})
+                                                </span>
+                                                <span v-if="$page.props.notifications?.length" role="button" @click="markAllAsRead" class="font-medium ml-auto text-sm text-primary-500 hover:underline hover:text-primary-600">Mark As Read</span>
+                                            </div>
+                                        </div>
+
+                                        <!-- Notification List -->
+                                        <div style="max-height: 245px; overflow: auto">
+                                            <div v-if="$page.props.notifications?.length">
+                                                <div role="button" class="border-b px-4 py-2 text-sm leading-5 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition" @click="handleClick(notification)" v-for="notification in $page.props.notifications" :key="notification.id" :class="{'bg-gray-50' : notification.read_at === null}">
+                                                    <div class="">
+                                                        <p class="mb-1" :class="{
+                                                            'text-indigo-500': notification.data.type == 'info', 
+                                                            'text-green-500': notification.data.type == 'success', 
+                                                            'text-yellow-500': notification.data.type == 'warning',
+                                                            'text-red-500': notification.data.type == 'error',
+                                                            'font-semibold' : notification.read_at === null }">{{ notification.data.title }}</p>
+                                                        <p class="text-xs text-gray-700 truncate font-normal">
+                                                            {{ notification.data.subtitle }}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div v-else>
+                                                <div class="text-gray-500 text-center w-full py-3 border-b text-sm">No notifications found</div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Clear Notification -->
+                                        <div class="p-2 text-center">
+                                            <a class="font-medium text-sm text-primary-500 hover:text-primary-600 hover:underline" href="javascript:void(0)" @click.prevent="clearAll">Clear All</a>
+                                        </div>
+                                    </div>
+                                    </template>
+                                </Dropdown>
                                 <Dropdown align="right" width="48">
                                     <template #trigger>
                                         <button v-if="$page.props.jetstream.managesProfilePhotos" class="flex text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-gray-300 transition">
-                                            <img class="h-8 w-8 rounded-full object-cover" :src="$page.props.user.profile_photo_url" :alt="$page.props.user.name">
+                                            <img class="h-8 w-8 rounded-full object-cover" :src="$page.props.user.profile_photo_url" :alt="$page.props.user.business_name">
                                         </button>
 
                                         <span v-else class="inline-flex rounded-md">
                                             <button type="button" class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition">
-                                                {{ $page.props.user.name }}
+                                                {{ $page.props.user.business_name }}
 
                                                 <svg
                                                     class="ml-2 -mr-0.5 h-4 w-4"
@@ -173,9 +244,6 @@ const logout = () => {
                                         <DropdownLink :href="route('profile.show')">
                                             Profile
                                         </DropdownLink>
-                                        <DropdownLink :href="route('myorders')">
-                                           My Orders
-                                        </DropdownLink>
 
                                         <DropdownLink v-if="$page.props.jetstream.hasApiFeatures" :href="route('api-tokens.index')">
                                             API Tokens
@@ -192,7 +260,6 @@ const logout = () => {
                                     </template>
                                 </Dropdown>
                             </div>
-                        </div>
                         </div>
 
                         <!-- Hamburger -->
@@ -233,7 +300,7 @@ const logout = () => {
                     </div>
 
                     <!-- Responsive Settings Options -->
-                    <div class="pt-4 pb-1 border-t border-gray-200" v-if="$page.props.user">
+                    <div class="pt-4 pb-1 border-t border-gray-200">
                         <div class="flex items-center px-4">
                             <div v-if="$page.props.jetstream.managesProfilePhotos" class="shrink-0 mr-3">
                                 <img class="h-10 w-10 rounded-full object-cover" :src="$page.props.user.profile_photo_url" :alt="$page.props.user.name">
@@ -315,7 +382,7 @@ const logout = () => {
             </nav>
 
             <!-- Page Heading -->
-            <header v-if="$slots.header" class="bg-white shadow">
+            <header v-if="$slots.header" class="bg-white">
                 <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
                     <slot name="header" />
                 </div>
@@ -325,7 +392,6 @@ const logout = () => {
             <main>
                 <slot />
             </main>
-            <TheFooter />
         </div>
     </div>
 </template>

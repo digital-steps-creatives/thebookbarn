@@ -32,6 +32,8 @@ Route::prefix('auth')->group( function(){
     Route::middleware('web')
     ->prefix('customer')
     ->group(base_path('routes/auth.php'));
+    //Vendors
+    Route::prefix('vendors')->group(base_path('routes/vendors.php'));
 });
 Route::prefix('backoffice')->group( function(){
     Route::get('forgot-password', [AuthController::class, 'resetpassword'])->name('admin.reset.password');
@@ -39,4 +41,5 @@ Route::prefix('backoffice')->group( function(){
 Route::middleware(['auth:sanctum',config('jetstream.auth_session'),'verified'])->group(function () {
     Route::get('/dashboard', function () {return Inertia::render('Dashboard');})->name('dashboard');
     Route::get('/orders', [FrontController::class, 'orders'])->name('myorders');
+    Route::get('/view-quote/{order}', [FrontController::class, 'viewOrder'])->name('view.order.final');
 });

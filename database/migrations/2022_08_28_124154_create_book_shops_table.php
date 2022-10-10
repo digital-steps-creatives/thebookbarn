@@ -16,10 +16,18 @@ return new class extends Migration
     {
         Schema::create('book_shops', function (Blueprint $table) {
             $table->id();
+            $table->string('contact_name');
+            $table->string('email')->unique();
+            $table->timestamp('email_verified_at')->nullable();
+            $table->string('password');
+            $table->rememberToken();
+            $table->enum('status', ['active', 'inactive']);
+            $table->foreignId('current_team_id')->nullable();
+            $table->string('profile_photo_path', 2048)->nullable();
             $table->string('business_name')->nullable();
-            $table->foreignIdFor(User::class);
             $table->string('address')->nullable();
             $table->enum('type', ['limited', 'sole', 'unregistered'])->nullable();
+            $table->enum('terms', ['true', 'false'])->default('false');
             $table->timestamps();
             $table->softDeletes();
         });

@@ -32,6 +32,7 @@ class Customer extends Authenticatable
         'role',
         'google_id',
         'facebook_id',
+        'status'
     ];
 
     /**
@@ -63,4 +64,9 @@ class Customer extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
+
+    public function scopeIsActive($query)
+    {
+        return $query->where('status', 'active');
+    }
 }

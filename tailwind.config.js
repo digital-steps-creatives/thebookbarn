@@ -3,6 +3,10 @@ const colors = require('tailwindcss/colors')
 module.exports = {
     content: ['./resources/**/*.blade.php', './vendor/filament/**/*.blade.php', './resources/js/**/*.vue'],
     theme: {
+        fontFamily: {
+            display: ['Inter', 'system-ui', 'sans-serif'],
+            body: ['Inter', 'system-ui', 'sans-serif'],
+        },
         extend: {
             colors: {
                 danger: colors.rose,

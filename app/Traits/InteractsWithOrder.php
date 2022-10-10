@@ -3,6 +3,7 @@
 namespace App\Traits;
 
 use App\Models\Order;
+use App\Events\CreateOrder;
 
 trait InteractsWithOrder
 {
@@ -32,7 +33,7 @@ trait InteractsWithOrder
 
         // Update totals
         //$order->updateTotals();
-
+        event(new CreateOrder($order));
         return $order;
     }
 
@@ -45,7 +46,7 @@ trait InteractsWithOrder
      */
     public function updateOrder(Order $order, $request)
     {
-        $items = collect($request->input('orderItems'));
+        $items = collect($request->input('items'));
         if (isset($items->pluck('id')[0])) {
             $order->orderItems()->whereNotIn('id', $items->pluck('id')->reject(function ($id) {
                 return empty($id);
@@ -59,7 +60,8 @@ trait InteractsWithOrder
                 [
                     'id' => $item['id'] ?? null
                 ],
-                [
+                [   
+                    'rate' => $item['amount'],
                     'quantity' =>  $item['quantity'],
                     'amount'   =>  $item['amount']
                 ]

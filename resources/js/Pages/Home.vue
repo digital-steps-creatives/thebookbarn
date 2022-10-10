@@ -5,6 +5,7 @@
     import FeaturedProducts from '@/frontend/components/partials/FeaturedProducts.vue';
     import store from '@/store';
     import Pagination from '@/Components/Pagination.vue';
+    import { Head, Link } from '@inertiajs/inertia-vue3';
 
     defineProps({
         listavailablebooks: Object
@@ -25,7 +26,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div v-for="bookItem in listavailablebooks.data" :key="bookItem.id" class="col-sm-3">
+                        <div v-for="bookItem in listavailablebooks" :key="bookItem.id" class="col-sm-3">
                             <div class="mb-6">
                                 <figure>
                                 <div class="h-48 overflow-hidden rounded-md mb-2">
@@ -48,14 +49,24 @@
                         </div>
                     </div>
                 </div>
-                <div class="container mb-5">
-                    <div class="row justify-content-center">
-                        <div class="col-12">
-                            <Pagination :links="listavailablebooks.links"/>
+            </section> 
+            <section class="py-14 bg-dark">
+                <div class="container">
+                    <div class="row">
+                        <div class="offset-lg-2 col-lg-8 col-md-12 col-12 text-center">
+                            <span class="fs-5 text-warning ls-md text-uppercase
+                                    fw-semi-bold">new way of doing business
+
+                            </span>
+                        <!-- heading  -->
+                                <h2 class="display-3 mt-4 mb-3 text-white fw-bold">Are you a Bookshop or Book Vendor?</h2>
+                            <!-- para  -->
+                            <p class="lead text-white-50 px-lg-8 mb-6">Interested in Ready Customers and Quotations?</p>
+                            <Link :href="route('register.vendor')" class="btn btn-primary btn-lg text-white">Get Started now</Link>
                         </div>
                     </div>
                 </div>
-            </section> 
+            </section>
         </AppLayout>
     </template>
     

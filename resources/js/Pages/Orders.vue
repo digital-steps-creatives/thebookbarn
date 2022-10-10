@@ -11,12 +11,14 @@
                         <div class="my-6">
                             <div v-if="myorders" class="overflow-x-auto relative shadow-md sm:rounded-lg">
                                 <table class="w-full text-sm text-left text-gray-500">
-                                    <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                                    <thead class="text-xs text-white uppercase bg-green-600">
                                         <tr>
                                             <th scope="col" class="py-3 px-6">Order No #</th>
                                             <th scope="col" class="py-3 px-6">Quantity</th>
                                             <th scope="col" class="py-3 px-6">Date</th>
+                                            <th scope="col" class="py-3 px-6">Price</th>
                                             <th scope="col" class="py-3 px-6">Status</th>
+                                            <th scope="col" class="py-3 px-6">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -24,7 +26,19 @@
                                             <th scope="row" class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap">{{item.invoice_no}}</th>
                                             <td class="py-4 px-6">{{item.order_items?.length}}</td>
                                             <td class="py-4 px-6">{{dateTime(item.created_at)}}</td>
-                                            <td class="py-4 px-6"><span v-if="item.status ==='waiting quotations from vendors'" class="bg-sky-400 px-3 py-1.5 rounded-full text-white text-xs">pending quotation</span></td>
+                                            <td class="py-4 px-6">
+                                                <span v-if="item.grand_total">Kes {{item.grand_total}}</span> 
+                                                <span v-else>pending quotation</span> 
+                                            </td>
+                                            <td class="py-4 px-6">
+                                                <span v-if="item.status ==='waiting quotations from vendors'" class="bg-sky-400 px-3 py-1.5 rounded-full text-white text-xs">pending quotation</span>
+                                                <span v-if="item.status ==='pending acceptance'" class="bg-teal-400 px-3 py-1.5 rounded-full text-white text-xs">pending acceptance</span>
+                                                <span v-if="item.status ==='pending payment'" class="bg-orange-400 px-3 py-1.5 rounded-full text-white text-xs">pending payment</span>
+                                            </td>
+                                            <td class="py-4 px-6">
+                                                <Link :href="route('view.order.final', item.id)" class="text-decoration-none h-10 px-6 py-2.5 hover:bg-green-400 font-semibold rounded-md bg-green-600 text-white" v-if="item.status ==='pending acceptance'">Accept Quotation</Link>
+                                                <span v-else>...</span>
+                                            </td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -50,7 +64,7 @@
     <script>
     import { defineComponent } from 'vue';
     import moment from 'moment';
-    import MasterLayout from '@/Layouts/FrontLayout.vue';
+    import MasterLayout from '@/Layouts/AppLayout.vue';
     import { Head, Link } from '@inertiajs/inertia-vue3';
 
     export default defineComponent({

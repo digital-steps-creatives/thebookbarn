@@ -5,3 +5,5 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('reset-my-password', [AuthController::class, 'passwordReset'])->name('reset.password');
+Route::post('login-to-account', [AuthController::class, 'processLogin'])->name('signin.customer.vendor');
+Route::post('register-to-account', [AuthController::class, 'processRegister'])->name('signup.customer.vendor');

@@ -2,6 +2,8 @@
 
 namespace App\Dsc;
 
+use App\Models\BookShop;
+use App\Models\Customer;
 use Carbon\Carbon;
 
 class Helper
@@ -55,4 +57,28 @@ class Helper
 
         return $this->generateReadableId($value, $finalPrefix, $length);  // POF200700001
     }
+
+   
+    public static function isVendorActive($email) : bool
+    {   
+            $business = BookShop::whereEmail($email)->IsActive()->exists();
+
+            if($business)
+            {
+                return true;
+            }
+            return false;
+    }
+
+    public static function isCustomerActive($email) : bool
+    {   
+            $customer = Customer::whereEmail($email)->IsActive()->exists();
+
+            if($customer)
+            {
+                return true;
+            }
+            return false;
+    }
+    
 }

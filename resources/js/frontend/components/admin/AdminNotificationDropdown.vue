@@ -2,7 +2,7 @@
 	<dropdown :width="80">
 		<template #trigger>
 			<button class="ti-bell px-4 relative text-xl text-gray-800 rounded-full hover:text-primary-500 focus:outline-none focus:text-primary-600 transition duration-150 ease-in-out">
-				<span class="bg-primary-500 text-white text-xs absolute w-5 h-5 rounded-full flex items-center justify-center border border-white" style="top:-5px; right: 8px" v-if="length">{{length}}</span>
+				<span class="bg-primary text-white text-xs absolute w-5 h-5 rounded-full flex items-center justify-center border border-white" style="top:-5px; right: 8px" v-if="countNotifications">{{countNotifications}}</span>
 			</button>
 		</template>
 
@@ -11,7 +11,7 @@
 			<div class="p-3 border-b">
 				<div class="flex items-center">
 					<p class="font-semibold text-sm">
-						Notifications ({{ length }})
+						Notifications ({{ countNotifications }})
 					</p>
 					<span v-if="notifications.length" role="button" @click="markAllAsRead" class="font-medium ml-auto text-sm text-primary-500 hover:underline hover:text-primary-600">Mark As Read</span>
 				</div>
@@ -49,64 +49,13 @@
 
 <script>
 export default {
+	props:['countNotifications'],
 	data() {
 		return {
 			notifications: [],
 		};
 	},
-	computed: {
-		// Filter unread notifications
-		unreadNotifications() {
-			return this.notifications.filter(
-				(notification) => notification.read_at === null
-			);
-		},
-
-		// Get the unread notification length
-		length() {
-			return this.unreadNotifications.length > 9
-				? "9+"
-				: this.unreadNotifications.length;
-		},
-	},
-	methods: {
-		// Handle notification click event
-		async handleClick(notification) {
-			const res = await this.$axios.$post(
-				`/admin/notifications/${notification.id}`
-			);
-			// Set read at
-			notification.read_at = res.data.read_at;
-			// Push to the link
-			this.$router.push(notification.data.link);
-		},
-
-		//Mark all notifications as read
-		async markAllAsRead() {
-			const res = await this.$axios.$post("/admin/notifications");
-			this.notifications = res.data;
-			this.$toast.success("All marked as read");
-		},
-
-		//Clear all notifications
-		async clearAll() {
-			await this.$axios.$delete("/admin/notifications");
-			this.notifications = [];
-		},
-	},
-	mounted() {
-		// Listen for new notification
-		this.$echo
-			.private("App.Models.User." + this.$auth.user.id)
-			.notification((notification) => {
-				this.notifications.unshift(notification);
-				this.$toast.info(notification.data.title);
-			});
-	},
-	async fetch() {
-		const res = await this.$axios.$get("/admin/notifications");
-		this.notifications = res.data;
-	},
+	
 };
 </script>
 

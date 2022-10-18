@@ -37,6 +37,7 @@
                                             </td>
                                             <td class="py-4 px-6">
                                                 <Link :href="route('view.order.final', item.id)" class="text-decoration-none h-10 px-6 py-2.5 hover:bg-green-400 font-semibold rounded-md bg-green-600 text-white" v-if="item.status ==='pending acceptance'">Accept Quotation</Link>
+                                                <button class="text-decoration-none h-10 px-6 py-2.5 hover:bg-orange-400 font-semibold rounded-md bg-orange-600 text-white" v-else-if="item.status ==='pending payment'" @click="moveToCheckout(item.id)">Pay Order</button>
                                                 <span v-else>...</span>
                                             </td>
                                         </tr>
@@ -80,7 +81,12 @@
             dateTime(value) {
                 return moment(value).format('lll');
             },
-            
+            moveToCheckout(order) {
+                localStorage.removeItem('orderItemready')
+                this.loading = true;
+                localStorage.setItem('orderItemready', JSON.stringify(order))
+                window.location.href = route('checkout.order.final')
+            }
         }
     });
     </script>

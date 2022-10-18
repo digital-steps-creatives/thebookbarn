@@ -242,7 +242,7 @@ select {
 }
 
 .company-name {
-    font-size: 2rem;
+    font-size: 1rem;
 }
 
 table{

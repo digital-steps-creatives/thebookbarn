@@ -80,5 +80,78 @@ class Helper
             }
             return false;
     }
+
+    //Format phone number to mpesa format
+    public static function formatMobileNumber($mobile_number)
+    {
+        $trimed_number = preg_replace('/\s+/', '', $mobile_number);
+        $first_digit = substr($trimed_number, 0, 1);
+        if ($first_digit == "0") {
+            $number_without_zero = mb_substr($trimed_number, 1);
+            $formated_number = "254" . $number_without_zero;
+            return $formated_number;
+        } elseif ($first_digit == "7") {
+            $formated_number = "254" . $trimed_number;
+            return $formated_number;
+        } elseif ($first_digit == "2") {
+            $formated_number = $trimed_number;
+            return $formated_number;
+        } elseif ($first_digit == "+") {
+            $formated_number = substr($trimed_number, 1);
+            return $formated_number;
+        } else {
+            return $trimed_number;
+        }
+    }
+    public static function global_Curl_post($data, $url)
+    {
+        $server = env('SAFARICOM_API') !== null ? env('SAFARICOM_API') : 'https://sandbox.safaricom.co.ke';
+        $token = self::generateAccessToken();
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, ($server . '/' . $url));
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:application/json','Authorization:Bearer '.$token));
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 3000);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_FRESH_CONNECT, true);
+
+        $response = json_decode(curl_exec($ch));
+
+        //dd($response);
+
+        curl_close($ch);
+
+        return $response;
+    }
+    public static function generateAccessToken()
+    {
+        $consumer_key= 'OSGHjreXoAoBnlJsfYFA7lRA4soUaVPz';
+        $consumer_secret= 'kmriYXlBh81p3l6J';
+        $credentials = base64_encode($consumer_key.":".$consumer_secret);
+        $url = "https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials";
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_HTTPHEADER, array("Authorization: Basic ".$credentials));
+        curl_setopt($curl, CURLOPT_HEADER,false);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        $curl_response = curl_exec($curl);
+        $access_token=json_decode($curl_response);
+        return $access_token->access_token;
+    }
+
+    /**
+     * Lipa na M-PESA password
+     * */
+    public static function lipaNaMpesaPassword()
+    {
+        $lipa_time = Carbon::rawParse('now')->format('YmdHms');
+        $passkey = "bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919";
+        $BusinessShortCode = 174379;
+        $timestamp =$lipa_time;
+        $lipa_na_mpesa_password = base64_encode($BusinessShortCode.$passkey.$timestamp);
+        return $lipa_na_mpesa_password;
+    }
     
 }

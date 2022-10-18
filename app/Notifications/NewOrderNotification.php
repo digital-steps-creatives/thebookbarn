@@ -40,14 +40,14 @@ class NewOrderNotification extends Notification
      * @param  mixed  $notifiable
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
-    public function toMail($notifiable)
-    {
-        return (new MailMessage)
-                    ->line('New order quotation request')
-                    ->line("Invoice No: {$this->order->invoice_no}")
-                    ->action('Send Quotation now', url("/vendors/orders/{$this->order->id}"))
-                    ->line('Thank you for using our application!');
-    }
+    // public function toMail($notifiable)
+    // {
+    //     return (new MailMessage)
+    //                 ->line('New order quotation request')
+    //                 ->line("Invoice No: {$this->order->invoice_no}")
+    //                 ->action('Send Quotation now', url("/vendors/orders/{$this->order->id}"))
+    //                 ->line('Thank you for using our application!');
+    // }
 
     /**
      * Get the array representation of the notification.

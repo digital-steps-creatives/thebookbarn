@@ -32,7 +32,8 @@ class Customer extends Authenticatable
         'role',
         'google_id',
         'facebook_id',
-        'status'
+        'status',
+        'phone'
     ];
 
     /**

@@ -3,7 +3,8 @@ import AppLayout from '@/Layouts/VendorsLayout.vue';
 import Welcome from '@/Components/Welcome.vue';
 import { Head, Link, useForm } from '@inertiajs/inertia-vue3';
 import { reactive, computed, ref } from 'vue'
-
+import axios from 'axios';
+import moment from 'moment'
 const props = defineProps({
     order:Object
 })
@@ -14,14 +15,13 @@ const quotation = useForm({
     client: props.order?.customer.name,
     currency:'KES',
     discountRate:0,
-    note:props.order?.note,
-    invoiceDate: new Date(),
+    invoiceDate: new moment(props.order.created_date).format('DD-MM-YYYY'),
     taxRate:16,
     items: props.order?.order_items,
     invoiceCurrency: {
-        symbol: "KSh",
+        symbol: "KES",
         name: "Kenya Shilling",
-        symbol_native: "kes",
+        symbol_native: "KES",
         decimal_digits: 2,
         rounding: 0,
         code: "KES",
@@ -67,15 +67,25 @@ const grandTotal = computed(() => {
 })
 const acceptQuote = () => {
     loading.value = true;
-    quotation.transform(data => ({
-        ...data,
+    let payload = {
         sub_total: subTotal.value,
         grand_total: grandTotal.value,
         total_discount: discountTotal.value,
-        order: props.order
-    })).post(route('quote.generator'));
-    loading.value = false;
+        order: props.order.id,
+        items: props.order.order_items,
+    }
+    axios.post(route('accept.order.final', payload))
+    .then((res) => {
+        if(res.data.status ===200)
+            {
+               localStorage.setItem('orderItemready', JSON.stringify(res.data.order.id))
+            }
+        loading.value = false;
+        window.location.href = route('checkout.order.final')
+    });
+    
 }
+
 </script>
 
 <template>
@@ -92,25 +102,18 @@ const acceptQuote = () => {
                     <div id="invoice-app">
                         <div class="header">
                             <div>
-                                <h1>Quotation Builder</h1>
-                                <p>Date:  <input type="date" v-model="quotation.invoiceDate"></p>
+                                <h1>Quotation</h1>
+                                <p>Created on:  {{quotation.invoiceDate}}</p>
                             </div>
                             <div>
                                 <div class="section-spacer">
-                                    <input type="text" placeholder="Company Name" class="company-name" v-model="quotation.name" disabled>
+                                    <p>Quotation #: {{quotation.name}}</p>
+                                    <p>Currency: {{quotation.currency}}</p>
                                 </div>
-                                <div class="section-spacer">
-                                    <p><strong>Bill to:</strong></p>
-                                    <input type="text" v-on:keyup="adjustTextAreaHeight" v-model="quotation.client" disabled/>
-                                </div>
+                                
                             </div>
                         </div>
-                        <div>
-                            <label for="currency-picker mr-2 block">Currency:</label>
-                            <select id="currency-picker" v-model="quotation.currency" disabled>
-                                <option value="KES">Kenya Shilling</option>
-                            </select>
-                        </div>
+                      <hr>
                         <table class="responsive-table">
                             <thead>
                                 <tr>
@@ -125,7 +128,7 @@ const acceptQuote = () => {
                             <tr v-for="(item, index) in quotation.items" :key="index">
                                 <td data-label="No">{{ index + 1 }}</td>
                                 <td data-label="Item"><input type="text" v-model="item.product.name" /></td>
-                                <td data-label="Price/unite"><div class="cell-with-input">{{ quotation.invoiceCurrency.symbol }} <input type="number" min="0" v-model="item.amount" /></div></td>
+                                <td data-label="Price/unite"><div class="cell-with-input"><span class="pt-2">{{ quotation.invoiceCurrency.symbol }}</span> <input type="number" min="0" v-model="item.amount" disabled /></div></td>
                                 <td data-label="Quantity"><input type="number" min="0" v-model="item.quantity" /></td>
                                 <td data-label="Total">{{ decimalDigits(item.amount  * item.quantity) }}</td>
                                 <td class="text-right"><button class="btn btn-danger btn-sm" v-on:click="deleteItem(index)">Delete item</button></td>
@@ -134,7 +137,7 @@ const acceptQuote = () => {
                        
                         <table>
                             <tr>
-                                <td>Subtotal</td>
+                                <td>Sub Total</td>
                                 <td>{{ decimalDigits(subTotal) }}</td>
                             </tr>
                             <tr>
@@ -150,17 +153,16 @@ const acceptQuote = () => {
                                 <td>{{ decimalDigits(grandTotal) }}</td>
                             </tr>
                         </table>
-                        <div class="section-spacer">
-                            <p>Notes to the Customer:</p>
-                            <textarea v-on:keyup="adjustTextAreaHeight" v-model="quotation.note"></textarea>
-                        </div>
+                       <hr>
                         
+                       <div class="flex w-full justify-end">
                         <button @click="acceptQuote" class="text-decoration-none px-6 py-3 hover:bg-green-400 font-semibold rounded-md bg-gray-600 text-white">
                             <div class="spinner-border" role="status" v-if="loading">
                                 <span class="visually-hidden">Please wait, Loading...</span>
                             </div>
-						<span v-else>Accept Quotation</span>	
+						    <span v-else>Accept Quotation</span>	
                         </button>
+                       </div>
                     </div>
                 </div>
             </div>

@@ -16,7 +16,6 @@ trait InteractsWithOrder
     public function createOrder($request)
     {
         $customerId = $request->customer_id ?? $this->createCustomer($request);
-
         $order = Order::create([
             'customer_id'         => $customerId,
             'note'               => $request->note,
@@ -47,13 +46,13 @@ trait InteractsWithOrder
     public function updateOrder(Order $order, $request)
     {
         $items = collect($request->input('items'));
-        if (isset($items->pluck('id')[0])) {
-            $order->orderItems()->whereNotIn('id', $items->pluck('id')->reject(function ($id) {
-                return empty($id);
-            }))->delete();
-        } else {
-            $order->orderItems()->delete();
-        }
+        // if (isset($items->pluck('id')[0])) {
+        //     $order->orderItems()->whereNotIn('id', $items->pluck('id')->reject(function ($id) {
+        //         return empty($id);
+        //     }))->delete();
+        // } else {
+        //     $order->orderItems()->delete();
+        // }
 
         $items->each(function ($item) use ($order) {
             $order->orderItems()->updateOrCreate(

@@ -6,6 +6,7 @@ use App\Models\BookShop;
 use Illuminate\Queue\InteractsWithQueue;
 use App\Notifications\NewOrderNotification;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Notification;
 
 class SendNewOrderNotification
@@ -28,8 +29,9 @@ class SendNewOrderNotification
      */
     public function handle($event)
     {
+        Log::info($event->order);
         $business = BookShop::where('status','active')->get();
-
         Notification::send($business, new NewOrderNotification($event->order));
+        //Notification::send($business, new NewOrderNotification($event->order));
     }
 }

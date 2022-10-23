@@ -2,96 +2,199 @@
 
 namespace App\Http\Controllers;
 
-use App\Dsc\Helper;
-use App\Models\Customer;
-use App\Models\Payment;
 use Carbon\Carbon;
+use App\Dsc\Helper;
+use App\Models\Order;
+use App\Models\Payment;
+use App\Models\Customer;
+use Faker\Provider\Uuid;
+use Akaunting\Money\Money;
+use App\Enums\OrderStatus;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Log;
+use Validator;
+use SmoDav\Mpesa\Laravel\Facades\STK;
+use SmoDav\Mpesa\Laravel\Facades\Registrar;
 
 class PaymentController extends Controller
 {   
     
+    protected $requestTime;
+    protected $reference_number;
 
+    public function __construct()
+    {
+        $this->requestTime = Carbon::now()->toDateTimeString();
+        $this->reference_number = Uuid::uuid();
+
+    }
     
     /**
      * Lipa na M-PESA STK Push method
      * */
     public function customerMpesaSTKPush(Request $request)
     {
-        $this->updateCustomer($request);
-        $url = '/mpesa/stkpush/v1/processrequest';
-        $data = [
-            'BusinessShortCode' => 174379,
-            'Password' => Helper::lipaNaMpesaPassword(),
-            'Timestamp' => Carbon::rawParse('now')->format('YmdHms'),
-            'TransactionType' => 'CustomerPayBillOnline',
-            'Amount' => $request->amount,
-            'PartyA' => Helper::formatMobileNumber($request->phone), // replace this with your phone number
-            'PartyB' => 174379,
-            'PhoneNumber' => Helper::formatMobileNumber($request->phone), // replace this with your phone number
-            'CallBackURL' => env('APP_URL'),
-            'AccountReference' => $request->invoice_no,
-            'TransactionDesc' => "The Book Barn"
-        ];
-        $response = Helper::global_Curl_post($data, $url);
-        $checkoutID = $response == null || $response->status == "failure" || isset($response->data->errorCode) ? [] : $response->data->CheckoutRequestID;
-        if(!empty($checkoutID)){
-            $payment_status = $this->stkPushStatus($checkoutID, Helper::generateAccessToken());
-            $this->stkPushStatus($checkoutID, Helper::generateAccessToken());
+        $customerId = $this->updateCustomer($request);
+        $finalAmount = env('APP_ENV') == 'local' ? 1 : round($request->amount);
+        $phone = Helper::formatMobileNumber($request->phone);
+        $quoteReference =  $request->invoice_no;
+        $response = STK::push($finalAmount, $phone, $quoteReference, 'Payment for Order: ' . $quoteReference, 'staging');
+        $order = Order::where('invoice_no', $request->invoice_no)->first();
+        if (isset($response->CheckoutRequestID)) {
+            $py = Payment::firstOrNew(['mpesa_checkout_request_id' => $response->CheckoutRequestID]);
+            $py->BillRefNumber = $quoteReference;
+            $py->invoice_number = $quoteReference;
+            $py->payment_mode = 'mpesa';
+            $py->amount = $finalAmount;
+            $py->status = 0;//0:Not Paid, 1:Paid, 2:Cancelled
+            $py->mpesa_checkout_request_id = $response->CheckoutRequestID;
+            $py->customer_id = $customerId->id;
+            $py->trans_type = OrderStatus::TRANSACTION_TYPE;
+            $py->order_id = $order->id;
+            $py->save();
+        }
+        if(!empty($response)){
+            
+            return response()->json([
+                'checkoutId' => $response->CheckoutRequestID,
+                'message' => 'STK push mpesa payment initiated successfully, check your phone',
+                'status' => 200
+            ]);
         }
     }
-    private function stkPushStatus($checkoutID, $token)
+    
+
+    public function paymentStatus(Request $request)
     {
-        for ($try = 1; $try <= 29; $try++) {
+        $rules = [
+            'checkoutId' => 'required'
+        ];
+        $validator = Validator::make($request->all(), $rules);
 
-            $payload = [
-                "payment_reference" => $checkoutID,
-                "payment_type" => "mpesa",
-            ];
+        if ($validator->fails()) {
+            $response = Helper::failureException("Validation Failed", $validator->errors()->all(), $this->requestTime);
+        } else {
+            if (isset($request->checkoutId) ) {
+                $column = 'mpesa_checkout_request_id';
+                //TODO::call mpesa validate
 
-            try {
-                $payStat = Helper::global_Curl_post($payload, $token, 'api/v1/payment/status');
-                $statusCheck = ($payStat == null || $payStat->status == "failure") ? null : $payStat->data->status;
+                $pay = Payment::where($column, $request->checkoutId)->first();
 
-                if (!is_null($statusCheck)) {
-
-                    //Pending transaction
-                    if ($statusCheck == "0") {
-                        if ($try == 29) {
-                            return json_encode(['incomplete' => 'You transaction has timed out. Please try again']);
-                        } else {
-                            sleep(3);
-                            continue;
-                        }
-                    } else {
-                        //When paid
-                        if ($statusCheck == "1") {
-                            return "paid";
-                        }
-
-                        //When cancelled
-                        if ($statusCheck == "2") {
-                            return json_encode(['cancel' => 'You Cancelled the transaction from your phone. Please try again']);
-                        }
-
-                        //Partially Paid
-                        if ($statusCheck == "3") {
-                            return "partially-paid";
-                        }
-                    }
+                if (is_null($pay)) {
+                    $response = response()->json(Helper::failure("Payment with the provided reference number could not be found", $this->requestTime));
+                    return $response;
                 }
-                return json_encode(['paymentStatusError' => 'System Error occured while checking your payment status. Please try again later']);
-            } catch (\QueryException $e) {
-                Helper::errorLogs($this->requestTime, $e->getMessage(), $this->product, $this->payment_status_endpoint);
-            } catch (\Throwable $e) {
-                Helper::errorLogs($this->requestTime, $e->getMessage(), $this->product, $this->payment_status_endpoint);
-            } catch (\Error $e) {
-                Helper::errorLogs($this->requestTime, $e->getMessage(), $this->product, $this->payment_status_endpoint);
-            } catch (\Exception $e) {
-                Helper::errorLogs($this->requestTime, $e->getMessage(), $this->product, $this->payment_status_endpoint);
+
+                $mpesaResponse = $this->mPesaValidate($request->checkoutId, $pay);
+                //dd($mpesaResponse);
+                $paymenStatus = $mpesaResponse;
+
+                if ($mpesaResponse == 0) {
+                    $message = 'Not Paid';
+                    $ammountPaid = null;
+                } else if ($mpesaResponse == 1) {
+                    $message = 'Paid';
+                    $ammountPaid = $pay->amount;
+                } else if ($mpesaResponse == 2) {
+                    $message = 'Cancelled';
+                    $ammountPaid = null;
+                }
+            } 
+            
+            $data = ['status' => $paymenStatus, 'message' => $message, 'amount_paid' => $ammountPaid];
+            $response = response()->json(Helper::success('Payment Status', 'data', $data, $this->requestTime));
+        }
+        Helper::customLogs(url()->current(), $this->reference_number, $this->requestTime, json_encode($request->all()), $request, $response);
+        return $response;
+    }
+
+    private function mPesaValidate($mpesa_checkout_request_id, $payId)
+    {
+        $mpesaAccount = 'staging';
+        $response = STK::validate($mpesa_checkout_request_id, $mpesaAccount);
+        if (isset($response->ResponseCode)) {
+           
+            if ($response->ResultCode == 0) {
+                $update = Payment::where('id', $payId->id)->update(array('status' => 1));
+                $order = Order::where('id', $payId->order_id)->update(array('status' => OrderStatus::PAID));
+                $response = 1;
+            } else if ($response->ResultCode == 1032) {//request cancelled by user
+                $update = Payment::where('id', $payId->id)->update(array('status' => 2));
+                
+                $response = 2;
+            } else if ($response->ResultCode == 1001) {//Unable to lock subscriber, a transaction is already in process for the current subscriber
+                $response = 0;
+            }else{
+                $response=0;
             }
         }
+        if (isset($response->errorCode)) {
+            if ($response->errorCode == "500.001.1001") {//The transaction is being processed
+                $response = 0;
+            }
+        }
+        return $response;
+    }
+
+    public function callback(Request $request) {
+
+        $response = json_decode($request->getContent());
+        Log::info(json_encode($response));
+        $resData = $response->Body->stkCallback->CallbackMetadata;
+        $resCode = $response->Body->stkCallback->ResultCode;
+        $resMessage = $response->Body->stkCallback->ResultDesc;
+        $amountPaid = $resData->Item[0]->Value;
+        $mpesaTransactionId = $resData->Item[1]->Value;
+        $paymentPhoneNumber = $resData->Item[3]->Value;
+        return;
+    }
+
+   
+   
+    public function resData(Request $request)
+    {
+        $response = json_decode($request->getContent());
+        Log::info(json_encode($response));
+        // $resData =  $response->Body->stkCallback->CallbackMetadata;
+        // $reCode =$response->Body->stkCallback->ResultCode;
+        // $resMessage =$response->Body->stkCallback->ResultDesc;
+        // $amountPaid = $resData->Item[0]->Value;
+        // $mpesaTransactionId = $resData->Item[1]->Value;
+        // $paymentPhoneNumber =$resData->Item[4]->Value;
+        // //replace the first 254 with 0
+        // $formatedPhone = str_replace("254","0",$paymentPhoneNumber);
+        // Log::info($response);
+        // Log::info($resData);
+        // $user = Customer::where('phone', $formatedPhone)->first();
+        // $trans = Payment::where('user_id', $user->id)->where('status', 0)->first();
+        // $transId = $trans->id;
+        // $payment = new Payment;
+        // $payment->amount = $amountPaid;
+        // $payment->trans_id =  $transId;
+        // $payment->user_id = $user->id;
+        // $payment->mpesa_trans_id = $mpesaTransactionId;
+        // $payment->phone = $formatedPhone;
+        // $payment->save();
+        // $trans->status = 1;
+        // $trans->save();
+
+    }
+
+    private function updateCustomer($customer)
+    {
+        
+        $user = Customer::where('email', $customer->email)->first();
+        $user->name  = $customer->name;
+        $user->email  = $customer->email;
+        $user->phone  = $customer->phone;
+        if($user->update()){
+            $order = Order::where('invoice_no', $customer->invoice_no)->first();
+            $order->address = $customer->address;
+            $order->delivery_type  = $customer->delivery_type;
+            $order->update();
+        }
+        return $user;
     }
 
     /**
@@ -114,54 +217,19 @@ class PaymentController extends Controller
         $result_description = "Accepted validation request.";
         return $this->createValidationResponse($result_code, $result_description);
     }
-    /**
-     * M-pesa Transaction confirmation method, we save the transaction in our databases
-     */
-    public function mpesaConfirmation(Request $request)
-    {
-        $content=json_decode($request->getContent());
-        $mpesa_transaction = new Payment();
-        $mpesa_transaction->trans_type = $content->TransactionType;
-        $mpesa_transaction->mpesa_code = $content->TransID;
-        $mpesa_transaction->paid_amount = $content->TransAmount;
-        $mpesa_transaction->BillRefNumber = $content->BillRefNumber;
-        $mpesa_transaction->invoice_number = $content->InvoiceNumber;
-        $mpesa_transaction->save();
-        // Responding to the confirmation request
-        $response = new Response();
-        $response->headers->set("Content-Type","text/xml; charset=utf-8");
-        $response->setContent(json_encode(["C2BPaymentConfirmationResult"=>"Success"]));
-        return $response;
-    }
 
     /**
      * M-pesa Register Validation and Confirmation method
      */
     public function mpesaRegisterUrls()
     {
-        $url = '/mpesa/c2b/v1/registerurl';
-        $data = [
-            'ShortCode' => "600141",
-            'ResponseType' => 'Completed',
-            'ConfirmationURL' => route('confirm.payment'),
-            'ValidationURL' => route('validate.payment'),
-        ];
-       
-        $response = Helper::global_Curl_post($data, $url);
-        return response()->json([
-            'status' =>$response
-        ]);
-    }
+        $conf = 'https://1d5a-154-154-35-15.eu.ngrok.io/api/v1/payments/responses';
+        $val = 'https://1d5a-154-154-35-15.eu.ngrok.io/api/v1/payments/validation';
 
-    private function updateCustomer($customer)
-    {
-        $user = Customer::where('email', auth()->user()->email)->first();
-        $user->address = $customer['address'];
-        $user->delivery_type  = $customer['delivery_type'];
-        $user->name  = $customer['name'];
-        $user->email  = $customer['email'];
-        $user->phone  = $customer['phone'];
-        return $user->save();
+        return Registrar::register(600000)
+        ->onConfirmation($conf)
+        ->onValidation($val)
+        ->submit();
     }
    
 }

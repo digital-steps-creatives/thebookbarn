@@ -23,6 +23,8 @@
         "myclabs/php-enum": "^1.8",
         "psr/simple-cache": "^2.0",
         "pusher/pusher-php-server": "^7.2",
+        "safaricom/mpesa": "^1.0",
+        "smodav/mpesa": "^6.1",
         "tightenco/ziggy": "^1.0"
     },
     "require-dev": {

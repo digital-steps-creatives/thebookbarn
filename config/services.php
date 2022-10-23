@@ -40,9 +40,9 @@ return [
         'client_secret' => env('FACEBOOK_CLIENT_SECRET'),
         'redirect' => env('FACEBOOK_CALLBACK_URL'),
     ],
-    'mpesa' => [
-        'consumer_key' => env('MPESA_CONSUMER_KEY'),
-        'consumer_secret' => env('MPESA_CONSUMER_SECRET')
-    ]
+    // 'mpesa' => [
+    //     'consumer_key' => env('MPESA_CONSUMER_KEY'),
+    //     'consumer_secret' => env('MPESA_CONSUMER_SECRET')
+    // ]
 
 ];

@@ -26,7 +26,7 @@ class AuthController extends Controller
         {
             if(Auth::guard('web')->attempt($credentials))
             {   
-                return redirect(RouteServiceProvider::HOME);
+                return redirect()->intended(route('dashboard'));
             }
             return redirect()->route('login')->with('message','Credentials not matched in our records!');
         }
@@ -45,7 +45,7 @@ class AuthController extends Controller
         $data = $request->all();
         $check = $this->create($data);
          
-        return redirect(RouteServiceProvider::HOME)->withSuccess('You have signed-in');
+        return redirect()->intended(route('dashboard'))->withSuccess('You have signed-in');
     }
 
     public function create(array $data)

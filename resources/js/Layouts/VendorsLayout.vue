@@ -72,7 +72,7 @@ export default {
                             <!-- Logo -->
                             <div class="shrink-0 flex items-center">
                                 <Link :href="route('dashboard')">
-                                    <ApplicationMark class="block h-9 w-auto" />
+                                    <ApplicationMark class="block w-auto" style="height:90px" />
                                 </Link>
                             </div>
 

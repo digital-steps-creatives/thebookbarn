@@ -98,6 +98,6 @@ class SocialController extends Controller
             $newUser->save();
             auth()->login($newUser, true);
         }
-        return redirect()->to(route('cart'));
+        return redirect()->intended(route('cart'));
     }
 }

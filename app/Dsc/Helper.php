@@ -8,6 +8,11 @@ use Carbon\Carbon;
 
 class Helper
 {
+
+    public function __construct()
+    {
+        $this->requestTime = Carbon::now()->toDateTimeString();
+    }
     /**
      * Die dump the code for api
      */
@@ -154,4 +159,43 @@ class Helper
         return $lipa_na_mpesa_password;
     }
     
+
+    public static function customLogs($route, $referenceNo, $requestTime, $requestAll, $request, $response)
+    {
+        /*try {
+            $data = new CustomLogs();
+            $data->route = $route;
+            $data->reference_no = $referenceNo;
+            $data->request = $request;
+            $data->request_all = $requestAll;
+            $data->response = $response;
+            $data->save();
+
+            //TODO:: send text and email to developer
+        } catch (QueryException $e) {
+        } catch (\Exception  $e) {
+        }*/
+    }
+
+    static function success($message, $name, $data, $requestTime)
+    {
+        return $response = [
+            'request_time' => $requestTime,
+            'response_time' => Carbon::now()->toDateTimeString(),
+            'status' => 'success',
+            'message' => $message,
+            $name => $data ?: []
+        ];
+    }
+
+    static function failure($message, $requestTime)
+    {
+        return $response = [
+            'request_time' => $requestTime,
+            'response_time' => Carbon::now()->toDateTimeString(),
+            'status' => 'failure',
+            'message' => $message
+        ];
+    }
+
 }

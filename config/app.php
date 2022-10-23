@@ -187,6 +187,7 @@ return [
          */
         Laravel\Socialite\SocialiteServiceProvider::class,
         Ladumor\LaravelPwa\PWAServiceProvider::class,
+        SmoDav\Mpesa\Laravel\ServiceProvider::class,
         /*
          * Application Service Providers...
          */
@@ -215,6 +216,10 @@ return [
     'aliases' => Facade::defaultAliases()->merge([
         // 'ExampleClass' => App\Example\ExampleClass::class,
         'LaravelPwa' => \Ladumor\LaravelPwa\LaravelPwa::class,
+        'STK' => SmoDav\Mpesa\Laravel\Facades\STK::class,
+        'Simulate' => SmoDav\Mpesa\Laravel\Facades\Simulate::class,
+        'Registrar' => SmoDav\Mpesa\Laravel\Facades\Registrar::class,
+        'Identity' => SmoDav\Mpesa\Laravel\Facades\Identity::class,
     ])->toArray(),
 
 ];

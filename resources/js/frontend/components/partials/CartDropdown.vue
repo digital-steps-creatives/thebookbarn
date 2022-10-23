@@ -66,7 +66,7 @@
 		</dropdown>
 
 		<!-- cart on mobile nav -->
-		<Link to="/cart" class="md:hidden">
+		<Link :href="route('cart')" class="md:hidden">
 			<div class="cursor-pointer relative">
 				<CartIcon class="text-gray-800" />
 				<div class="absolute -top-2.5 -right-2.5 bg-primary h-5 w-5 rounded-full flex items-center justify-center" v-if="totalItems">

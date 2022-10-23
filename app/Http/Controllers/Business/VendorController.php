@@ -45,7 +45,7 @@ class VendorController extends Controller
         {
             if(Auth::guard('vendors')->attempt($credentials))
             {   
-                return redirect(RouteServiceProvider::BUSINESS);
+                return redirect()->intended(route('vendor.dashboard'));
             }
             return redirect()->route('login')->with('message','Credentials not matched in our records!');
         }
@@ -64,7 +64,7 @@ class VendorController extends Controller
         $data = $request->all();
         $check = $this->create($data);
          
-        return redirect()->route('signin.vendor')->withSuccess('You are now registered Successfully');
+        return redirect()->intended(route('vendor.dashboard'))->withSuccess('You are now registered Successfully');
     }
 
     public function create(array $data)

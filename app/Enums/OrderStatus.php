@@ -15,6 +15,7 @@ use MyCLabs\Enum\Enum;
 class OrderStatus extends Enum
 {
     public const PENDINGPAYMENT    = 'pending payment';
+    public const PAID = 'paid';
     public const WAITINGQUOTATIONS = 'waiting quotations from vendors';
     public const APPROVED   = 'approved';
     public const PENDINGCUSTOMER = 'pending acceptance';
@@ -23,4 +24,5 @@ class OrderStatus extends Enum
     public const DELIVERED  = 'delivered';
     public const REJECTED   = 'rejected';
     public const CANCELED   = 'canceled';
+    public const TRANSACTION_TYPE = 'invoice payment';
 }

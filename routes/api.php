@@ -32,6 +32,7 @@ Route::prefix('orders')->group( function() {
     Route::post('create', [OrderController::class, 'store'])->name('orders.store');
     Route::get('list', [OrderController::class, 'index']);
     Route::post('/accept/quote/{order}', [FrontController::class, 'acceptOrder'])->name('accept.order.final');
+    Route::post('store/image', [OrderController::class, 'storeImageQuote'])->name('store.image.quote');
 });
 Route::prefix('v1')->group( function(){
     Route::prefix('payments')->group( function(){

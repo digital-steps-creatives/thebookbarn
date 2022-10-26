@@ -1,4 +1,6 @@
 <script>
+import axios from 'axios';
+
 export default {
     data() {
         return {
@@ -68,11 +70,11 @@ export default {
       context.drawImage(this.$refs.camera, 0, 0, 450, 337.5);
     },
     
-    downloadImage() {
+    sendQuoteRequest() {
       const download = document.getElementById("downloadPhoto");
       const canvas = document.getElementById("photoTaken").toDataURL("image/jpeg")
     .replace("image/jpeg", "image/octet-stream");
-      download.setAttribute("href", canvas);
+      axios.post('store.image.quote', canvas);
     }
     },
 }
@@ -90,7 +92,7 @@ export default {
                             <div id="cameraview" class="visible sm:hidden">
                                 <div class="camera-button">
                                     <button type="button" class="block text-center  rounded  text-white p-2.5" :class="{ 'bg-green-400 hover:bg-red-600' : !isCameraOpen, 'bg-red-600 hover:bg-green-400' : isCameraOpen}" @click="toggleCamera">
-                                        <span v-if="!isCameraOpen">Take a photo</span>
+                                        <span v-if="!isCameraOpen" class="w-full block">Take a photo</span>
                                         <span v-else>Close Camera</span>
                                     </button>
                                 </div>
@@ -107,7 +109,7 @@ export default {
                                     
                                     <div class="camera-shutter" :class="{'flash' : isShotPhoto}"></div>
                                     
-                                    <video v-show="!isPhotoTaken" ref="camera" :width="450" :height="337.5" autoplay></video>
+                                    <video v-show="!isPhotoTaken" ref="camera" :width="350" :height="337.5" autoplay></video>
                                     
                                     <canvas v-show="isPhotoTaken" id="photoTaken" ref="canvas" :width="450" :height="337.5"></canvas>
                                 </div>
@@ -119,7 +121,7 @@ export default {
                                 </div>
                                 
                                 <div v-if="isPhotoTaken && isCameraOpen" class="camera-download">
-                                    <a id="downloadPhoto" download="my-photo.jpg" class="button" role="button" @click="downloadImage">
+                                    <a id="downloadPhoto" download="my-photo.jpg" class="button" role="button" @click="sendQuoteRequest">
                                     Download
                                     </a>
                                 </div>

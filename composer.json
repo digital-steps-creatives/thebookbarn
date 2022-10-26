@@ -11,6 +11,7 @@
         "filament/notifications": "^2.0",
         "guzzlehttp/guzzle": "^7.2",
         "inertiajs/inertia-laravel": "^0.6.3",
+        "intervention/image": "^2.7",
         "jeffgreco13/filament-breezy": "^1.4",
         "ladumor/laravel-pwa": "^0.0.3",
         "laravel/framework": "^9.19",

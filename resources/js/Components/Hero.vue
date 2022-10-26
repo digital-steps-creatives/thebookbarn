@@ -70,23 +70,52 @@ export default {
       context.drawImage(this.$refs.camera, 0, 0, 450, 337.5);
     },
     
-    sendQuoteRequest() {
-      const download = document.getElementById("downloadPhoto");
-      const canvas = document.getElementById("photoTaken").toDataURL("image/jpeg")
-    .replace("image/jpeg", "image/octet-stream");
-      axios.post('store.image.quote', canvas);
-    }
+    async sendQuoteRequest() {
+
+      this.loading = true;
+      const canvas = document.getElementById("photoTaken").toDataURL("image/jpeg");
+      const config = {
+                    headers: {
+                        'content-type': 'multipart/form-data'
+                    }
+      }
+      let data = new FormData();
+      data.append('customerList', canvas);
+      data.append('customer_id', this.$page.props.user.id);
+			try {
+            await axios.get('/sanctum/csrf-cookie')
+                .then((res) => {
+                    if(res) {
+                        axios.post(route('store.image.quote'), data, config)
+                        .then(function(response){
+                          if(response.data.status ===200) {
+							              this.$swal('Order created successfully!');
+                            //store.dispatch("cart/resetCart");
+                            //localStorage.setItem('OrderId', JSON.stringify(response.data));
+                            window.location.href = route('myorders');
+                            this.loading = false;
+                        }
+                        });
+                        
+                    }
+                })
+			} catch (error) {
+				console.log(error);
+			}
+      
+      
+      }
     },
 }
 </script>
 <template>
     <section  class="my-8 container">
-        <div class="mx-auto px-12 sm:px-6 lg:px-8 rounded-lg p-5" style="background:#D7D2F2;">
+        <div class="mx-auto px-4 sm:px-6 lg:px-8 rounded-lg p-5" style="background:#D7D2F2;">
             <div class="row">
                 <div class="col-sm-8">
-                    <h4 class="text-primary font-medium mb-4 text-lg font-sans text-center sm:text-left">Back to School</h4>
-                    <h2 class="font-bold text-3xl font-sans text-center sm:text-left">Special Discount <br><span>for new Customers</span></h2>
-                    <p class="text-center sm:text-left">Start here by taking a photo of your Book list</p>
+                    <h4 class="text-primary font-medium mb-4 text-lg font-sans sm:text-2xl md:text-left">Back to School</h4>
+                    <h2 class="font-bold text-3xl font-sans md:text-left">Special Discount <br><span>for new Customers</span></h2>
+                    <p class=" md:text-left">Start here by taking a photo of your Book list</p>
                     <div class="upload__takephoto_section mt-5">
                         <div class="border-dashed border-2 border-gray-400 rounded bg-gray-100 p-4">
                             <div id="cameraview" class="visible sm:hidden">
@@ -111,7 +140,7 @@ export default {
                                     
                                     <video v-show="!isPhotoTaken" ref="camera" :width="350" :height="337.5" autoplay></video>
                                     
-                                    <canvas v-show="isPhotoTaken" id="photoTaken" ref="canvas" :width="450" :height="337.5"></canvas>
+                                    <canvas v-show="isPhotoTaken" id="photoTaken" ref="canvas" :width="350" :height="337.5"></canvas>
                                 </div>
                                 
                                 <div v-if="isCameraOpen && !isLoading" class="camera-shoot">
@@ -121,8 +150,8 @@ export default {
                                 </div>
                                 
                                 <div v-if="isPhotoTaken && isCameraOpen" class="camera-download">
-                                    <a id="downloadPhoto" download="my-photo.jpg" class="button" role="button" @click="sendQuoteRequest">
-                                    Download
+                                    <a id="downloadPhoto" download="my-photo.jpg" class="button text-decoration-none" role="button" @click="sendQuoteRequest">
+                                    Send Book list
                                     </a>
                                 </div>
                             </div>

@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\OrderRequest;
 use Illuminate\Support\Facades\Auth;
-
+use Intervention\Image\Facades\Image;
 class OrderController extends BaseController
 {
 
@@ -39,5 +39,29 @@ class OrderController extends BaseController
 
 
         return $this->sendResponse($success, 'Order created successfully');
+   }
+
+
+   public function queueOrder(Request $request)
+   {    
+        $this->validate($request, [
+            'customerList' => 'required|image|mimes:jpg,jpeg,png,gif,svg|max:2048',
+        ]);
+        $image = $request->file('customerList');
+        $imgData = str_replace(' ','+',$image);
+        $imgData =  substr($imgData,strpos($imgData,",")+1);
+        $finalimgData = base64_decode($imgData);
+        $file = fopen($filePath, 'w');
+        fwrite($file, $imgData);
+        fclose($file);
+        $input['customerList'] = time().'.'.$image->getClientOriginalExtension();
+        $destinationPath = public_path('/thumbnail');
+        $imgFile = Image::make($image->getRealPath());
+        $imgFile->resize(1200, 1200, function ($constraint) {
+		    $constraint->aspectRatio();
+		})->save($destinationPath.'/'.$input['customerList']);
+        $destinationPath = public_path('/orders/images/uploads');
+        $listName = $image->move($destinationPath, $input['customerList']);
+        dd($listName);
    }
 }

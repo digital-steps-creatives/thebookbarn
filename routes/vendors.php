@@ -10,6 +10,7 @@ Route::prefix('auth')->group( function(){
     Route::get('login', [VendorController::class, 'login'])->name('login.vendor');
     Route::post('login-to-account', [VendorController::class, 'processLogin'])->name('signin.vendor');
     Route::post('register-to-account', [VendorController::class, 'processRegister'])->name('signup.vendor');
+    Route::post('logout-to-account', [VendorController::class, 'logout'])->name('logout.vendor');
 });
 
 Route::middleware(['auth:vendors',config('jetstream.auth_session'),'verified'])->group(function () {

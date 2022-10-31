@@ -67,6 +67,19 @@ class VendorController extends Controller
         return redirect()->intended(route('vendor.dashboard'))->withSuccess('You are now registered Successfully');
     }
 
+
+    public function logout(Request $request)
+    {
+
+        Auth::guard('vendors')->logout();
+
+        $request->session()->flush();
+
+        $request->session()->regenerate();
+
+        return redirect()->guest(route( 'vendor.dashboard' ));
+    }
+
     public function create(array $data)
     {
       return BookShop::create([

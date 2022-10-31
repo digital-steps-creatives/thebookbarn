@@ -7,8 +7,11 @@ use App\Dsc\OrderHandler;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\OrderRequest;
+use App\Models\ImageOrder;
 use Illuminate\Support\Facades\Auth;
 use Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\Storage;
+
 class OrderController extends BaseController
 {
 
@@ -44,24 +47,25 @@ class OrderController extends BaseController
 
    public function queueOrder(Request $request)
    {    
-        $this->validate($request, [
-            'customerList' => 'required|image|mimes:jpg,jpeg,png,gif,svg|max:2048',
-        ]);
-        $image = $request->file('customerList');
-        $imgData = str_replace(' ','+',$image);
-        $imgData =  substr($imgData,strpos($imgData,",")+1);
-        $finalimgData = base64_decode($imgData);
-        $file = fopen($filePath, 'w');
-        fwrite($file, $imgData);
-        fclose($file);
-        $input['customerList'] = time().'.'.$image->getClientOriginalExtension();
-        $destinationPath = public_path('/thumbnail');
-        $imgFile = Image::make($image->getRealPath());
-        $imgFile->resize(1200, 1200, function ($constraint) {
-		    $constraint->aspectRatio();
-		})->save($destinationPath.'/'.$input['customerList']);
-        $destinationPath = public_path('/orders/images/uploads');
-        $listName = $image->move($destinationPath, $input['customerList']);
-        dd($listName);
+    
+        
+        $img = $request->photoInput;
+        $folderPath = "images/orders/";
+        
+        $image_parts = explode(";base64,", $img);
+        $image_type_aux = explode("image/", $image_parts[0]);
+        $image_type = $image_type_aux[1];
+        
+        $image_base64 = base64_decode($image_parts[1]);
+        $fileName = uniqid() . '.jpg';
+        
+        $file = $folderPath . $fileName;
+        $imageOrder = new ImageOrder();
+        $imageOrder->image = $file;
+        $imageOrder->status = 'pending transfer';
+        $imageOrder->customer_id = auth()->user()->id;
+        $imageOrder->save();
+       Storage::put($file, $image_base64);
+       return;
    }
 }

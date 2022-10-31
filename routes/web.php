@@ -1,10 +1,11 @@
 <?php
 
-use App\Http\Controllers\Api\AuthController;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
 use App\Http\Controllers\FrontController;
+use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Auth\SocialController;
 
 /*
@@ -41,6 +42,7 @@ Route::prefix('backoffice')->group( function(){
 Route::middleware(['auth:sanctum',config('jetstream.auth_session'),'verified'])->group(function () {
     Route::get('/dashboard', function () {return Inertia::render('Dashboard');})->name('dashboard');
     Route::get('/orders', [FrontController::class, 'orders'])->name('myorders');
+    Route::post('store/image', [OrderController::class, 'queueOrder'])->name('store.image.quote');
     Route::get('/view-quote/{order}', [FrontController::class, 'viewOrder'])->name('view.order.final');
     Route::get('/checkout/quote', [FrontController::class, 'checkout'])->name('checkout.order.final');
 });

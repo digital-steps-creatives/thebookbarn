@@ -1,5 +1,5 @@
 <template>
-	<div class="flex items-center h-full px-4 lg:px-6">
+	<div class="flex items-center h-full pr-4 lg:px-6">
 		<dropdown width="72" class="hidden md:flex">
 			<template #trigger>
 				<div class="cursor-pointer border p-3 rounded-lg inline-flex">

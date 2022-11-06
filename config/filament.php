@@ -1,9 +1,9 @@
 <?php
 
-use App\Filament\Resources\BookShopResource\Widgets\BookShopChart;
 use Filament\Pages;
 use Filament\Widgets;
 use Filament\Http\Middleware\Authenticate;
+use App\Filament\Widgets\OrdersPendingReview;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Routing\Middleware\SubstituteBindings;
@@ -13,6 +13,7 @@ use Filament\Http\Middleware\MirrorConfigToSubpackages;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
+use App\Filament\Resources\BookShopResource\Widgets\BookShopChart;
 use App\Filament\Resources\BookShopResource\Widgets\StatsOverview;
 
 return [
@@ -153,7 +154,8 @@ return [
         'register' => [
             Widgets\AccountWidget::class,
             StatsOverview::class,
-            BookShopChart::class
+            BookShopChart::class,
+            OrdersPendingReview::class
         ],
     ],
 

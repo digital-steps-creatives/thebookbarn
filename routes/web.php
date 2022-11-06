@@ -43,6 +43,7 @@ Route::middleware(['auth:sanctum',config('jetstream.auth_session'),'verified'])-
     Route::get('/dashboard', function () {return Inertia::render('Dashboard');})->name('dashboard');
     Route::get('/orders', [FrontController::class, 'orders'])->name('myorders');
     Route::post('store/image', [OrderController::class, 'queueOrder'])->name('store.image.quote');
+    Route::post('store/excel', [OrderController::class, 'importList'])->name('store.excel.quote');
     Route::get('/view-quote/{order}', [FrontController::class, 'viewOrder'])->name('view.order.final');
     Route::get('/checkout/quote', [FrontController::class, 'checkout'])->name('checkout.order.final');
 });

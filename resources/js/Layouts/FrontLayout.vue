@@ -30,6 +30,7 @@ const logout = () => {
 };
 </script>
 
+
 <template>
     <div>
         <Head :title="title" />
@@ -41,16 +42,16 @@ const logout = () => {
                 <!-- Primary Navigation Menu -->
                 <div class="container">
                     <div class="row">
-                        <div class="col-sm-3">
+                        <div class="col-sm-3 col-6">
                             <!-- Logo -->
                             <div class="shrink-0 flex items-center mr-8">
-                                <Link href="/">
+                                <Link href="/" class="logo">
                                     <ApplicationMark class="block w-auto" style="height:90px" />
                                 </Link>
                             </div>
                         </div>
                         <!-- Navigation Links -->
-                        <div class="col-sm-6">
+                        <div class="col-sm-6 hidden sm:block">
                                 <div class="relative mt-4 hidden sm:block">
                                     <input type="text" id="email-address-icon" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-3 py-3" placeholder="search over 100s book titles">
                                     <button type="submit" class="absolute right-0 top-0 mt-3 mr-2">
@@ -61,16 +62,16 @@ const logout = () => {
                                 </div>
                         </div>
 
-                        <div class="col-sm-3 col-9">
+                        <div class="col-sm-3 col-4">
                             <div class="flex justify-between">
-                            <div class="sm:mt-4 mt-3 relative">
+                            <div class="sm:mt-4 mt-4 relative">
                                 <div class="flex justify-between">
-                                    <CartDropdown  class="py-3 pt-0"/>
-                                    <Link class="sm:border sm:p-3 py-3 rounded-lg inline-flex" :href="route('login')"  v-if="!$page.props.user">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 leading-4 text-gray-500">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
-                                        </svg>
-                                    </Link>
+                                    <CartDropdown  class="sm:py-3 sm:pt-0"/>
+                                    <div class="sm:py-3 sm:pt-0">
+                                        <Link class="mr-2 flex text-decoration-none sm:my-3" :href="route('login')"  v-if="!$page.props.user">
+                                            <span class="text-green-500 hover:text-red-500">Log In</span>
+                                        </Link>
+                                    </div>
                                 </div>
                                 <!-- Teams Dropdown -->
                                 <Dropdown v-if="$page.props.jetstream.hasTeamFeatures" align="right" width="60">
@@ -196,32 +197,32 @@ const logout = () => {
                         </div>
 
                         <!-- Hamburger -->
-                       <div class="col-3">
-                        <div class="flex items-center sm:hidden">
-                            <button class="inline-flex items-center border rounded-lg mt-3 justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition" @click="showingNavigationDropdown = ! showingNavigationDropdown">
-                                <svg
-                                    class="h-6 w-6"
-                                    stroke="currentColor"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                >
-                                    <path
-                                        :class="{'hidden': showingNavigationDropdown, 'inline-flex': ! showingNavigationDropdown }"
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="2"
-                                        d="M4 6h16M4 12h16M4 18h16"
-                                    />
-                                    <path
-                                        :class="{'hidden': ! showingNavigationDropdown, 'inline-flex': showingNavigationDropdown }"
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="2"
-                                        d="M6 18L18 6M6 6l12 12"
-                                    />
-                                </svg>
-                            </button>
-                        </div>
+                       <div class="col-2">
+                            <div class="flex items-center sm:hidden">
+                                <button class="inline-flex items-center border rounded-lg mt-3 justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition" @click="showingNavigationDropdown = ! showingNavigationDropdown">
+                                    <svg
+                                        class="h-6 w-6"
+                                        stroke="currentColor"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path
+                                            :class="{'hidden': showingNavigationDropdown, 'inline-flex': ! showingNavigationDropdown }"
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            stroke-width="2"
+                                            d="M4 6h16M4 12h16M4 18h16"
+                                        />
+                                        <path
+                                            :class="{'hidden': ! showingNavigationDropdown, 'inline-flex': showingNavigationDropdown }"
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            stroke-width="2"
+                                            d="M6 18L18 6M6 6l12 12"
+                                        />
+                                    </svg>
+                                </button>
+                            </div>
                        </div>
                     </div>
                 </div>

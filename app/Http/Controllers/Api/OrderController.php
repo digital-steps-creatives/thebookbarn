@@ -4,11 +4,13 @@ namespace App\Http\Controllers\Api;
 
 use App\Models\Order;
 use App\Dsc\OrderHandler;
+use App\Models\ImageOrder;
+use App\Imports\OrderImport;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\OrderRequest;
-use App\Models\ImageOrder;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
 
@@ -67,5 +69,13 @@ class OrderController extends BaseController
         $imageOrder->save();
        Storage::put($file, $image_base64);
        return;
+   }
+
+   public function importList(Request $request)
+   {
+    
+        Excel::import(new OrderImport, $request->file('customerExcel'));
+           
+        return back();
    }
 }

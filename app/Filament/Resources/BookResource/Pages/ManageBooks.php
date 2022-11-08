@@ -9,7 +9,8 @@ use Filament\Resources\Pages\ManageRecords;
 class ManageBooks extends ManageRecords
 {
     protected static string $resource = BookResource::class;
-
+    protected static ?string $title = 'Products';
+    
     protected function getActions(): array
     {
         return [

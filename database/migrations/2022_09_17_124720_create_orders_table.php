@@ -24,6 +24,10 @@ return new class extends Migration
             $table->double('grand_total')->default(0);
             $table->string('note')->nullable();
             $table->string('payment_method')->nullable();
+            $table->string('image')->nullable();
+            $table->enum('order_type', ['listing', 'file', 'image'])->default('listing');
+            $table->string('class')->nullable();
+            $table->string('level')->nullable();
             $table->string('status')->default(OrderStatus::WAITINGQUOTATIONS());
             $table->softDeletes();
             $table->timestamps();

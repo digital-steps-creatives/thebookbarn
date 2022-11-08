@@ -26,6 +26,7 @@ class BookFactory extends Factory
             'class_level_id' => ClassLevel::factory(),
             'added_by' =>1,
             'featured_image' => fake()->imageUrl(640,980),
+            'product_type' => 'book'
         ];
     }
 }

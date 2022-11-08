@@ -2,17 +2,18 @@
 
 namespace App\Filament\Widgets;
 
-use App\Enums\OrderStatus;
-use App\Models\ListOrder;
 use Filament\Tables;
-use Filament\Widgets\TableWidget as BaseWidget;
+use App\Models\Order;
+use App\Models\ListOrder;
+use App\Enums\OrderStatus;
 use Illuminate\Database\Eloquent\Builder;
+use Filament\Widgets\TableWidget as BaseWidget;
 
 class OrdersPendingReview extends BaseWidget
 {
     protected function getTableQuery(): Builder
     {
-        return ListOrder::query()->latest();
+        return Order::query()->latest();
     }
 
     protected function getTableColumns(): array

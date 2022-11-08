@@ -19,6 +19,8 @@ use App\Filament\Resources\BookResource\RelationManagers;
 class BookResource extends Resource
 {
     protected static ?string $model = Book::class;
+    protected static ?string $navigationLabel = 'Products';
+    protected static ?string $slug = 'products';
 
     protected static ?string $navigationIcon = 'heroicon-o-clipboard-list';
 
@@ -38,6 +40,7 @@ class BookResource extends Resource
                 TextColumn::make('name')->sortable(),
                 TextColumn::make('subject.name')->sortable()->label('Subject'),
                 TextColumn::make('classlevel.class')->sortable()->label('Class'),
+                TextColumn::make('product_type')->sortable(),
                 BooleanColumn::make('availability')
                 ->trueColor('primary')
                 ->falseColor('warning')->sortable(),

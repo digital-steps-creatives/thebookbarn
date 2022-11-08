@@ -25,6 +25,7 @@ return new class extends Migration
             $table->foreignIdFor(User::class, 'added_by');
             $table->boolean('status')->default(1);
             $table->string('featured_image');
+            $table->enum('product_type', ['book', 'stationary'])->nullable();
             $table->timestamps();
         });
     }

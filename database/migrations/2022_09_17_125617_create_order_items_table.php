@@ -22,6 +22,7 @@ return new class extends Migration
             $table->double('quantity')->default(0);
             $table->double('rate')->default(0);
             $table->double('amount')->default(0);
+            $table->json('product')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

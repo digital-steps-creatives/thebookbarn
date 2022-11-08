@@ -17,7 +17,7 @@ class ClassLevelFactory extends Factory
     public function definition()
     {
         return [
-            'class' => fake()->randomDigit(),
+            'class' => fake()->randomDigitNotZero(),
             'level' => 'primary'
         ];
     }

@@ -28,6 +28,7 @@ return new class extends Migration
             $table->string('address')->nullable();
             $table->enum('type', ['limited', 'sole', 'unregistered'])->nullable();
             $table->enum('terms', ['true', 'false'])->default('false');
+            $table->boolean('delivery')->default(0);
             $table->timestamps();
             $table->softDeletes();
         });

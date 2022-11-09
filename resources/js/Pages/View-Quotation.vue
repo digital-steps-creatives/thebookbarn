@@ -17,6 +17,8 @@ const quotation = useForm({
     discountRate:0,
     invoiceDate: new moment(props.order.created_date).format('DD-MM-YYYY'),
     taxRate:16,
+    commissionRate:10,
+    commissionAmount:0,
     items: props.order?.order_items,
     invoiceCurrency: {
         symbol: "KES",

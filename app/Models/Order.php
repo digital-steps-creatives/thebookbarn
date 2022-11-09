@@ -16,7 +16,17 @@ class Order extends Model
      *
      * @var string[]
      */
-    protected $fillable = ['invoice_no', 'customer_id', 'status', 'note', 'grand_total', 'sub_total', 'total_discount', 'address',
+    protected $fillable = ['invoice_no', 
+    'customer_id', 
+    'status', 
+    'note', 
+    'grand_total', 
+    'sub_total', 
+    'total_discount', 
+    'address',
+    'tax',
+    'commission',
+    'delivery_fee',
     'is_invoice',
     'delivery_type',
     'is_delivered',

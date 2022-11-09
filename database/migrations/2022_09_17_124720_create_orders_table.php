@@ -20,6 +20,9 @@ return new class extends Migration
             $table->string('invoice_no')->index('order_invoice_no_index');
             $table->foreignIdFor(User::class, 'customer_id');
             $table->double('sub_total')->default(0);
+            $table->double('tax')->default(0);
+            $table->double('commission')->default(0);
+            $table->double('delivery_fee')->default(0);
             $table->double('total_discount')->default(0);
             $table->double('grand_total')->default(0);
             $table->string('note')->nullable();

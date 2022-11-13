@@ -3,7 +3,7 @@ import axios from 'axios';
 import { ref } from 'vue';
 import { Inertia } from '@inertiajs/inertia';
 import { Link, useForm } from '@inertiajs/inertia-vue3';
-import { usePhotoGallery } from '@/Composables/usePhotoGallery';
+
 
 export default {
     data() {
@@ -28,125 +28,123 @@ export default {
     },
     methods: {
         toggleCamera() {
-        if(this.isCameraOpen) {
-            this.isCameraOpen = false;
-            this.isPhotoTaken = false;
-            this.isShotPhoto = false;
-            this.stopCameraStream();
-        } else {
-            this.isCameraOpen = true;
-            this.createCameraElement();
-        }
-    },
-    
-    createCameraElement() {
-      this.isLoading = true;
-      
-      const constraints = (window.constraints = {
-				audio: false,
-				video: true
-			});
-
-
-			navigator.mediaDevices
-				.getUserMedia(constraints)
-				.then(stream => {
-          this.isLoading = false;
-					this.$refs.camera.srcObject = stream;
-				})
-				.catch(error => {
-          this.isLoading = false;
-					alert("May the browser didn't support or there is some errors.");
-				});
-    },
-    
-    stopCameraStream() {
-      let tracks = this.$refs.camera.srcObject.getTracks();
-
-			tracks.forEach(track => {
-				track.stop();
-			});
-    },
-    
-    takePhoto() {
-      if(!this.isPhotoTaken) {
-        this.isShotPhoto = true;
-
-        const FLASH_TIMEOUT = 50;
-
-        setTimeout(() => {
-          this.isShotPhoto = false;
-        }, FLASH_TIMEOUT);
-      }
-      
-      this.isPhotoTaken = !this.isPhotoTaken;
-      
-      const context = this.$refs.canvas.getContext('2d');
-      context.drawImage(this.$refs.camera, 0, 0, 450, 337.5);
-    },
-    async sendExcelQuote(){
+            if(this.isCameraOpen) {
+                this.isCameraOpen = false;
+                this.isPhotoTaken = false;
+                this.isShotPhoto = false;
+                this.stopCameraStream();
+            } else {
+                this.isCameraOpen = true;
+                this.createCameraElement();
+            }
+        },
+        createCameraElement() {
         this.isLoading = true;
-        if(!this.$page.props?.user?.id){
-            this.$swal('Hold on you need to login!');
-            window.location.href = route('login');
-        }
-        try {
-            await axios.get('/sanctum/csrf-cookie')
-                .then((res) => {
-                    if(res) {
-                        this.excel.post(route('store.excel.quote'), {
-                                onSuccess: () => {
-                                this.$swal('Order request created successfully!');
-                                //store.dispatch("cart/resetCart");
-                                //localStorage.setItem('OrderId', JSON.stringify(response.data));
-                                window.location.href = route('myorders');
-                                this.isLoading = false;
-                            }
-                        })
-                        
-                    }
-                })
-			} catch (error) {
-				console.log(error);
-			}
-    },
-    async sendQuoteRequest() {
+        
+        const constraints = (window.constraints = {
+                    audio: false,
+                    video: true
+                });
 
-      this.isLoading = true;
-      this.form.photoInput = document.getElementById("photoTaken").toDataURL("image/jpeg");
+
+                navigator.mediaDevices
+                    .getUserMedia(constraints)
+                    .then(stream => {
+            this.isLoading = false;
+                        this.$refs.camera.srcObject = stream;
+                    })
+                    .catch(error => {
+            this.isLoading = false;
+                        alert("May the browser didn't support or there is some errors.");
+                    });
+        },
+        
+        stopCameraStream() {
+        let tracks = this.$refs.camera.srcObject.getTracks();
+
+                tracks.forEach(track => {
+                    track.stop();
+                });
+        },
+        
+        takePhoto() {
+        if(!this.isPhotoTaken) {
+            this.isShotPhoto = true;
+
+            const FLASH_TIMEOUT = 50;
+
+            setTimeout(() => {
+            this.isShotPhoto = false;
+            }, FLASH_TIMEOUT);
+        }
+        
+        this.isPhotoTaken = !this.isPhotoTaken;
+        
+        const context = this.$refs.canvas.getContext('2d');
+        context.drawImage(this.$refs.camera, 0, 0, 450, 337.5);
+        },
+        async sendExcelQuote(){
+            this.isLoading = true;
             if(!this.$page.props?.user?.id){
                 this.$swal('Hold on you need to login!');
                 window.location.href = route('login');
             }
-			try {
-            await axios.get('/sanctum/csrf-cookie')
-                .then((res) => {
-                    if(res) {
-                        this.form.post(route('store.image.quote'), {
-                                onSuccess: () => {
-                                this.$swal('Order request created successfully!');
-                                //store.dispatch("cart/resetCart");
-                                //localStorage.setItem('OrderId', JSON.stringify(response.data));
-                                window.location.href = route('myorders');
-                                this.isLoading = false;
-                            }
-                        })
-                        
-                    }
-                })
-			} catch (error) {
-				console.log(error);
-			}
-      
-      
-      }
+            try {
+                await axios.get('/sanctum/csrf-cookie')
+                    .then((res) => {
+                        if(res) {
+                            this.excel.post(route('store.excel.quote'), {
+                                    onSuccess: () => {
+                                    this.$swal('Order request created successfully!');
+                                    //store.dispatch("cart/resetCart");
+                                    //localStorage.setItem('OrderId', JSON.stringify(response.data));
+                                    window.location.href = route('myorders');
+                                    this.isLoading = false;
+                                }
+                            })
+                            
+                        }
+                    })
+                } catch (error) {
+                    console.log(error);
+                }
+        },
+        async sendQuoteRequest() {
+
+        this.isLoading = true;
+        this.form.photoInput = document.getElementById("photoTaken").toDataURL("image/jpeg");
+                if(!this.$page.props?.user?.id){
+                    this.$swal('Hold on you need to login!');
+                    window.location.href = route('login');
+                }
+                try {
+                await axios.get('/sanctum/csrf-cookie')
+                    .then((res) => {
+                        if(res) {
+                            this.form.post(route('store.image.quote'), {
+                                    onSuccess: () => {
+                                    this.$swal('Order request created successfully!');
+                                    //store.dispatch("cart/resetCart");
+                                    //localStorage.setItem('OrderId', JSON.stringify(response.data));
+                                    window.location.href = route('myorders');
+                                    this.isLoading = false;
+                                }
+                            })
+                            
+                        }
+                    })
+                } catch (error) {
+                    console.log(error);
+                }
+        
+        
+        },
+        photoTaken(data) {
+            console.log('image blob: ', data.blob)
+            console.log('image data url', data.image_data_url)
+        },
     },
-    setup(){
-        const { takePhoto } = usePhotoGallery();
-        return {
-            takePhoto
-        }
-    }
+    
 }
 </script>
 <template>
@@ -167,7 +165,7 @@ export default {
                         <div class="upload__takephoto_section mt-5">
                             <div class="border-dashed border-2 border-gray-400 rounded bg-green-100 p-5">
                                 <div id="cameraview" class="visible sm:hidden">
-                                    <div class="camera-button">
+                                    <!-- <div class="camera-button">
                                         <button type="button" class="block text-center w-full  rounded  text-white p-2.5" :class="{ 'bg-green-400 hover:bg-red-600' : !isCameraOpen, 'bg-red-600 hover:bg-green-400' : isCameraOpen}" @click="takePhoto">
                                             <span v-if="!isCameraOpen" class="w-full block">Take a photo 
                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 inline-flex">
@@ -177,8 +175,8 @@ export default {
                                             </span>
                                             <span v-else>Close Camera</span>
                                         </button>
-                                    </div>
-                                    
+                                    </div> -->
+                                    <WebCamUI :fullscreenState="false"  @photoTaken="photoTaken" />
                                     <div v-show="isCameraOpen && isLoading" class="camera-loading">
                                         <ul class="loader-circle">
                                         <li></li>

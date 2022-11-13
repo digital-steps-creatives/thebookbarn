@@ -1800,6 +1800,11 @@ detective@^5.2.1:
     defined "^1.0.0"
     minimist "^1.2.6"
 
+deviceorientation-js@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/deviceorientation-js/-/deviceorientation-js-1.0.0.tgz#04a79a962a20fb90e538bbea21c397a4eba26ccd"
+  integrity sha512-2TnjRD0TW/HYOdOxy13WHLv1J8UDU3Xa1fGhdE9pAq8Os6lbuN7H1ZyWyFzKXbT4nGfOUKMASUO/vuF8IJmxOg==
+
 didyoumean@^1.2.2:
   version "1.2.2"
   resolved "https://registry.yarnpkg.com/didyoumean/-/didyoumean-1.2.2.tgz#989346ffe9e839b4555ecf5666edea0d3e8ad037"
@@ -2952,6 +2957,13 @@ rollup@~2.78.0:
   optionalDependencies:
     fsevents "~2.3.2"
 
+rotate-canvas@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/rotate-canvas/-/rotate-canvas-1.0.0.tgz#ca29af364c9826a092e852ab6a3eb51bda1bcab0"
+  integrity sha512-ZLWB9QbGotvlKuTWuNtlMVQHDWB59UUY3xnzJo0jO+ovbymEyucPUTxKg+a5aYRwkDHS/TWvcZHj/eVYwyTswg==
+  dependencies:
+    typescript "^4.7.4"
+
 run-parallel@^1.1.9:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/run-parallel/-/run-parallel-1.2.0.tgz#66d1368da7bdf921eb9d95bd1a9229e7f21a43ee"
@@ -3219,6 +3231,11 @@ type-fest@^0.16.0:
   resolved "https://registry.yarnpkg.com/type-fest/-/type-fest-0.16.0.tgz#3240b891a78b0deae910dbeb86553e552a148860"
   integrity sha512-eaBzG6MxNzEn9kiwvtre90cXaNLkmadMWa1zQMs3XORCXNbsH/OewwbxC5ia9dCxIxnTAsSxXJaa/p5y8DlvJg==
 
+typescript@^4.7.4:
+  version "4.8.4"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.8.4.tgz#c464abca159669597be5f96b8943500b238e60e6"
+  integrity sha512-QCh+85mCy+h0IGff8r5XWzOVSbBO+KfeYrMQh7NJ58QujwcE22u+NUSmUxqF+un70P9GXKxa2HCNiTTMJknyjQ==
+
 ufo@^0.8.5:
   version "0.8.5"
   resolved "https://registry.yarnpkg.com/ufo/-/ufo-0.8.5.tgz#e367b4205ece9d9723f2fa54f887d43ed1bce5d0"
@@ -3379,6 +3396,14 @@ vite@^3.0.0:
     rollup "~2.78.0"
   optionalDependencies:
     fsevents "~2.3.2"
+
+vue-camera-lib@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/vue-camera-lib/-/vue-camera-lib-1.0.4.tgz#3a02460a30b672b3c3473347c1744024a6151d74"
+  integrity sha512-LlMrOqb8j/bOrgWYW1UQKnDFQLJLmHM5d8QyTjwEoArw9f4jsbz7TXa0btmZkTLToVQYNgdGykj5OG57s0pqZA==
+  dependencies:
+    deviceorientation-js "^1.0.0"
+    rotate-canvas "^1.0.0"
 
 vue-demi@*:
   version "0.13.11"

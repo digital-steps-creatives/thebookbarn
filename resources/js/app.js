@@ -11,7 +11,7 @@ import * as bootstrap from 'bootstrap';
 import store from '@/store';
 import VueSweetalert2 from 'vue-sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
-import { defineCustomElements } from '@ionic/pwa-elements/loader';
+import VueCameraLib from 'vue-camera-lib'
 
 const appName = window.document.getElementsByTagName('title')[0]?.innerText || 'Laravel';
 const options = {
@@ -27,10 +27,10 @@ createInertiaApp({
             .use(store)
             .use(VueSweetalert2, options)
             .use(ZiggyVue, Ziggy)
+            .use(VueCameraLib)
             .mount(el);
     },
 });
-defineCustomElements(window);
 
 InertiaProgress.init({
     // The delay after which the progress bar will

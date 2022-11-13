@@ -10,6 +10,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Providers\RouteServiceProvider;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Validator;
+use Symfony\Component\Console\Input\Input;
 
 class AuthController extends Controller
 {
@@ -20,17 +23,28 @@ class AuthController extends Controller
 
     public function processLogin(Request $request)
     {   
-        $credentials = $request->except(['_token']);
-        
-        if(Helper::isCustomerActive($request->email))
+        $input = $request->all();
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|string|email|max:255',
+            'password' => 'required|string',
+        ]);
+        if ($validator->fails())
         {
-            if(Auth::guard('web')->attempt($credentials))
-            {   
-                return redirect()->intended(route('dashboard'));
-            }
-            return redirect()->route('login')->with('message','Credentials not matched in our records!');
+            return Redirect::to('login')->withErrors($validator)->withInput($request->except('password')); // send back the input (not the password) so that we can repopulate the form
         }
-        return redirect()->route('login')->with('message','You are not an active customer!');
+        $user = Customer::where('email', $request->email)->first();
+        if ($user && Helper::isCustomerActive($request->email)) {
+            if(auth()->attempt(array('email' => $input['email'], 'password' => $input['password'])))
+                {   
+                    return redirect()->intended(route('dashboard'));
+                }
+            return redirect()->route('login')->with('error','Credentials not matched in our records!');
+           
+        }
+        else
+        {
+            return redirect()->route('login')->with('error','You are not an active customer!');
+        }
     }
 
     public function processRegister(Request $request)

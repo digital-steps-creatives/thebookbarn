@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Models\Order;
 use App\Dsc\OrderHandler;
+use App\Enums\OrderStatus;
 use App\Models\ImageOrder;
 use App\Imports\OrderImport;
 use Illuminate\Http\Request;
@@ -50,7 +51,7 @@ class OrderController extends BaseController
    public function queueOrder(Request $request)
    {    
     
-        
+       
         $img = $request->photoInput;
         $folderPath = "images/orders/";
         
@@ -62,12 +63,13 @@ class OrderController extends BaseController
         $fileName = uniqid() . '.jpg';
         
         $file = $folderPath . $fileName;
-        $imageOrder = new ImageOrder();
+        $imageOrder = new Order();
         $imageOrder->image = $file;
-        $imageOrder->status = 'pending transfer';
+        $imageOrder->status = OrderStatus::PENDINGADMIN;
         $imageOrder->customer_id = auth()->user()->id;
+        $imageOrder->order_type = 'image';
         $imageOrder->save();
-       Storage::put($file, $image_base64);
+        Storage::put($file, $image_base64);
        return;
    }
 

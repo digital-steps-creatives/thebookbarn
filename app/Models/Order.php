@@ -29,6 +29,8 @@ class Order extends Model
     'delivery_fee',
     'is_invoice',
     'delivery_type',
+    'order_type',
+    'image',
     'is_delivered',
     'output_status'];
 

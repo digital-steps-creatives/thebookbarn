@@ -25,4 +25,5 @@ class OrderStatus extends Enum
     public const REJECTED   = 'rejected';
     public const CANCELED   = 'canceled';
     public const TRANSACTION_TYPE = 'invoice payment';
+    public const PENDINGADMIN = 'waiting approval';
 }

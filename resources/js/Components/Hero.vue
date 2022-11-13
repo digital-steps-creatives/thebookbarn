@@ -32,10 +32,10 @@ export default {
                 this.isCameraOpen = false;
                 this.isPhotoTaken = false;
                 this.isShotPhoto = false;
-                this.stopCameraStream();
+                //this.stopCameraStream();
             } else {
                 this.isCameraOpen = true;
-                this.createCameraElement();
+                //this.createCameraElement();
             }
         },
         createCameraElement() {
@@ -109,10 +109,10 @@ export default {
                     console.log(error);
                 }
         },
-        async sendQuoteRequest() {
+        async sendQuoteRequest(data) {
 
         this.isLoading = true;
-        this.form.photoInput = document.getElementById("photoTaken").toDataURL("image/jpeg");
+        this.form.photoInput = data.image_data_url;
                 if(!this.$page.props?.user?.id){
                     this.$swal('Hold on you need to login!');
                     window.location.href = route('login');
@@ -139,10 +139,6 @@ export default {
         
         
         },
-        photoTaken(data) {
-            console.log('image blob: ', data.blob)
-            console.log('image data url', data.image_data_url)
-        },
     },
     
 }
@@ -163,10 +159,10 @@ export default {
                         
                     
                         <div class="upload__takephoto_section mt-5">
-                            <div class="border-dashed border-2 border-gray-400 rounded bg-green-100 p-5">
+                            <div class="border-dashed border-2 border-gray-400 rounded bg-green-100 p-3">
                                 <div id="cameraview" class="visible sm:hidden">
-                                    <!-- <div class="camera-button">
-                                        <button type="button" class="block text-center w-full  rounded  text-white p-2.5" :class="{ 'bg-green-400 hover:bg-red-600' : !isCameraOpen, 'bg-red-600 hover:bg-green-400' : isCameraOpen}" @click="takePhoto">
+                                    <div class="camera-button">
+                                        <button type="button" class="block text-center w-full  rounded  text-white p-2.5" :class="{ 'bg-green-400 hover:bg-red-600' : !isCameraOpen, 'bg-red-600 hover:bg-green-400' : isCameraOpen}" @click="toggleCamera">
                                             <span v-if="!isCameraOpen" class="w-full block">Take a photo 
                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 inline-flex">
                                                     <path stroke-linecap="round" stroke-linejoin="round" d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z" />
@@ -175,8 +171,8 @@ export default {
                                             </span>
                                             <span v-else>Close Camera</span>
                                         </button>
-                                    </div> -->
-                                    <WebCamUI :fullscreenState="false"  @photoTaken="photoTaken" />
+                                    </div>
+                                    
                                     <div v-show="isCameraOpen && isLoading" class="camera-loading">
                                         <ul class="loader-circle">
                                         <li></li>
@@ -187,11 +183,7 @@ export default {
                                     
                                     <div v-if="isCameraOpen" v-show="!isLoading" class="camera-box" :class="{ 'flash' : isShotPhoto }">
                                         
-                                        <div class="camera-shutter" :class="{'flash' : isShotPhoto}"></div>
-                                        
-                                        <video v-show="!isPhotoTaken" ref="camera" :width="350" :height="337.5" autoplay></video>
-                                        
-                                        <canvas v-show="isPhotoTaken" id="photoTaken" ref="canvas" :width="350" :height="337.5"></canvas>
+                                        <WebCamUI :fullscreenState="true"  @photoTaken="sendQuoteRequest" />
                                     </div>
                                     
                                     <div v-if="isCameraOpen && !isLoading" class="camera-shoot">

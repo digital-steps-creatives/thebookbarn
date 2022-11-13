@@ -3,6 +3,7 @@ import axios from 'axios';
 import { ref } from 'vue';
 import { Inertia } from '@inertiajs/inertia';
 import { Link, useForm } from '@inertiajs/inertia-vue3';
+import { usePhotoGallery } from '@/Composables/usePhotoGallery';
 
 export default {
     data() {
@@ -140,6 +141,12 @@ export default {
       
       }
     },
+    setup(){
+        const { takePhoto } = usePhotoGallery();
+        return {
+            takePhoto
+        }
+    }
 }
 </script>
 <template>
@@ -161,7 +168,7 @@ export default {
                             <div class="border-dashed border-2 border-gray-400 rounded bg-green-100 p-5">
                                 <div id="cameraview" class="visible sm:hidden">
                                     <div class="camera-button">
-                                        <button type="button" class="block text-center  rounded  text-white p-2.5" :class="{ 'bg-green-400 hover:bg-red-600' : !isCameraOpen, 'bg-red-600 hover:bg-green-400' : isCameraOpen}" @click="toggleCamera">
+                                        <button type="button" class="block text-center w-full  rounded  text-white p-2.5" :class="{ 'bg-green-400 hover:bg-red-600' : !isCameraOpen, 'bg-red-600 hover:bg-green-400' : isCameraOpen}" @click="takePhoto">
                                             <span v-if="!isCameraOpen" class="w-full block">Take a photo 
                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 inline-flex">
                                                     <path stroke-linecap="round" stroke-linejoin="round" d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z" />

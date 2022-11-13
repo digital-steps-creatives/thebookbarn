@@ -11,6 +11,7 @@ import * as bootstrap from 'bootstrap';
 import store from '@/store';
 import VueSweetalert2 from 'vue-sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
+import { defineCustomElements } from '@ionic/pwa-elements/loader';
 
 const appName = window.document.getElementsByTagName('title')[0]?.innerText || 'Laravel';
 const options = {
@@ -29,6 +30,7 @@ createInertiaApp({
             .mount(el);
     },
 });
+defineCustomElements(window);
 
 InertiaProgress.init({
     // The delay after which the progress bar will

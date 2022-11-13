@@ -1,0 +1,1 @@
+import{L as a}from"./app.f1de3385.js";import{aS as e,ac as t,bk as o,W as r,af as s}from"./runtime-dom.esm-bundler.585c24df.js";const c=s("img",{src:"/images/logo.png",alt:""},null,-1),f={__name:"AuthenticationCardLogo",setup(n){return(_,i)=>(e(),t(r(a),{href:"/"},{default:o(()=>[c]),_:1}))}};export{f as _};

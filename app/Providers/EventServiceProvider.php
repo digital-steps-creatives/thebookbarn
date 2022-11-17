@@ -2,13 +2,15 @@
 
 namespace App\Providers;
 
+use App\Models\Order;
 use App\Events\CreateOrder;
-use App\Listeners\SendNewOrderNotification;
-use App\Listeners\WelcomeEmailListener;
+use App\Observers\OrderObserver;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Auth\Events\Registered;
+use App\Listeners\WelcomeEmailListener;
+use App\Listeners\SendNewOrderNotification;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
-use Illuminate\Support\Facades\Event;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -25,6 +27,10 @@ class EventServiceProvider extends ServiceProvider
         CreateOrder::class => [
             SendNewOrderNotification::class
         ]
+    ];
+
+    protected $observers = [
+        Order::class => [OrderObserver::class],
     ];
 
     /**

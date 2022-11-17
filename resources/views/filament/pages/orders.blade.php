@@ -96,16 +96,19 @@
                             </td>
                             <th scope="row" class="py-4 px-6 whitespace-nowrap dark:text-white">
                                 @if ($item->status === App\Enums\OrderStatus::WAITINGQUOTATIONS)
-                                    <span class="px-3 py-1.5 text-sm bg-orange-200 border border-orange-600 text-center font-light rounded-full text-orange-600 inline-flex">{{$item->status}}</span>
+                                    <span class="px-3 py-1.5 text-sm bg-orange-700 border border-orange-600 text-center font-light rounded-full text-orange-600 inline-flex">{{$item->status}}</span>
                                 @else
-                                    <span class="px-3 py-1 text-sm bg-green-200 text-center rounded inline-flex">{{$item->status}}</span>
+                                    <span class="px-3 py-1 text-sm bg-cyan-700 text-center rounded-full text-white inline-flex">{{$item->status}}</span>
                                 @endif
                             </th>
                             <td class="py-4 px-6">
                                 Direct Customer
                             </td>
                             <td class="py-4 px-6">
-                                <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
+                                @if ($item->status === App\Enums\OrderStatus::PENDINGADMIN)
+                                    <a href="{{route('orders.convert.order', $item->id)}}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Convert to an Order</a>
+                                @else
+                                @endif
                             </td>
                         </tr>
                        @endforeach

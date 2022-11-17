@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
+use Inertia\Inertia;
 
 class OrderController extends BaseController
 {
@@ -50,8 +51,7 @@ class OrderController extends BaseController
 
    public function queueOrder(Request $request)
    {    
-    
-       
+
         $img = $request->photoInput;
         $folderPath = "images/orders/";
         
@@ -79,5 +79,12 @@ class OrderController extends BaseController
         Excel::import(new OrderImport, $request->file('customerExcel'));
            
         return back();
+   }
+
+   public function viewOrder($order)
+   {
+        return Inertia::render('ViewOrder', [
+            'order' => Order::with('customer', 'orderItems', 'orderLogs')->find($order)
+        ]);
    }
 }

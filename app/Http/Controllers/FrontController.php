@@ -73,4 +73,11 @@ class FrontController extends Controller
             'order' => $orders->load('orderItems.product')
         ]);
     }
+
+    //Admin Method
+    public function convertImagesOrder($order)
+    {   
+        $orders = Order::with('orderItems')->find($order);
+        return view('filament.pages.convert-orders', compact('orders'));
+    }
 }

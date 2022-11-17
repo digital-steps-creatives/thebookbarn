@@ -24,6 +24,8 @@ class Order extends Model
     'sub_total', 
     'total_discount', 
     'address',
+    'level',
+    'class',
     'tax',
     'commission',
     'delivery_fee',
@@ -81,6 +83,16 @@ class Order extends Model
         $this->sub_total   = $this->orderItems()->sum('amount');
         $this->grand_total = $this->sub_total - $this->total_discount;
         $this->save();
+    }
+
+     /**
+     * Determines one-to-many relation
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function orderLogs()
+    {
+        return $this->hasMany(OrderLog::class);
     }
 
     /**

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
@@ -37,11 +38,16 @@ Route::prefix('auth')->group( function(){
     Route::prefix('vendors')->group(base_path('routes/vendors.php'));
 });
 Route::prefix('backoffice')->group( function(){
+    Route::get('auth/login', [AdminController::class, 'login'])->name('admin.login');
+    Route::post('post/login', [AdminController::class, 'processLogin'])->name('admin.post.login');
+    Route::get('dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
     Route::get('forgot-password', [AuthController::class, 'resetpassword'])->name('admin.reset.password');
+    Route::get('orders/convert/order/{order}', [FrontController::class, 'convertImagesOrder'])->name('orders.convert.order');
 });
 Route::middleware(['auth:sanctum',config('jetstream.auth_session'),'verified'])->group(function () {
     Route::get('/dashboard', function () {return Inertia::render('Dashboard');})->name('dashboard');
     Route::get('/orders', [FrontController::class, 'orders'])->name('myorders');
+    Route::get('view/order/{order}', [OrderController::class, 'viewOrder'])->name('view.order.status');
     Route::post('store/image', [OrderController::class, 'queueOrder'])->name('store.image.quote');
     Route::post('store/excel', [OrderController::class, 'importList'])->name('store.excel.quote');
     Route::get('/view-quote/{order}', [FrontController::class, 'viewOrder'])->name('view.order.final');

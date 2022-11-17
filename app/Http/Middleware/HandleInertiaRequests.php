@@ -39,6 +39,12 @@ class HandleInertiaRequests extends Middleware
             $unreadNotifications = Auth::guard('vendors')->user()->unreadNotifications()->count();
             $notifications = Auth::guard('vendors')->user()->notifications()->get();
             $userObject = Auth::guard('vendors')->user();
+            $user = Auth::guard('vendors')->user();
+        }elseif(auth()->guard('administrator')){
+            $user = auth()->guard('administrator')->user();
+            $unreadNotifications = auth()->guard('administrator')->user()->unreadNotifications()->count();
+            $notifications = auth()->guard('administrator')->user()->notifications()->get();
+            $userObject = auth()->guard('administrator')->user();
         }else{
             $unreadNotifications =0;
             $notifications = [];
@@ -51,6 +57,7 @@ class HandleInertiaRequests extends Middleware
                     'location' => $request->url(),
                 ]);
             },
+            'user' => $user,
             'unreadNotifications' =>  $unreadNotifications,
             'notifications' =>   $notifications,
             'userObject' => $userObject

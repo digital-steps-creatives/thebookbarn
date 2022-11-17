@@ -6,6 +6,9 @@ use App\Models\Book;
 use App\Models\Order;
 use Ramsey\Uuid\Uuid;
 use App\Models\ListOrder;
+use App\Models\OrderItem;
+use App\Enums\OrderStatus;
+use App\Events\CreateOrder;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Concerns\ToModel;
@@ -31,23 +34,27 @@ class OrderImport implements ToModel, WithHeadingRow
         return $this->makeData($row);
     }
 
-    public function makeData($saveData)
+    public function makeData($item)
     {
 
-        foreach ($saveData as $item) {
-            dd($item);
-           $data = [
-            'books' =>  $item['book_name'],
-            'quantity' => $item['quantity'],
-            'customer_id' => auth()->user()->id,
-            'class' => $item['class'],
-            'level' => $item['level'],
-            'order_type' => 'file'
-           ];
-           $resultArray[] = $data;
-        }
-        Log::info($resultArray);
-        dd($resultArray);
-        
+        $order = Order::create([
+                'customer_id' => auth()->user()->id,
+                'class' => $item['class'],
+                'level' => $item['level'],
+                'order_type' => 'file',
+                'status' => OrderStatus::PENDINGADMIN
+            ]);
+            if($order){
+                $order->orderItems()->create(
+                    [
+                        'product' =>  $item['book_name'],
+                        'quantity' => $item['quantity'],
+                    ]
+                );
+            }
+            event(new CreateOrder($order));
+            return $order;
+           
+       
     }
 }

@@ -43,7 +43,7 @@ class VendorController extends Controller
         
         if(Helper::isVendorActive($request->email))
         {
-            if(Auth::guard('vendors')->attempt($credentials))
+            if(auth()->guard('vendors')->attempt($credentials))
             {   
                 return redirect()->intended(route('vendor.dashboard'));
             }

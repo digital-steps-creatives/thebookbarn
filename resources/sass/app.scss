@@ -22,3 +22,142 @@ $primary: #35B520;
         }
     }
 }
+
+.timeline{
+  
+    
+    
+    h3{
+  font-style: normal;
+  font-weight: bold;
+  font-size: 22px;
+  line-height: 30px;
+      margin-left:66px;
+      margin-top:40px;
+  
+    }
+    
+    label{
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 22px;
+  /* identical to box height */
+  margin-left:66px;
+  margin-top:10px;
+  
+  color: $primary;
+  
+    }
+    
+    .box{
+      
+      .container{
+        
+        width:100%;
+        display:flex;
+  
+        .lines{
+          margin-left:40px;
+          margin-top:6px;
+          
+          
+          .dot{
+            width:14px;
+            height:14px;
+  background: $primary;
+            border-radius:7px;
+          }
+          
+          .line{
+            height: 103px;
+    margin-left: 6.3px;
+    border-left: 2px dashed $primary;
+          }
+        }
+        .cards{
+          
+          margin-left:12px;
+          transform:translateY(-30px);
+          .card{
+            width:249px;
+            height:93px;
+            padding-top:25px;
+            background: none;
+            margin-bottom:10px;
+            border: none;
+            
+            &.mid{
+     
+              height:71px;
+            }
+            
+            h4{
+                font-style: normal;
+                font-weight: bold;
+                font-size: 14px;
+                line-height: 19px;
+                margin-left:25px;
+              margin-bottom:5px;
+                color: #fff;
+  
+            }
+            span {
+                margin-left:25px;
+                color: #2B2862;
+                margin-top: .5rem;
+            }
+            p{
+                font-style: normal;
+                font-weight: normal;
+                font-size: 14px;
+                line-height: 18px;
+                margin-top: .7rem;
+                color: #aaa;
+                    margin-left:25px;
+            }
+          }
+        }
+      
+      }
+      
+      .bottom{
+        width:100%;
+        height:107px;
+          background:#fff;
+        box-shadow:0 0 2px #eeeeee50;
+        padding-top:45px;
+        
+        .btn{
+          width:249px;
+          height:62px;
+          background: #FFFFFF40;
+  mix-blend-mode: normal;
+  cursor:pointer;
+  border: 1px solid #8260D780;
+  border-radius: 5px;
+          
+          display:flex;
+          align-items:center;
+          justify-content:center;
+          font-family: Open Sans;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 19px;
+  color: #2B2862;
+         
+          margin-left:53px;
+          transition:0.3s;
+          background:#2B2862;
+            color:#fff;
+             border-color:#2B2862;
+          
+          &:hover{
+             transform:scale(1.03)
+            
+          }
+        }
+      }
+    }
+}

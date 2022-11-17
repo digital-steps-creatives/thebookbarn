@@ -14,7 +14,7 @@ class OrderItem extends Model
      *
      * @var string[]
      */
-    protected $fillable = ['order_id', 'book_id', 'quantity', 'rate','amount'];
+    protected $fillable = ['order_id', 'book_id', 'quantity', 'rate','amount', 'product'];
     /**
      * Determines one-to-many relation
      *

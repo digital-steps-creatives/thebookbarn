@@ -18,11 +18,11 @@ return new class extends Migration
         Schema::create('order_items', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Order::class, 'order_id');
-            $table->foreignIdFor(Book::class, 'book_id');
+            $table->foreignIdFor(Book::class, 'book_id')->nullable();
             $table->double('quantity')->default(0);
             $table->double('rate')->default(0);
             $table->double('amount')->default(0);
-            $table->json('product')->nullable();
+            $table->string('product')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

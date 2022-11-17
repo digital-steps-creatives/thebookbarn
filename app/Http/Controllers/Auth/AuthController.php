@@ -34,11 +34,11 @@ class AuthController extends Controller
         }
         $user = Customer::where('email', $request->email)->first();
         if ($user && Helper::isCustomerActive($request->email)) {
-            if(auth()->attempt(array('email' => $input['email'], 'password' => $input['password'])))
+            if(auth()->guard('web')->attempt(array('email' => $input['email'], 'password' => $input['password'])))
                 {   
                     return redirect()->intended(route('dashboard'));
                 }
-            return redirect()->route('login')->with('error','Credentials not matched in our records!');
+            return redirect()->route('login')->withError('Credentials not matched in our records!');
            
         }
         else

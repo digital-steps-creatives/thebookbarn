@@ -67,7 +67,7 @@
                     </div>
                 </div>
             </section>
-            <section class="bg-gray-100 py-16">
+            <section class="bg-gray-100 py-9">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
                     <div class="container">
                         <div class="row">
@@ -77,7 +77,7 @@
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                     </svg>
                                 </span>
-                                <span class="text-green-800 font-medium text-2xl inline-flex leading-10 mt-1">Value for your money</span>
+                                <span class="text-green-800 font-medium text-md inline-flex leading-10 mt-1">Value for your money</span>
                             </div>
                             <div class="col-sm-4">
                                 <span class="icon inline-flex align-top">
@@ -86,7 +86,7 @@
                                     </svg>
 
                                 </span>
-                                <span class="text-green-800 font-medium text-2xl inline-flex leading-10 mt-1">24/7 Support</span>
+                                <span class="text-green-800 font-medium text-md inline-flex leading-10 mt-1">24/7 Support</span>
                             </div>
                             <div class="col-sm-4">
                                 <span class="icon inline-flex align-top">
@@ -94,7 +94,7 @@
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
                                     </svg>
                                 </span>
-                                <span class="text-green-800 font-medium text-2xl inline-flex leading-10 mt-1">Safe and secure online payment</span>
+                                <span class="text-green-800 font-medium text-md inline-flex leading-10 mt-1">Safe and secure online payment</span>
                             </div>
                         </div>
                     </div>

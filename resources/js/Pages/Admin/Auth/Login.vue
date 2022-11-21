@@ -1,6 +1,6 @@
 <script setup>
 import { Head, Link, useForm } from '@inertiajs/inertia-vue3';
-import AuthenticationCard from '@/Layouts/FrontLayout.vue';
+import AuthenticationCard from '@/Layouts/AdminFrontLayout.vue';
 import AuthenticationCardLogo from '@/Components/AuthenticationCardLogo.vue';
 import Checkbox from '@/Components/Checkbox.vue';
 import InputError from '@/Components/InputError.vue';
@@ -39,33 +39,25 @@ const socialLoginfacebook = () => {
     <Head title="Log in" />
 
     <AuthenticationCard>
-        <div class="container my-5">
-            <div class="row">
-                <div class="col-sm-5">
-                    <div class="bg-white p-5 shadow rounded">
-                        <h4 class="text-red-600">Welcome back! Login to continue!</h4>
-                        
-                        <hr>
-                        <div v-if="status" class="mb-4 font-medium text-sm text-green-600">
-                            {{ status }}
-                        </div>
-                        <form @submit.prevent="submit">
-                            <div>
-                                <InputLabel for="email" value="Email" />
-                                <TextInput
-                                    id="email"
-                                    v-model="form.email"
-                                    type="email"
-                                    class="mt-1 block w-full"
-                                    required
-                                    autofocus
-                                />
-                                <InputError class="mt-2" :message="form.errors.email" />
-                            </div>
+        <div>
+            <form @submit.prevent="submit" class="p-8 space-y-8 bg-white/50 backdrop-blur-xl border border-gray-200 shadow-2xl rounded-2xl relative filament-breezy-auth-card">
+                <div class="w-full flex justify-center">
+                    <div class="filament-brand text-xl font-bold tracking-tight">
+                        The Book Barn
+                     </div>
+                </div>
+                <div v-if="status" class="my-4 font-medium text-sm text-green-600">
+                    {{ status }}
+                </div>
+                <div>
+                    <InputLabel for="email" value="Email" />
+                    <TextInput id="email" v-model="form.email" type="email" class="mt-1 block w-full" required/>
+                    <InputError class="mt-2" :message="form.errors.email" />
+                </div>
 
-                            <div class="mt-4">
-                                <InputLabel for="password" value="Password" />
-                                <TextInput
+                <div class="mt-4">
+                    <InputLabel for="password" value="Password" />
+                    <TextInput
                                     id="password"
                                     v-model="form.password"
                                     type="password"
@@ -73,45 +65,28 @@ const socialLoginfacebook = () => {
                                     required
                                     autocomplete="current-password"
                                 />
-                                <InputError class="mt-2" :message="form.errors.password" />
-                            </div>
+                    <InputError class="mt-2" :message="form.errors.password" />
+                </div>
 
                             <div class="flex items-center justify-between mt-4">
                                 <label class="">
                                     <Checkbox v-model:checked="form.remember_token" name="remember" />
                                     <span class="ml-2 text-sm text-gray-600">Remember me</span>
                                 </label>
-                                <Link :href="route('password.request')" class="underline text-sm text-gray-600 hover:text-gray-900">
+                               
+                            </div>
+                            <div class="flex items-center mt-4">
+                                <PrimaryButton class="w-full text-center block-must" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
+                                    Sign in
+                                </PrimaryButton>
+                            </div>
+                            <div class="flex items-center mt-4">
+                                <Link :href="route('password.request')" class="text-primary-600 text-center text-decoration-none hover:text-primary-700">
                                     Forgot your password?
                                 </Link>
                             </div>
-                           
-                            
-                            <div class="flex items-center justify-end mt-4">
-                                <Link :href="route('register.vendor')" class="underline text-sm text-gray-600 hover:text-gray-900">
-                                    Don't have an account?
-                                </Link>
-
-                                <PrimaryButton class="ml-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                                    Log in
-                                </PrimaryButton>
-                            </div>
-                            
-                            <div class="flex justify-content-center">
-                                <Link v-if="canResetPassword" :href="route('register')" class="underline text-sm text-gray-600 hover:text-gray-900">
-                                   Dont have an Account? Register
-                                </Link>
-                            </div>
                         </form>
-                       
-
                     </div>
-                </div>
-                <div class="col-sm-7">
-                    <img src="/images/illustration.svg" alt="" class="flex mx-auto">
-                </div>
-            </div>
-        </div>
     </AuthenticationCard>
 </template>
 <style lang="scss" scoped>

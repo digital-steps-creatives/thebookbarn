@@ -1149,7 +1149,7 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@popperjs/core@^2.11.6", "@popperjs/core@^2.9.0", "@popperjs/core@^2.9.3":
+"@popperjs/core@^2.11.5", "@popperjs/core@^2.11.6", "@popperjs/core@^2.9.0", "@popperjs/core@^2.9.3":
   version "2.11.6"
   resolved "https://registry.yarnpkg.com/@popperjs/core/-/core-2.11.6.tgz#cee20bd55e68a1720bdab363ecf0c821ded4cd45"
   integrity sha512-50/17A98tWUfQ176raKiOGXuYpLyyVMkxxG6oylzL3BPOlA6ADGdK7EYunSa4I064xerltq9TGXs8HmOk5E+vw==
@@ -1158,6 +1158,15 @@
   version "2.11.7"
   resolved "https://registry.yarnpkg.com/@sxzz/popperjs-es/-/popperjs-es-2.11.7.tgz#a7f69e3665d3da9b115f9e71671dae1b97e13671"
   integrity sha512-Ccy0NlLkzr0Ex2FKvh2X+OyERHXJ88XJ1MXtsI9y9fGexlaXaVTPzBCRBwIxFkORuOb+uBqeu+RqnpgYTEZRUQ==
+
+"@protonemedia/inertiajs-tables-laravel-query-builder@^2.1.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@protonemedia/inertiajs-tables-laravel-query-builder/-/inertiajs-tables-laravel-query-builder-2.1.0.tgz#981bc6a4a102a419d72d9ccaab5630834eb526c8"
+  integrity sha512-E8EIyrsMTQ4J4rdCzv12ehVIU89pUADdZ5g14gN2dniCeTnF8GGzP4gosF3fxvDfAB0SJdgOKWZaMH+OABDjGA==
+  dependencies:
+    "@popperjs/core" "^2.11.5"
+    lodash-es "^4.17.21"
+    qs "^6.10.5"
 
 "@rollup/plugin-babel@^5.2.0":
   version "5.3.1"
@@ -2814,7 +2823,7 @@ pusher-js@^7.4.0:
     "@types/node" "^14.14.31"
     tweetnacl "^1.0.3"
 
-qs@^6.9.0:
+qs@^6.10.5, qs@^6.9.0:
   version "6.11.0"
   resolved "https://registry.yarnpkg.com/qs/-/qs-6.11.0.tgz#fd0d963446f7a65e1367e01abd85429453f0c37a"
   integrity sha512-MvjoMCJwEarSbUYk5O+nmoSzSutSsTwF85zcHPQ9OrlFoZOYIjaqBAJIqIXjptyD5vThxGq52Xu/MaJzRkIk4Q==

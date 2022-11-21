@@ -1,5 +1,6 @@
 import './bootstrap';
 import '../css/app.css';
+import '../css/bookbarn.css';
 import '../sass/app.scss';
 
 import { createApp, h } from 'vue';

@@ -40,7 +40,12 @@ Route::prefix('auth')->group( function(){
 Route::prefix('backoffice')->group( function(){
     Route::get('auth/login', [AdminController::class, 'login'])->name('admin.login');
     Route::post('post/login', [AdminController::class, 'processLogin'])->name('admin.post.login');
-    Route::get('dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
+    Route::middleware(['auth:administrator',config('jetstream.auth_session'),'verified'])->group(function () {
+        Route::get('dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
+        Route::get('customers', [AdminController::class, 'customers'])->name('admin.customers');
+        Route::get('view/customer/{customer}', [AdminController::class, 'showCustomer'])->name('admin.view.customer');
+    });
+    
     Route::get('forgot-password', [AuthController::class, 'resetpassword'])->name('admin.reset.password');
     Route::get('orders/convert/order/{order}', [FrontController::class, 'convertImagesOrder'])->name('orders.convert.order');
 });

@@ -161,3 +161,35 @@ $primary: #35B520;
       }
     }
 }
+
+//Admin Login
+.admin__login {
+  &:before {
+    position: absolute;
+    left: 0px;
+    right: 0px;
+    margin-left: auto;
+    margin-right: auto;
+    height: 1px;
+    width: 66.666667%;
+    background-image: linear-gradient(to right, var(--tw-gradient-stops));
+    --tw-gradient-from: #E5E7EB;
+    --tw-gradient-to: rgb(229 231 235 / 0);
+    --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+    --tw-gradient-to: rgb(63 191 42 / 0);
+    --tw-gradient-stops: var(--tw-gradient-from), #3fbf2a, var(--tw-gradient-to);
+    --tw-gradient-to: #E5E7EB;
+}
+}
+.filament-login-page {
+  position: relative;
+  background-repeat: no-repeat;
+  background-image: radial-gradient( circle at top, #5ddd48, #ffffff 50% );
+}
+.block-must {
+  display: block !important;
+}
+:root {
+  --sidebar-width: 20rem;
+  --collapsed-sidebar-width: 5.4rem;
+}

@@ -146,7 +146,7 @@ export default {
 <template>
     <section>
         <div class="container mx-auto items-center py-2 sm:py-4">
-            <div class="my-8 relative rounded-lg bg-green-700 container mx-auto flex flex-col items-center pt-12 sm:pt-24 pb-24 sm:pb-32 md:pb-48 lg:pb-56 xl:pb-64">
+            <div class="my-8 relative rounded-lg bg-green-700 container mx-auto flex flex-col items-center pt-12 sm:pt-24 pb-24 sm:pb-32 md:pb-20 lg:pb-20 xl:pb-20">
                 <img class="mr-2 lg:mr-12 mt-2 lg:mt-12 absolute right-0 top-0"  src="https://tuk-cdn.s3.amazonaws.com/can-uploader/center_aligned_with_image-svg2.svg" alt="bg"/>
                 <img class="ml-2 lg:ml-12 mb-2 lg:mb-12 absolute bottom-0 left-0" src="https://tuk-cdn.s3.amazonaws.com/can-uploader/center_aligned_with_image-svg3.svg" alt="bg"/>
                 <div class="row justify-content-center">
@@ -156,8 +156,6 @@ export default {
                             <h1 class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl text-center text-white font-bold leading-tight">Special Discount to all new Customers</h1>
                             <p class=" text-center visible sm:hidden text-white">Start here by taking a photo of your Book list</p>
                         </div>
-                        
-                    
                         <div class="upload__takephoto_section mt-5">
                             <div class="border-dashed border-2 border-gray-400 rounded bg-green-100 p-3">
                                 <div id="cameraview" class="visible sm:hidden">

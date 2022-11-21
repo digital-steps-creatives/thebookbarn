@@ -40,15 +40,21 @@ class HandleInertiaRequests extends Middleware
             $notifications = Auth::guard('vendors')->user()->notifications()->get();
             $userObject = Auth::guard('vendors')->user();
             $user = Auth::guard('vendors')->user();
-        }elseif(auth()->guard('administrator')){
+        }elseif(auth()->guard('administrator')->check()){
             $user = auth()->guard('administrator')->user();
             $unreadNotifications = auth()->guard('administrator')->user()->unreadNotifications()->count();
             $notifications = auth()->guard('administrator')->user()->notifications()->get();
             $userObject = auth()->guard('administrator')->user();
+        }elseif(auth()->guard('web')->check()){
+            $user = auth()->guard('web')->user();
+            $unreadNotifications = auth()->guard('web')->user()->unreadNotifications()->count();
+            $notifications = auth()->guard('web')->user()->notifications()->get();
+            $userObject = auth()->guard('web')->user();
         }else{
             $unreadNotifications =0;
             $notifications = [];
             $userObject = Auth::user();
+            $user =  null;
         }
         
         return array_merge(parent::share($request), [

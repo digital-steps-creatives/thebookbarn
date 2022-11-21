@@ -1,7 +1,7 @@
 const colors = require('tailwindcss/colors')
 
 module.exports = {
-    content: ['./resources/**/*.blade.php', './vendor/filament/**/*.blade.php', './resources/js/**/*.vue'],
+    content: ['./resources/**/*.blade.php', './vendor/filament/**/*.blade.php', './resources/js/**/*.vue', './node_modules/@protonemedia/inertiajs-tables-laravel-query-builder/**/*.{js,vue}'],
     theme: {
         fontFamily: {
             display: ['Inter', 'system-ui', 'sans-serif'],

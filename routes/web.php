@@ -44,10 +44,11 @@ Route::prefix('backoffice')->group( function(){
         Route::get('dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
         Route::get('customers', [AdminController::class, 'customers'])->name('admin.customers');
         Route::get('view/customer/{customer}', [AdminController::class, 'showCustomer'])->name('admin.view.customer');
+        Route::get('orders/convert/order/{order}', [AdminController::class, 'convertImagesOrder'])->name('orders.convert.order');
     });
     
     Route::get('forgot-password', [AuthController::class, 'resetpassword'])->name('admin.reset.password');
-    Route::get('orders/convert/order/{order}', [FrontController::class, 'convertImagesOrder'])->name('orders.convert.order');
+   
 });
 Route::middleware(['auth:sanctum',config('jetstream.auth_session'),'verified'])->group(function () {
     Route::get('/dashboard', function () {return Inertia::render('Dashboard');})->name('dashboard');

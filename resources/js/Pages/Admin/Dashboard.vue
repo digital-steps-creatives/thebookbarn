@@ -71,7 +71,7 @@ export default {
                             </div>
                         </div>
                         <div class="filament-tables-table-container overflow-x-auto relative border-t">
-                                    <table class="filament-tables-table w-full text-left rtl:text-right divide-y table-auto">
+                                    <table class="filament-tables-table w-full text-left rtl:text-right divide-y table-auto text-sm">
                                         <thead>
                                             <tr class="bg-teal-100">
                                                 <td class="filament-tables-header-cell p-0"><span class="flex items-center w-full px-4 py-2 whitespace-nowrap space-x-1 rtl:space-x-reverse font-medium text-sm text-gray-600 cursor-default">Id</span></td>
@@ -82,11 +82,11 @@ export default {
                                         </thead>
                                         <tbody class="divide-y whitespace-nowrap">
                                             <tr class="filament-tables-row transition" v-for="(item, index) in ordersPendingReview" :key="index">
-                                                <td class="filament-tables-cell"><div class="px-4 py-3">{{index}}</div></td>
+                                                <td class="filament-tables-cell"><div class="px-4 py-3">{{index + 1}}</div></td>
                                                 <td class="filament-tables-cell"><div class="px-4 py-3">{{item.invoice_no}}</div></td>
                                                 <td class="filament-tables-cell"><div class="px-4 py-3">{{item.status}}</div></td>
                                                 <td class="filament-tables-cell">
-                                                    <Link>Approve</Link>
+                                                    <div class="px-4 py-3"> <Link>Approve</Link></div>
                                                 </td>
                                             </tr>
                                         </tbody>

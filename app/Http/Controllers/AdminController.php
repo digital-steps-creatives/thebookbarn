@@ -92,4 +92,15 @@ class AdminController extends Controller
             'customer' =>  $findCustomer->load('orders')
         ]);
     }
+    public function Orders($order)
+    {   
+        $orders = Order::with('orderItems')->get();
+        return Inertia::render('Admin/Orders/Index', compact('orders'));
+    }
+
+    public function convertImagesOrder($order)
+    {   
+        $orders = Order::with('orderItems')->find($order);
+        return Inertia::render('Admin/Orders/Convert', compact('orders'));
+    }
 }

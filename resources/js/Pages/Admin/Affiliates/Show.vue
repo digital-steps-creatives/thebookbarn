@@ -159,10 +159,7 @@ const updateCustomer = () => {
                             </tr>
                         </thead>
                         <tbody class="text-sm divide-y divide-gray-100">
-                            <tr v-if="(customer.orders <= 0)">
-                                <td colspan="3">Sorry no Orders found</td>
-                            </tr>
-                            <tr v-for="(order, key) in customer.orders" :key="key" v-else>
+                            <tr v-for="(order, key) in customer.orders" :key="key">
                                 <td class="p-2 whitespace-nowrap">
                                     <div class="text-left">{{order.invoice_no}}</div>
                                 </td>

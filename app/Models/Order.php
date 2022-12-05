@@ -44,6 +44,7 @@ class Order extends Model
      * @var int
      */
     protected static $invoiceNoLength = 5;
+    protected $with = ['orderItems'];
 
     /**
      * Set the model readable id prefix

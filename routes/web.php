@@ -31,11 +31,13 @@ Route::prefix('auth')->group( function(){
         Route::get('/redirect', [SocialController::class, 'facebookRedirectToProvider'])->name('facebook.redirect');
         Route::get('/callback', [SocialController::class, 'handleFacebookCallback']);
     });
-    Route::middleware('web')
-    ->prefix('customer')
-    ->group(base_path('routes/auth.php'));
+    Route::middleware('web')->prefix('customer')->group(base_path('routes/auth.php'));
     //Vendors
     Route::prefix('vendors')->group(base_path('routes/vendors.php'));
+    /**
+     * Affiliates
+     */
+    Route::prefix('affiliates')->group(base_path('routes/affiliates.php'));
 });
 Route::prefix('backoffice')->group( function(){
     Route::get('auth/login', [AdminController::class, 'login'])->name('admin.login');
@@ -45,6 +47,8 @@ Route::prefix('backoffice')->group( function(){
         Route::get('customers', [AdminController::class, 'customers'])->name('admin.customers');
         Route::get('view/customer/{customer}', [AdminController::class, 'showCustomer'])->name('admin.view.customer');
         Route::get('orders/convert/order/{order}', [AdminController::class, 'convertImagesOrder'])->name('orders.convert.order');
+        Route::get('manage-affiliates', [AdminController::class, 'affiliates'])->name('admin.affiliates');
+        Route::get('view/affiliate/{affiliate}', [AdminController::class, 'showAffiliate'])->name('admin.view.affiliate');
     });
     
     Route::get('forgot-password', [AuthController::class, 'resetpassword'])->name('admin.reset.password');

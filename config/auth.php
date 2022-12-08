@@ -48,6 +48,10 @@ return [
             'driver' => 'session',
             'provider' => 'vendors',
         ],
+        'affiliates' => [
+            'driver' => 'session',
+            'provider' => 'affiliates',
+        ],
     ],
 
     /*
@@ -81,6 +85,10 @@ return [
         'vendors' => [
             'driver' => 'eloquent',
             'model' => App\Models\BookShop::class,
+        ],
+        'affiliates' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Affiliate::class,
         ],
     ],
 

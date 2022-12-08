@@ -16,7 +16,7 @@ class FrontController extends Controller
     public function home()
     {   
         return Inertia::render('Home', [
-            'listavailablebooks' => Book::with('subject', 'classlevel')->where('availability', 1)->where('status', 1)->take(8)->get()
+            'listavailablebooks' => Book::with('subject', 'classlevel')->where('availability', 1)->where('status', 1)->take(12)->get()
         ]);
     }
 

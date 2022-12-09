@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use Inertia\Inertia;
 use App\Models\Order;
 use App\Models\Customer;
@@ -143,6 +144,7 @@ class AdminController extends Controller
                 searchable: true
             );
             $table->column('status', 'Status');
+            $table->column('ref_code', 'Referal Code');
             $table->column(label: 'Actions');
         });
     }

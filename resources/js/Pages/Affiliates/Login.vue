@@ -23,7 +23,7 @@ const submit = () => {
     form.transform(data => ({
         ...data,
         remember_token: form.remember_token ? 'on' : '',
-    })).post(route('affiliate.post.login'), {
+    })).post(route('affiliates.post.signin'), {
         onFinish: () => form.reset('password'),
     });
 };
@@ -36,13 +36,13 @@ const socialLoginfacebook = () => {
 </script>
 
 <template>
-    <Head title="Log in" />
+    <Head title="Affiliates Login" />
 
     <AuthenticationCard>
-        <div class="container my-12">
-            <div class="row">
-                <div class="col-sm-4">
-                    <form @submit.prevent="submit" class="p-8 bg-white/50 space-y-8 backdrop-blur-xl border border-gray-200 shadow rounded-2xl">
+        <div class="container my-12 py-8">
+            <div class="row g-5 align-center">
+                <div class="col-sm-5">
+                    <form @submit.prevent="submit" class="p-5 bg-white/50 space-y-8 backdrop-blur-xl border border-gray-200 shadow rounded">
                         <div class="w-full flex justify-center">
                             <div class="filament-brand text-xl font-bold tracking-tight">
                                 The Book Barn | Affiliates Login
@@ -89,15 +89,59 @@ const socialLoginfacebook = () => {
                                     </div>
                     </form>
                 </div>
-                <div class="col-sm-8">
-
-                    <p>BECOME AN AFFILIATE</p>
-                    <h2>Sign up fast, for free.</h2>
-                    <p>In just a few minutes, you'll have a unique tracking code.</p>
-                    <p>Send your Ref</p>
+                <div class="col-sm-7">
+                    <img src="/images/illustration.svg" alt="" class="flex mx-auto" />
+                    
                 </div>
             </div>
         </div>
+        <section class="bg-green-100 py-5">
+            <div class="container ">
+                <div class="row">
+                    <h2 class="text-center mb-4 text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl text-green-600 font-bold leading-tight">FAQs</h2>
+                    <div class="col-12">
+                        <div class="row mb-4">
+                            <div class="col-sm-4">
+                                <h4>What's the affiliate program?</h4>
+                            </div>
+                            <div class="col-sm-8">
+                                <p>We offer commission for each qualified referral who signs up and makes a purchase of any of our products through their affiliate link.</p>
+                            </div>
+                        </div>
+                        <div class="row mb-4">
+                            <div class="col-sm-4">
+                                <h4>How much will I get paid?</h4>
+                            </div>
+                            <div class="col-sm-8">
+                                <p>It's a 10% commission for every order purchase and paid for using your unique link. For qualifications, check out our terms of service.</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <h4>How will I get paid?</h4>
+                            </div>
+                            <div class="col-sm-8">
+                                <p>We pay commissions through Mpesa instant when we receive a payment from your referral.</p>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="bg-gray-50 py-9">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-6">
+                        <p>BECOME AN AFFILIATE</p>
+                    <h2 class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl text-green-500 font-bold leading-tight">Sign up fast, for free.</h2>
+                    <p>In just a few minutes, you'll have a unique tracking code.</p>
+                    <p>Send your unique code to your referrals, once they purchase any item, you earn</p>
+                        <Link class="btn btn-primary text-white w-full" :href="route('affiliates.register')">Create an account</Link>
+                    </div>
+                </div>
+            </div>
+        </section>
     </AuthenticationCard>
 </template>
 <style lang="scss" scoped>

@@ -50,6 +50,11 @@ class HandleInertiaRequests extends Middleware
             $unreadNotifications = auth()->guard('web')->user()->unreadNotifications()->count();
             $notifications = auth()->guard('web')->user()->notifications()->get();
             $userObject = auth()->guard('web')->user();
+        }elseif(auth()->guard('affiliates')->check()){
+            $user = auth()->guard('affiliates')->user();
+            $unreadNotifications = auth()->guard('affiliates')->user()->unreadNotifications()->count();
+            $notifications = auth()->guard('affiliates')->user()->notifications()->get();
+            $userObject = auth()->guard('affiliates')->user();
         }else{
             $unreadNotifications =0;
             $notifications = [];

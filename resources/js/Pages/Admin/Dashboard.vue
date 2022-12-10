@@ -60,7 +60,7 @@ export default {
                         </div>
                     </div>
                 </div>
-                <div class="grid grid-cols-1   lg:grid-cols-2   filament-widgets-container gap-4 lg:gap-8 mb-6">
+                <div class="grid grid-cols-1 filament-widgets-container gap-4 lg:gap-8 mb-6">
                     <div></div>
                     <div class="border border-gray-300 shadow-sm bg-white rounded-xl filament-tables-container">
                         <div class="px-2 pt-2">

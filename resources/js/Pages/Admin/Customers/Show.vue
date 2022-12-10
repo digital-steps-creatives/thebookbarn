@@ -159,12 +159,15 @@ const updateCustomer = () => {
                             </tr>
                         </thead>
                         <tbody class="text-sm divide-y divide-gray-100">
-                            <tr v-for="(order, key) in customer.orders" :key="key">
+                            <tr v-if="(customer.orders <= 0)">
+                                <td colspan="3">Sorry no Orders found</td>
+                            </tr>
+                            <tr v-for="(order, key) in customer.orders" :key="key" v-else>
                                 <td class="p-2 whitespace-nowrap">
                                     <div class="text-left">{{order.invoice_no}}</div>
                                 </td>
                                 <td class="p-2 whitespace-nowrap">
-                                    <div class="text-left">{{order.quantity}}</div>
+                                    <div class="text-left">{{order.order_items.length}}</div>
                                 </td>
                                 <td class="p-2 whitespace-nowrap">
                                     <div class="text-left font-medium text-green-500">
@@ -173,7 +176,9 @@ const updateCustomer = () => {
                                     </div>
                                 </td>
                                 <td class="p-2 whitespace-nowrap">
-                                    <div class="text-lg text-center">??</div>
+                                    <div class="text-lg text-center">
+                                        <Link class="text-sm">Manage Order</Link>
+                                    </div>
                                 </td>
                             </tr>
                             

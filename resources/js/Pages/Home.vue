@@ -34,14 +34,19 @@
                                 </div>
                                 <figcaption class="mb-4">
                                     <h4 class="font-semibold text-sm text-gray-600">{{bookItem.name}}</h4>
-                                    <h5 class="my-2 text-sm">Level: <span class="bg-orange-500 px-2 py-1 rounded-full text-xs text-white" v-if="bookItem?.classlevel?.level ==='primary'">{{bookItem?.classlevel?.level}}</span> <span class="bg-cyan-600 p-2 rounded-full text-xs text-white" v-else>{{bookItem?.classlevel?.level}}</span> | Class: {{bookItem?.classlevel?.class}}</h5>
-                                    <h6 class="font-normal text-sm text-gray-400 mb-3">Subject: {{bookItem?.subject?.name}}</h6>
+                                    <div v-if="bookItem.product_type==='book'">
+                                        <h5 class="my-2 text-sm">Level: <span class="bg-orange-500 px-2 py-1 rounded-full text-xs text-white" v-if="bookItem?.classlevel?.level ==='primary'">{{bookItem?.classlevel?.level}}</span> <span class="bg-cyan-600 p-2 rounded-full text-xs text-white" v-else-if="bookItem.product_type='uniform'">any level</span> | Class: {{bookItem?.classlevel?.class}}</h5>
+                                        <h6 class="font-normal text-sm text-gray-400 mb-3">Subject: {{bookItem?.subject?.name}}</h6>
+                                    </div>
+                                    <div v-else-if="bookItem.product_type==='uniform'">
+                                        <h6 class="font-normal text-sm text-gray-400 mb-3">Category: {{bookItem?.category}}</h6>
+                                    </div>
+                                    
                                     <button @click="addToCart(bookItem)" class="text-white bg-emerald-400 hover:bg-emerald-500 focus:ring-4 focus:outline-none focus:ring-emerald-300 font-normal rounded-lg text-sm px-4 py-2 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="mr-2 -ml-1 w-5 h-5">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                                         </svg>
-
-                                    Add to your List
+                                        Add to your List
                                     </button>
                                 </figcaption>
                                 </figure>
@@ -59,10 +64,26 @@
 
                             </span>
                         <!-- heading  -->
-                                <h2 class="display-3 mt-4 mb-3 text-white fw-bold">Are you a Bookshop or Book Vendor?</h2>
+                                <h2 class="display-5 mt-4 mb-3 text-white fw-bold">Are you a Bookshop or Book Vendor?</h2>
                             <!-- para  -->
                             <p class="lead text-white-50 px-lg-8 mb-6">Interested in Ready Business?</p>
                             <Link :href="route('register.vendor')" class="bg-green-500 py-3 px-12 rounded-lg text-white hover:bg-green-700 text-decoration-none">Get Started now</Link>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="py-14 bg-black">
+                <div class="container">
+                    <div class="row justify-content-center mb-5">
+                        <div class="col-8 text-center">
+                            <span class="fs-5 text-warning ls-md text-uppercase
+                                    fw-semi-bold">Affiliate Program
+                            </span>
+                        <!-- heading  -->
+                                <h2 class="display-5 mt-4 mb-3 text-white fw-bold">Make more Money from the Refferals</h2>
+                            <!-- para  -->
+                            <p class="lead text-white-50 px-lg-8 mb-6">Interested? Become a partner</p>
+                            <Link :href="route('affiliates.landing')" class="bg-red-500 py-3 px-12 rounded-lg text-white hover:bg-red-700 text-decoration-none">Get Started now</Link>
                         </div>
                     </div>
                 </div>

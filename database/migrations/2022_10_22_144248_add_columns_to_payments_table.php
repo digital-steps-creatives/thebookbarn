@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::table('payments', function (Blueprint $table) {
             $table->float('amount');
-            $table->string('payment_mode')->default('mpesa')->comment('mpesa,visa,mastercardpesapal');
+            $table->string('payment_mode')->default('mpesa')->comment('mpesa,visa,mastercard,pesapal');
         });
     }
 

@@ -22,6 +22,7 @@ use App\Http\Controllers\PaymentController;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+Route::get('products/search',[FrontController::class, 'searchItems'])->name('products.search');
 Route::post('login', [AuthController::class, 'signin']);
 Route::post('register', [AuthController::class, 'signup']);
 Route::prefix('content')->group( function(){

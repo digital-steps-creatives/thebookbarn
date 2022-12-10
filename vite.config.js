@@ -6,8 +6,8 @@ const path = require('path')
 export default defineConfig({
     plugins: [
         laravel({
-            input: ['resources/css/app.css', 'resources/js/main.js', 'resources/js/app.js'],
-            refresh: [...refreshPaths, 'app/Http/Livewire/**'],
+            input: 'resources/js/app.js',
+            refresh: true,
         }),
         vue({
             template: {

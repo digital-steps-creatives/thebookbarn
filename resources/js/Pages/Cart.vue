@@ -15,7 +15,7 @@
 										<th class="text-white">Name</th>
 										<th class="text-white">Price</th>
 										<th class="text-white">Quantity</th>
-										<th class="text-white">Total</th>
+										<!-- <th class="text-white">Total</th> -->
 										<th class="text-white"></th>
 									</tr>
 								</thead>
@@ -23,24 +23,27 @@
 									<tr v-for="(item, index) in cartItems" :key="index">
 										<td class="px-3">
 											<div class="h-16 w-16">
-												<img :src="item.featured_image" class="w-full h-full object-cover" :alt="item.name">
+												<img :src="item.featured_image" class="w-full h-full object-cover py-2" :alt="item.name">
 											</div>
 										</td>
-										<td> {{item.name}} </td>
-										<td><span class="px-3 py-1.5 bg-orange-200 text-orange-700 text-center rounded-full text-sm">pending quotation</span></td>
-										<td>
+										<td class="px-3 text-sm"> {{item.name}} </td>
+										<td class="px-3"><span class="text-orange-700 inline-flex text-center rounded-full text-sm">pending quotation</span></td>
+										<td class="px-3">
 											<input @input="changedQuantity($event, item)" :value="item.quantity" type="number"/>
 										</td>
-										<td><span class="font-semibold">
+										<!-- <td class="px-3"><span class="font-semibold">
 											<span>pending quotation</span>
-												<!-- <span v-if="item.saleprice > '0'">{{currencyFormat(item.quantity * item.saleprice)}}</span>
-												<span v-else>{{currencyFormat(item.quantity * item.price)}}</span> -->
-											</span> </td>
-										<td>
+												<span v-if="item.saleprice > '0'">{{currencyFormat(item.quantity * item.saleprice)}}</span>
+												<span v-else>{{currencyFormat(item.quantity * item.price)}}</span>
+											</span> </td> -->
+										<td class="px-3">
 											<remove-icon-button @click="removeFromCart(item)"></remove-icon-button>
 										</td>
 									</tr>
 								</tbody>
+								<tfoot>
+
+								</tfoot>
 							</table>
 						</div>
 						
@@ -92,9 +95,9 @@
 						<span v-else>Get a Quotation now</span>	
 					</button>
 					<div v-else>
-                        <Link class="w-full mt-8 text-sm bg-primary text-white px-6 py-3 block rounded-md text-center text-decoration-none" :href="route('login')"  v-if="cartItems.length">Login to request a quotation</Link>
+                        <Link class="w-full mt-8 text-sm bg-primary text-white px-6 py-3 block rounded-md text-center text-decoration-none" :href="route('login')"  v-if="cartItems.length">Login to get a quotation</Link>
                         <span class="my-5 block text-center font-medium text-lg">or</span>
-                        <Link class="w-full mt-8 text-sm bg-redish text-white px-6 py-3 block rounded-md text-center text-decoration-none" :href="route('register')"  v-if="cartItems.length">Sign up to request a quotation</Link>
+                        <Link class="w-full mt-8 text-sm bg-redish text-white px-6 py-3 block rounded-md text-center text-decoration-none" :href="route('register')"  v-if="cartItems.length">Sign up to get a quotation</Link>
                     </div>
 				</div>
 			</div>
@@ -168,18 +171,28 @@ export default {
                 await axios.get('/sanctum/csrf-cookie')
                 .then((res) => {
                     if(res) {
-                        const response =  axios.post(route('orders.store'), {
+                        axios.post(route('orders.store'), {
                             customer_id: this.$page.props.user.id,
                             totalDiscount: 0,
                             orderItems: this.orderItems,
-                        });
-                        if(response) {
-							this.$swal('Order created successfully!');
-                            store.dispatch("cart/resetCart");
-                            //localStorage.setItem('OrderId', JSON.stringify(response.data));
-                            window.location.href = route('myorders');
-                            this.loading = false;
-                        }
+                        })
+						.then((response) => {
+							if(response.data.status===200) {
+								
+								Swal.fire({
+									title: 'Order created successfully!',
+									timer: 2000,
+									icon: 'success',
+									timerProgressBar: true,
+									showConfirmButton: false,
+								});
+								store.dispatch("cart/resetCart");
+								//localStorage.setItem('OrderId', JSON.stringify(response.data));
+								window.location.href = route('myorders');
+								this.loading = false;
+							}
+						});
+                        
                     }
                 })
 			} catch (error) {

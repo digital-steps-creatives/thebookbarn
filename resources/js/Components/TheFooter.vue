@@ -1,7 +1,7 @@
 <template>
     <footer style="background-color: #fff" class="pt-5">
         <div class="max-w-7xl mx-auto divide-y divide-slate-200 px-4 sm:px-6 md:px-8 dark:divide-slate-700">
-            <div class="container">
+            <!-- <div class="container">
                 <div class="row">
                     <div class="col-sm-4">
                         <div class="module__social">
@@ -44,11 +44,11 @@
 
                     </div>
                 </div>
-            </div>
+            </div> -->
             
             <div class="container">
-                <div class="row py-3">
-                    <div class="col-12">
+                <div class="row justify-content-center py-3">
+                    <div class="col-4">
                         <span>The Bookbarn | © 2022 All Rights Reserved</span>
                     </div>
                 </div>

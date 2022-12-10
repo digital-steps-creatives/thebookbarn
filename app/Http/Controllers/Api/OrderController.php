@@ -2,19 +2,25 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Dsc\Helper;
+use App\Models\User;
+use Inertia\Inertia;
 use App\Models\Order;
+use App\Dsc\SMSHelper;
 use App\Dsc\OrderHandler;
 use App\Enums\OrderStatus;
+use App\Mail\OrderCreated;
 use App\Models\ImageOrder;
+use App\Events\CreateOrder;
 use App\Imports\OrderImport;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\OrderRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Maatwebsite\Excel\Facades\Excel;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
-use Inertia\Inertia;
 
 class OrderController extends BaseController
 {
@@ -37,15 +43,39 @@ class OrderController extends BaseController
 
 
    public function store(OrderRequest $request, OrderHandler $orderHandler)
-   {
+   {    
         $success = DB::transaction(function () use ($request, $orderHandler) {
-            $success['order'] = $orderHandler->createOrder($request);
-            return $success;
+            $order = $orderHandler->createOrder($request);
+            event(new CreateOrder($order));
+            //send an sms to admin
+            $adminsCellphone = User::whereIn('role', ['administrator', 'super-admin', 'manager'])->select('cellphone', 'email')->get();
+            
+            foreach ($adminsCellphone as $phone) {
+                $payload[] = [
+                    'message' => 'Hello there, a quotation request has been placed with order number '. $order->invoice_no,
+                    'recipient' => Helper::formatMobileNumber($phone->cellphone)
+                ];
+            }
+            
+            try {
+                $invoice_no = $order->invoice_no;
+                Mail::to(auth()->user()->email)->send(new OrderCreated($invoice_no));
+                SMSHelper::sendSMS($payload);
+                
+            } catch (\Throwable $th) {
+                //throw $th;
+            }
+            
+            $success['order'] = $order;
+            return;
 
         });
 
 
-        return $this->sendResponse($success, 'Order created successfully');
+        return response()->json([
+            'message' => 'Order created successfully',
+            'status' => 200
+        ]);
    }
 
 

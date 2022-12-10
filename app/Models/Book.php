@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Spatie\Searchable\Searchable;
+use Spatie\Searchable\SearchResult;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Book extends Model
+class Book extends Model implements Searchable
 {
     use HasFactory;
 
@@ -31,5 +33,12 @@ class Book extends Model
     public function classlevel():BelongsTo
     {
         return $this->belongsTo(ClassLevel::class, 'class_level_id');
+    }
+
+    public function getSearchResult(): SearchResult
+    {
+    //    $url = route('members.show', $this->id);
+         
+       return new SearchResult($this, $this->name, '#');
     }
 }

@@ -2,8 +2,10 @@
 
 namespace App\Traits;
 
+use App\Dsc\SMSHelper;
 use App\Models\Order;
 use App\Events\CreateOrder;
+use App\Models\User;
 
 trait InteractsWithOrder
 {
@@ -32,7 +34,7 @@ trait InteractsWithOrder
 
         // Update totals
         //$order->updateTotals();
-        event(new CreateOrder($order));
+        
         return $order;
     }
 

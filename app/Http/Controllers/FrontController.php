@@ -8,6 +8,7 @@ use App\Models\Order;
 use App\Dsc\OrderHandler;
 use App\Enums\OrderStatus;
 use Illuminate\Http\Request;
+use Spatie\Searchable\Search;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
@@ -18,6 +19,14 @@ class FrontController extends Controller
         return Inertia::render('Home', [
             'listavailablebooks' => Book::with('subject', 'classlevel')->where('availability', 1)->where('status', 1)->take(12)->get()
         ]);
+    }
+
+    public function searchItems(Request $request)
+    {
+        $searchresults = (new Search())
+        ->registerModel(Book::class, ['name', 'product_type'])
+        ->search($request->input('query'));
+        return response()->json($searchresults);
     }
 
     public function cart()

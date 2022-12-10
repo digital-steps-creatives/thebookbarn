@@ -15,7 +15,7 @@
 					<div v-if="cartItems && cartItems.length">
 						<!-- header -->
 						<div class="bg-primary text-white py-2 px-3">
-							<p class="text-center text-sm tracking-wider">{{totalItems}} Books Added to your BookList</p>
+							<p class="text-center text-sm tracking-wider">{{totalItems}} <span v-if="(totalItems > 1)">products</span><span v-else>product</span>  added to your list</p>
 						</div>
 
 						<!-- body -->
@@ -56,11 +56,11 @@
 								<span class="text-red-600">Pending Quotation</span>
 								<!-- <span>{{currencyFormat(totalPrice)}}</span> -->
 							</div>
-							<Link :href="route('cart')" class="w-full mt-4 inline-flex items-center justify-center px-6 py-2 bg-primary border border-transparent rounded-lg text-sm text-white hover:bg-primary-600 active:bg-primary-700 focus:outline-none focus:border-primary-700 focus:ring focus:ring-primary-200 transition whitespace-nowrap w-full mt-4">View your Booklist</Link>
+							<Link :href="route('cart')" class="w-full mt-4 inline-flex items-center justify-center px-6 py-2 bg-primary border border-transparent rounded-lg text-sm text-white hover:bg-primary-600 active:bg-primary-700 focus:outline-none focus:border-primary-700 focus:ring focus:ring-primary-200 transition whitespace-nowrap w-full mt-4 text-decoration-none">View your list</Link>
 						</div>
 					</div>
 
-					<div v-else class="py-3 px-4 h-16 flex items-center justify-center">No Books added in the List!</div>
+					<div v-else class="py-3 px-4 h-16 flex items-center justify-center">No products added in the list!</div>
 				</div>
 			</template>
 		</dropdown>

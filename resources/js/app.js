@@ -2,6 +2,7 @@ import './bootstrap';
 import '../css/app.css';
 import '../css/bookbarn.css';
 import '../sass/app.scss';
+import 'instantsearch.css/themes/algolia-min.css';
 
 import { createApp, h } from 'vue';
 import { createInertiaApp } from '@inertiajs/inertia-vue3';
@@ -13,8 +14,10 @@ import store from '@/store';
 import 'sweetalert2/dist/sweetalert2.min.css';
 import VueCameraLib from 'vue-camera-lib';
 import { plugin as formPlugin, defaultConfig } from '@formkit/vue'
-import { generateClasses } from '@formkit/themes'
-
+import { generateClasses } from '@formkit/themes';
+import VueInstantSearch from 'vue-instantsearch/vue3/es';
+import swal from 'sweetalert2';
+window.Swal = swal;
 const appName = window.document.getElementsByTagName('title')[0]?.innerText || 'Laravel';
 const options = {
     confirmButtonColor: '#35B520',
@@ -53,6 +56,7 @@ createInertiaApp({
             .use(store)
             .use(ZiggyVue, Ziggy)
             .use(VueCameraLib)
+            .use(VueInstantSearch)
             .mount(el);
     },
 });

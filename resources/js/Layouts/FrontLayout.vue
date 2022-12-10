@@ -10,6 +10,7 @@ import NavLink from '@/Components/NavLink.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
 import TheFooter from '@/Components/TheFooter.vue';
 import CartDropdown from '@/frontend/components/partials/CartDropdown.vue';
+import Search from '@/Components/MySearch.vue';
 
 defineProps({
     title: String,
@@ -53,12 +54,8 @@ const logout = () => {
                         <!-- Navigation Links -->
                         <div class="col-sm-6 hidden sm:block">
                                 <div class="relative mt-4 hidden sm:block">
-                                    <input type="text" id="email-address-icon" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-3 py-3" placeholder="search over 100s book titles">
-                                    <button type="submit" class="absolute right-0 top-0 mt-3 mr-2">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-green-600">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
-                                        </svg>
-                                    </button>
+                                    <Search />
+                                   
                                 </div>
                         </div>
 

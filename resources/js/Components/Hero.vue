@@ -45,8 +45,6 @@ export default {
                     audio: false,
                     video: true
                 });
-
-
                 navigator.mediaDevices
                     .getUserMedia(constraints)
                     .then(stream => {
@@ -55,7 +53,7 @@ export default {
                     })
                     .catch(error => {
             this.isLoading = false;
-                        alert("May the browser didn't support or there is some errors.");
+                        alert("Your browser doesn't support this feature or there is some errors.");
                     });
         },
         
@@ -186,7 +184,7 @@ export default {
                                     
                                     <div v-if="isCameraOpen && !isLoading" class="camera-shoot">
                                         <button type="button" class="button" @click="takePhoto">
-                                        <img src="https://img.icons8.com/material-outlined/50/000000/camera--v2.png">
+                                            <img src="https://img.icons8.com/material-outlined/50/000000/camera--v2.png">
                                         </button>
                                     </div>
                                     

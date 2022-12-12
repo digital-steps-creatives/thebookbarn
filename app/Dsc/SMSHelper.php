@@ -10,7 +10,7 @@ class SMSHelper
     {
         $username = env('AT_USERNAME');
         $api_key = env('AT_KEY');
-
+        
         $AT = new AfricasTalking($username, $api_key);
 
         // Get one of the services

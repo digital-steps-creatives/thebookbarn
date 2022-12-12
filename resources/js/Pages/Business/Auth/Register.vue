@@ -47,7 +47,7 @@ const rejectTerms = () => {
             <div class="row">
                 <div class="col-sm-5">
                     <div class="bg-white p-5 shadow rounded">
-                        <h4 class="text-red-600 mb-3">Register an Account</h4>
+                        <h4 class="mb-3">Register an Account</h4>
                         <hr>
                         <form @submit.prevent="submit">
                             <div>

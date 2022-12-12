@@ -17,6 +17,7 @@ const quotation = useForm({
     note:props.order?.note,
     invoiceDate: new Date(),
     taxRate:16,
+    commissionRate:10,
     items: props.order?.order_items,
     invoiceCurrency: {
         symbol: "KSh",
@@ -61,8 +62,12 @@ const taxTotal = computed(() => {
     var total = (subTotal.value - discountTotal.value) * (quotation.taxRate / 100);
     return total;
 })
+const commissionTotal = computed(() => {
+    var total = (subTotal.value - discountTotal.value) * (quotation.commissionRate / 100);
+    return total;
+})
 const grandTotal = computed(() => {
-    var total = (subTotal.value - discountTotal.value) + taxTotal.value;
+    var total = (subTotal.value - discountTotal.value) + taxTotal.value + commissionTotal.value;
     return total;
 })
 const saveQuote = () => {
@@ -72,6 +77,7 @@ const saveQuote = () => {
         sub_total: subTotal.value,
         grand_total: grandTotal.value,
         total_discount: discountTotal.value,
+        commission: commissionTotal.value,
         order: props.order
     })).post(route('quote.generator'));
     loading.value = false;
@@ -142,8 +148,12 @@ const saveQuote = () => {
                                 <td>{{ decimalDigits(discountTotal) }}</td>
                             </tr>
                             <tr>
-                                <td><div class="cell-with-input">Tax <input class="text-right" type="number" min="0" max="100" v-model="quotation.taxRate" />%</div></td>
+                                <td><div class="cell-with-input">Tax {{quotation.taxRate}}%</div></td>
                                 <td>{{ decimalDigits(taxTotal) }}</td>
+                            </tr>
+                            <tr>
+                                <td><div class="cell-with-input">Commission Charged {{quotation.commissionRate}}%</div></td>
+                                <td>{{ decimalDigits(commissionTotal) }}</td>
                             </tr>
                             <tr class="text-bold">
                                 <td><strong>Grand Total</strong></td>

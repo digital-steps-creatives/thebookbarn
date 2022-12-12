@@ -29,12 +29,28 @@ class VendorController extends Controller
 
     public function register()
     {
-        return Inertia::render('Business/Auth/Register');
+        
+        if (Auth::guard('administrator')->user()) {
+            return redirect()->route('admin.dashboard');
+        }
+        elseif (Auth::guard('web')->user()) {
+            return redirect()->route('dashboard');
+        } else {
+            return Inertia::render('Business/Auth/Register');
+        }
     }
 
     public function login()
-    {
-        return Inertia::render('Business/Auth/Login');
+    {   
+        if (Auth::guard('administrator')->user()) {
+            return redirect()->route('admin.dashboard');
+        }
+        elseif (Auth::guard('web')->user()) {
+            return redirect()->route('dashboard');
+        } else {
+            return Inertia::render('Business/Auth/Login');
+        }
+        
     }
 
     public function processLogin(Request $request)
@@ -63,8 +79,15 @@ class VendorController extends Controller
 
         $data = $request->all();
         $check = $this->create($data);
-         
-        return redirect()->intended(route('vendor.dashboard'))->withSuccess('You are now registered Successfully');
+        $credentials = [
+            'email' => $request->email,
+            'password' => $request->password
+        ];
+        if(auth()->guard('vendors')->attempt($credentials))
+        {   
+            return redirect()->intended(route('vendor.dashboard'))->withSuccess('You are now registered Successfully');
+        }
+        
     }
 
 
@@ -77,7 +100,7 @@ class VendorController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->guest(route( 'vendor.dashboard' ));
+        return redirect()->guest(route('vendor.dashboard' ));
     }
 
     public function create(array $data)
@@ -126,9 +149,12 @@ class VendorController extends Controller
             'note' => $request->note,
             'grand_total' => $request->grand_total,
             'sub_total' => $request->sub_total,
+            'commission' => $request->commission,
             'total_discount' => $request->total_discount,
             'status' => OrderStatus::PENDINGCUSTOMER
         ]);
+
+        
        return redirect()->route('orders.index')->with('success', 'Quotation created and sent successfully');
     }
 }

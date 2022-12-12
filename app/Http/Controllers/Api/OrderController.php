@@ -16,6 +16,8 @@ use App\Imports\OrderImport;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\OrderRequest;
+use App\Models\BookShop;
+use App\Models\Customer;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Maatwebsite\Excel\Facades\Excel;
@@ -46,36 +48,30 @@ class OrderController extends BaseController
    {    
         $success = DB::transaction(function () use ($request, $orderHandler) {
             $order = $orderHandler->createOrder($request);
-            event(new CreateOrder($order));
-            //send an sms to admin
-            $adminsCellphone = User::whereIn('role', ['administrator', 'super-admin', 'manager'])->select('cellphone', 'email')->get();
-            
-            foreach ($adminsCellphone as $phone) {
-                $payload[] = [
-                    'message' => 'Hello there, a quotation request has been placed with order number '. $order->invoice_no,
-                    'recipient' => Helper::formatMobileNumber($phone->cellphone)
-                ];
-            }
-            
-            try {
-                $invoice_no = $order->invoice_no;
-                Mail::to(auth()->user()->email)->send(new OrderCreated($invoice_no));
-                SMSHelper::sendSMS($payload);
-                
-            } catch (\Throwable $th) {
-                //throw $th;
-            }
-            
             $success['order'] = $order;
-            return;
+            return $success;
 
         });
-
-
-        return response()->json([
-            'message' => 'Order created successfully',
-            'status' => 200
-        ]);
+        event(new CreateOrder($success['order']));
+            //send an sms to admin notify about the order
+            $this->sendSMStoAdmin($success['order']);
+            //notify the vendors via sms channel
+            $this->sendSMStoVendors($success['order']);
+            try {
+                $invoice_no = $success['order']->invoice_no;
+                $orderId = $success['order']->id;
+                $customer = Customer::find($request->customer_id);
+               
+                $sendemail = Mail::to($customer->email)->send(new OrderCreated($invoice_no, $orderId));
+                
+               
+            } catch (\Throwable $th) {
+                //throw 
+                dd($th);
+            }
+        
+        return $this->sendResponse($success, 'Order created successfully');
+       
    }
 
 
@@ -116,5 +112,25 @@ class OrderController extends BaseController
         return Inertia::render('ViewOrder', [
             'order' => Order::with('customer', 'orderItems', 'orderLogs')->find($order)
         ]);
+   }
+
+
+   public function sendSMStoVendors($payload)
+   {
+        $vendorscellPhone = BookShop::where('status', 'active')->select('email', 'cellphone')->get();
+   }
+
+
+   public function sendSMStoAdmin($payload)
+   {
+        $adminsCellphone = User::whereIn('role', ['administrator', 'super-admin', 'manager'])->select('cellphone', 'email')->get();
+        foreach ($adminsCellphone as $phone) {
+            $SMSpayload = [
+                'message' => 'Hello there, a quotation request has been placed with order number '. $payload['order']->invoice_no,
+                'recipient' => Helper::formatMobileNumber($phone->cellphone)
+            ];
+            $sendsms= SMSHelper::sendSMS($SMSpayload);
+        }
+        return;
    }
 }

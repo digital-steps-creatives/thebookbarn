@@ -8,9 +8,28 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Contracts\Auth\StatefulGuard;
+use Laravel\Fortify\Http\Requests\LoginRequest;
 
 class AffiliateController extends Controller
-{
+{   
+     /**
+     * The guard implementation.
+     *
+     * @var \Illuminate\Contracts\Auth\StatefulGuard
+     */
+    protected $guard;
+
+    /**
+     * Create a new controller instance.
+     *
+     * @param  \Illuminate\Contracts\Auth\StatefulGuard  $guard
+     * @return void
+     */
+    public function __construct(StatefulGuard $guard) {
+        $this->guard = $guard;
+    }
+
     public function landing()
     {
         return Inertia::render('Affiliates/Login');
@@ -27,16 +46,17 @@ class AffiliateController extends Controller
      * @param  mixed $request
      * @return void
      */
-    public function processLogin(Request $request)
+    public function processLogin(LoginRequest $request)
     {   
         $input = $request->all();
         $validator = Validator::make($request->all(), [
-            'email' => 'required|string|email|max:255',
-            'password' => 'required|string',
+            'email' => 'required',
+            'password' => 'required',
         ]);
-        if ($validator->fails())
-        {
-            return Redirect::back()->withErrors($validator)->withInput($request->except('password')); // send back the input (not the password) so that we can repopulate the form
+        if ($validator->fails()) {
+            return redirect()->back()
+                            ->withErrors($validator)
+                            ->withInput();
         }
         
         if(auth()->guard('affiliates')->attempt(array('email' => $input['email'], 'password' => $input['password'])))
@@ -50,15 +70,29 @@ class AffiliateController extends Controller
     public function processRegister(Request $request)
     {
         $request->validate([
+            
+        ]);
+        $validator = Validator::make($request->all(), [
             'name' => 'required',
-            'email' => 'required|email|unique:users',
+            'email' => 'required|email|unique:affiliates',
             'password' => 'required|min:6',
         ]);
+        if ($validator->fails()) {
+            return redirect()->back()
+                            ->withErrors($validator)
+                            ->withInput();
+        }
 
         $data = $request->all();
         $check = $this->create($data);
-         
-        return redirect()->intended(route('affiliates.dashboard'))->withSuccess('You have signed-in');
+        $credentials = [
+            'email' => $request->email,
+            'password' => $request->password
+        ];
+        if(auth()->guard('affiliates')->attempt($credentials))
+        {   
+            return redirect()->intended(route('affiliates.dashboard'))->withSuccess('You are now registered Successfully');
+        }
 
     }
 
@@ -79,5 +113,10 @@ class AffiliateController extends Controller
     public function dashboard()
     {
         return Inertia::render('Affiliates/Dashboard');
+    }
+
+    public function createRef()
+    {
+
     }
 }

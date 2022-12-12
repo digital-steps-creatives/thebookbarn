@@ -155,7 +155,7 @@ export default {
                             <p class=" text-center visible sm:hidden text-white">Start here by taking a photo of your Book list</p>
                         </div>
                         <div class="upload__takephoto_section mt-5">
-                            <div class="border-dashed border-2 border-gray-400 rounded bg-green-100 p-3">
+                            <div class="border-dashed border-2 border-gray-400 rounded bg-green-100 p-4 pb-5">
                                 <div id="cameraview" class="visible sm:hidden">
                                     <div class="camera-button">
                                         <button type="button" class="block text-center w-full  rounded  text-white p-2.5" :class="{ 'bg-green-400 hover:bg-red-600' : !isCameraOpen, 'bg-red-600 hover:bg-green-400' : isCameraOpen}" @click="toggleCamera">

@@ -29,7 +29,7 @@
 										<td class="px-3 text-sm"> {{item.name}} </td>
 										<td class="px-3"><span class="text-orange-700 inline-flex text-center rounded-full text-sm">pending quotation</span></td>
 										<td class="px-3">
-											<input @input="changedQuantity($event, item)" :value="item.quantity" type="number"/>
+											<input @input="changedQuantity($event, item)" :value="item.quantity" type="number" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-3 py-2"/>
 										</td>
 										<!-- <td class="px-3"><span class="font-semibold">
 											<span>pending quotation</span>
@@ -177,7 +177,7 @@ export default {
                             orderItems: this.orderItems,
                         })
 						.then((response) => {
-							if(response.data.status===200) {
+							if(response) {
 								
 								Swal.fire({
 									title: 'Order created successfully!',

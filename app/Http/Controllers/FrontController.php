@@ -37,7 +37,7 @@ class FrontController extends Controller
     public function Orders()
     {
         return Inertia::render('Orders',[
-            'myorders' => Order::with('customer', 'orderItems')->where('customer_id',  auth()->user()->id)->get()
+            'myorders' => Order::with('customer', 'orderItems')->where('customer_id',  auth()->user()->id)->paginate(10)
         ]);
     }
 

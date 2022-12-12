@@ -13,9 +13,12 @@ use App\Providers\RouteServiceProvider;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\Console\Input\Input;
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
 class AuthController extends Controller
 {
+    use AuthenticatesUsers;
+
     public function passwordReset()
     {
         return view('passwords.email');
@@ -23,28 +26,17 @@ class AuthController extends Controller
 
     public function processLogin(Request $request)
     {   
-        $input = $request->all();
-        $validator = Validator::make($request->all(), [
-            'email' => 'required|string|email|max:255',
-            'password' => 'required|string',
+        $this->validate($request, [
+            'email'   => 'required|email',
+            'password' => 'required|min:6'
         ]);
-        if ($validator->fails())
-        {
-            return Redirect::to('login')->withErrors($validator)->withInput($request->except('password')); // send back the input (not the password) so that we can repopulate the form
+        if (Auth::guard('web')->attempt([
+            'email' => $request->email,
+            'password' => $request->password
+        ], $request->get('remember'))) {
+            return redirect()->intended(route('dashboard'));
         }
-        $user = Customer::where('email', $request->email)->first();
-        if ($user && Helper::isCustomerActive($request->email)) {
-            if(auth()->guard('web')->attempt(array('email' => $input['email'], 'password' => $input['password'])))
-                {   
-                    return redirect()->intended(route('dashboard'));
-                }
-            return redirect()->route('login')->withError('Credentials not matched in our records!');
-           
-        }
-        else
-        {
-            return redirect()->route('login')->with('error','You are not an active customer!');
-        }
+        return back()->withInput($request->only('email', 'remember'));
     }
 
     public function processRegister(Request $request)

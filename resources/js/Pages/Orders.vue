@@ -23,7 +23,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr  v-for="(item, index) in myorders" :key="index" class="bg-white border-b">
+                                            <tr  v-for="(item, index) in myorders.data" :key="index" class="bg-white border-b">
                                                 <th scope="row" class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap"><Link :href="route('view.order.status', item.id)">
                                                     {{item.invoice_no}}
                                                 </Link>
@@ -42,7 +42,7 @@
                                                 <td class="py-4 px-6 hidden sm:table-cell">{{dateTime(item.created_at)}}</td>
                                                 <td class="py-4 px-6 hidden sm:table-cell">
                                                     <span v-if="item.grand_total">Kes {{item.grand_total}}</span> 
-                                                    <span v-else>pending quotation</span> 
+                                                    <span v-else>n/a</span> 
                                                 </td>
                                                 <td class="py-4 px-6  hidden sm:table-cell">
                                                     <div>
@@ -61,6 +61,7 @@
                                             </tr>
                                         </tbody>
                                     </table>
+                                    
                                 </div>
                                 <div v-else>
                                     <div class="alert alert-info" role="alert">
@@ -75,6 +76,11 @@
                             </div>
                     </div>
                 </div>
+                <div class="row justify-content-center">
+                    <div class="col">
+                        <Pagination :links="myorders.links"/>
+                    </div>
+                </div>
             </div>
        </div>
     </master-layout>
@@ -85,11 +91,12 @@
     import moment from 'moment';
     import MasterLayout from '@/Layouts/AppLayout.vue';
     import { Head, Link } from '@inertiajs/inertia-vue3';
+    import Pagination from '@/Components/Pagination.vue'
 
     export default defineComponent({
       name: 'OrderPage',
       props:["myorders"],
-      components: {MasterLayout, Head, Link },
+      components: {MasterLayout, Head, Link, Pagination},
       data() {
         return {
           loading:false

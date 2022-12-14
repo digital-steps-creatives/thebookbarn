@@ -34,6 +34,9 @@ class Order extends Model
     'order_type',
     'image',
     'is_delivered',
+    'notify_admin',
+    'notify_vendors',
+    'notify_customer_quote',
     'output_status'];
 
   

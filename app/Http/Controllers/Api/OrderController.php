@@ -118,19 +118,31 @@ class OrderController extends BaseController
    public function sendSMStoVendors($payload)
    {
         $vendorscellPhone = BookShop::where('status', 'active')->select('email', 'cellphone')->get();
+        if ($vendorscellPhone) {
+            foreach ($vendorscellPhone as $phone) {
+                $SMSpayload = [
+                    'message' => env('APP_NAME'). '- A Customer has requested for a quotation for Order ID '. $payload['order']->invoice_no . ' Thank you for using '. env('APP_NAME'). route('view.order.status', $payload['order']->id),
+                    'recipient' => Helper::formatMobileNumber($phone->cellphone)
+                ];
+                $sendsms= SMSHelper::sendSMS($SMSpayload);
+            }
+            return;
+        }
    }
 
 
    public function sendSMStoAdmin($payload)
    {
         $adminsCellphone = User::whereIn('role', ['administrator', 'super-admin', 'manager'])->select('cellphone', 'email')->get();
-        foreach ($adminsCellphone as $phone) {
-            $SMSpayload = [
-                'message' => 'Hello there, a quotation request has been placed with order number '. $payload['order']->invoice_no,
-                'recipient' => Helper::formatMobileNumber($phone->cellphone)
-            ];
-            $sendsms= SMSHelper::sendSMS($SMSpayload);
+        if ($adminsCellphone) {
+            foreach ($adminsCellphone as $phone) {
+                $SMSpayload = [
+                    'message' => 'Hello there, a quotation request has been placed with order number '. $payload['order']->invoice_no,
+                    'recipient' => Helper::formatMobileNumber($phone->cellphone)
+                ];
+                $sendsms= SMSHelper::sendSMS($SMSpayload);
+            }
+            return;
         }
-        return;
    }
 }

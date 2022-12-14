@@ -27,6 +27,7 @@ class BookShop extends Authenticatable
         'address',
         'contact_name',
         'email',
+        'cellphone',
         'terms',
         'password',
         'status',

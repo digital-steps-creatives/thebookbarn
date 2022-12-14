@@ -78,6 +78,7 @@ const saveQuote = () => {
         grand_total: grandTotal.value,
         total_discount: discountTotal.value,
         commission: commissionTotal.value,
+        tax: taxTotal.value,
         order: props.order
     })).post(route('quote.generator'));
     loading.value = false;

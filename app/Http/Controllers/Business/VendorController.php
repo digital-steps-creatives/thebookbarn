@@ -5,26 +5,48 @@ namespace App\Http\Controllers\Business;
 use App\Dsc\Helper;
 use Inertia\Inertia;
 use App\Models\Order;
+use App\Dsc\SMSHelper;
 use App\Models\BookShop;
+use App\Models\Customer;
 use App\Dsc\OrderHandler;
 use App\Models\OrderItem;
 use App\Enums\OrderStatus;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\Quotation;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Providers\RouteServiceProvider;
+use Illuminate\Contracts\Auth\StatefulGuard;
 
 class VendorController extends Controller
 {
+
+     /**
+     * The guard implementation.
+     *
+     * @var \Illuminate\Contracts\Auth\StatefulGuard
+     */
+    protected $guard;
+
+    /**
+     * Create a new controller instance.
+     *
+     * @param  \Illuminate\Contracts\Auth\StatefulGuard  $guard
+     * @return void
+     */
+    public function __construct(StatefulGuard $guard) {
+        $this->guard = $guard;
+    }
+
     public function dashboard()
     {
         if(Auth::guard('vendors')->check()){
             return Inertia::render('Business/Dashboard');
         }
   
-        return redirect("login")->withSuccess('You are not allowed to access');
+        return redirect()->route('login.vendor')->withSuccess('You are not allowed to access');
     }
 
     public function register()
@@ -35,6 +57,12 @@ class VendorController extends Controller
         }
         elseif (Auth::guard('web')->user()) {
             return redirect()->route('dashboard');
+        }
+        elseif (Auth::guard('affiliates')->user()) {
+            return redirect()->route('affiliates.dashboard');
+        }
+        elseif (Auth::guard('vendors')->user()) {
+            return redirect()->route('vendor.dashboard');
         } else {
             return Inertia::render('Business/Auth/Register');
         }
@@ -47,6 +75,9 @@ class VendorController extends Controller
         }
         elseif (Auth::guard('web')->user()) {
             return redirect()->route('dashboard');
+        }
+        elseif (Auth::guard('affiliates')->user()) {
+            return redirect()->route('affiliates.dashboard');
         } else {
             return Inertia::render('Business/Auth/Login');
         }
@@ -150,11 +181,43 @@ class VendorController extends Controller
             'grand_total' => $request->grand_total,
             'sub_total' => $request->sub_total,
             'commission' => $request->commission,
+            'tax' => $request->tax,
             'total_discount' => $request->total_discount,
             'status' => OrderStatus::PENDINGCUSTOMER
         ]);
-
+        $quote = Quotation::create([
+            'note' => $request->note,
+            'grand_total' => $request->grand_total,
+            'sub_total' => $request->sub_total,
+            'commission' => $request->commission,
+            'total_discount' => $request->total_discount,
+            'status' => OrderStatus::PENDINGCUSTOMER,
+            'tax' => $request->tax,
+            'order_id' => $order->id,
+            'book_shop_id' => Auth::guard('vendors')->user()->id
+        ]);
         
+        //notify Customer about the new quote
+        $this->sendSMStoCustomers($order);
+
        return redirect()->route('orders.index')->with('success', 'Quotation created and sent successfully');
     }
+
+    public function sendSMStoCustomers($payload)
+   {
+        $getcustomer = Customer::where('id', $payload->customer_id)->select('email', 'phone')->get();
+        if ($getcustomer) {
+            foreach ($getcustomer as $phone) {
+                $SMSpayload = [
+                    'message' => 'The best offer for your Order ID '. $payload->invoice_no . ' is ready. Please take a look at your order to accept the offer. Thank you for using '. env('APP_NAME'). ' see ' . route('view.order.status', $payload->id),
+                    'recipient' => Helper::formatMobileNumber($phone->phone)
+                ];
+                $sendsms= SMSHelper::sendSMS($SMSpayload);
+                if ($sendsms) {
+                    $payload->update(['notify_customer_quote' => true]);
+                }
+            }
+            return;
+        }
+   }
 }

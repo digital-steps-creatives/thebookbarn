@@ -13,4 +13,19 @@ class RefCode extends Model
         'ref_code',
         'status',
     ];
+
+    public function scopeAffiliate($query)
+    {
+        return $query->where('affiliate_id', auth()->guard('affiliates')->user()->id);
+    }
+
+    /**
+     * Determines one-to-many relation
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function affiliate()
+    {
+        return $this->belongsTo(Affiliate::class);
+    }
 }

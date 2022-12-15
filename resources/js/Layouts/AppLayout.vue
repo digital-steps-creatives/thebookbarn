@@ -49,10 +49,10 @@ const logout = () => {
 
                             <!-- Navigation Links -->
                             <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                                <NavLink :href="route('dashboard')" :active="route().current('dashboard')">
+                                <NavLink :href="route('dashboard')" :active="route().current('dashboard')" v-if="!$page.props.user.role ==='teacher' || !$page.props.user.role ==='other'">
                                     Dashboard
                                 </NavLink>
-                                <NavLink :href="route('myorders')" :active="route().current('myorders')">
+                                <NavLink :href="route('myorders')" :active="route().current('myorders')" v-if="!$page.props.user.role ==='teacher' || !$page.props.user.role ==='other'">
                                     My Orders
                                 </NavLink>
                             </div>
@@ -158,7 +158,7 @@ const logout = () => {
                                             Manage Account
                                         </div>
 
-                                        <DropdownLink :href="route('profile.show')">
+                                        <DropdownLink :href="route('profile.show')" v-if="!$page.props.user.role ==='teacher' || !$page.props.user.role ==='other'">
                                             Profile
                                         </DropdownLink>
 

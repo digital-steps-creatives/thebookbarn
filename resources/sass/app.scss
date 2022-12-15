@@ -193,3 +193,9 @@ $primary: #35B520;
   --sidebar-width: 20rem;
   --collapsed-sidebar-width: 5.4rem;
 }
+
+#unstyle {
+  .shadow{
+    box-shadow: unset !important;
+  }
+}

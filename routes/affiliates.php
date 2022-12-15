@@ -11,5 +11,5 @@ Route::post('auth/login', [AffiliateController::class, 'processLogin'])->name('a
 Route::post('auth/register', [AffiliateController::class, 'processRegister'])->name('affiliates.post.signup');
 Route::middleware(['auth:affiliates', 'verified'])->group(function () {
     Route::get('dashboard', [AffiliateController::class, 'dashboard'])->name('affiliates.dashboard');
-    Route::get('generate-referral', [AffiliateController::class, 'createRef'])->name('referral.code.create');
+    Route::post('generate-referral', [AffiliateController::class, 'createRef'])->name('referral.code.create');
 });

@@ -253,10 +253,10 @@ const logout = () => {
                         </div>
 
                         <div class="mt-3 space-y-1">
-                            <ResponsiveNavLink :href="route('profile.show')" :active="route().current('profile.show')">
+                            <ResponsiveNavLink :href="route('profile.show')" :active="route().current('profile.show')" >
                                 Profile
                             </ResponsiveNavLink>
-                            <ResponsiveNavLink :href="route('myorders')">
+                            <ResponsiveNavLink :href="route('myorders')" v-if="!$page.props.user.role ==='teacher' || !$page.props.user.role ==='other'">
                                 My Orders
                             </ResponsiveNavLink>
                             <ResponsiveNavLink v-if="$page.props.jetstream.hasApiFeatures" :href="route('api-tokens.index')" :active="route().current('api-tokens.index')">

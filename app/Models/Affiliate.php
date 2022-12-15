@@ -71,4 +71,6 @@ class Affiliate extends Authenticatable
     {
         return $query->where('status', 'active');
     }
+
+    
 }

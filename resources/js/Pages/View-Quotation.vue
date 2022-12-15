@@ -121,7 +121,7 @@ const acceptQuote = () => {
                                 <tr>
                                     <th>No</th>
                                     <th>Book/Item</th>
-                                    <th>Price/unite</th>
+                                    <th>Price/unit</th>
                                     <th>Quantity</th>
                                     <th>Total</th>
                                     <th></th>
@@ -129,8 +129,8 @@ const acceptQuote = () => {
                             </thead>
                             <tr v-for="(item, index) in quotation.items" :key="index">
                                 <td data-label="No">{{ index + 1 }}</td>
-                                <td data-label="Item"><input type="text" v-model="item.product.name" /></td>
-                                <td data-label="Price/unite"><div class="cell-with-input"><span class="pt-2">{{ quotation.invoiceCurrency.symbol }}</span> <input type="number" min="0" v-model="item.amount" disabled /></div></td>
+                                <td data-label="Item">{{ item.product.name }}</td>
+                                <td data-label="Price/unite"><div class="cell-with-input"><span class="pl-2">{{ quotation.invoiceCurrency.symbol }}</span> {{ item.amount }}</div></td>
                                 <td data-label="Quantity"><input type="number" min="0" v-model="item.quantity" /></td>
                                 <td data-label="Total">{{ decimalDigits(item.amount  * item.quantity) }}</td>
                                 <td class="text-right"><button class="btn btn-danger btn-sm" v-on:click="deleteItem(index)">Delete item</button></td>
@@ -140,19 +140,24 @@ const acceptQuote = () => {
                         <table>
                             <tr>
                                 <td>Sub Total</td>
-                                <td>{{ decimalDigits(subTotal) }}</td>
+                                <td>{{ decimalDigits(order.sub_total) }}</td>
                             </tr>
                             <tr>
-                                <td><div class="cell-with-input">Discount <input class="text-right" type="number" min="0" max="100" v-model="quotation.discountRate" />%</div></td>
-                                <td>{{ decimalDigits(discountTotal) }}</td>
+                                <td><div class="cell-with-input">Discount {{quotation.discountRate}}</div></td>
+                                <td>{{ decimalDigits(order.total_discount) }}</td>
                             </tr>
                             <tr>
-                                <td><div class="cell-with-input">Tax <input class="text-right" type="number" min="0" max="100" v-model="quotation.taxRate" />%</div></td>
-                                <td>{{ decimalDigits(taxTotal) }}</td>
+                                <td><div class="cell-with-input">Tax </div></td>
+                                <td>{{ decimalDigits(order.tax) }}</td>
                             </tr>
+                            <tr>
+                                <td><div class="cell-with-input">Administration/Facilitation </div></td>
+                                <td>{{ decimalDigits(order.commission) }}</td>
+                            </tr>
+                         
                             <tr class="text-bold">
                                 <td><strong>Grand Total</strong></td>
-                                <td>{{ decimalDigits(grandTotal) }}</td>
+                                <td>{{ decimalDigits(order.grand_total) }}</td>
                             </tr>
                         </table>
                        <hr>

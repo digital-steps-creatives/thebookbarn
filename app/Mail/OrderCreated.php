@@ -11,14 +11,16 @@ class OrderCreated extends Mailable
 {
     use Queueable, SerializesModels;
     public $invoice_no;
+    public $orderId;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($invoice_no)
+    public function __construct($invoice_no, $orderId)
     {
         $this->invoice_no = $invoice_no;
+        $this->orderId = $orderId;
     }
 
     /**
@@ -28,9 +30,6 @@ class OrderCreated extends Mailable
      */
     public function build()
     {
-        return $this->markdown('emails.orders.created', [
-           // 'url' => $this->orderUrl,
-            'invoice_no' => $this->invoice_no
-        ]);
+        return $this->subject('Order Created')->markdown('emails.orders.created');
     }
 }

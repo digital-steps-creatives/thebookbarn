@@ -34,29 +34,7 @@ const updateCustomer = () => {
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="row">
-                    <div class="col-sm-4">
-                            <div class="bg-white p-8 sm:rounded-lg">
-                                <h4>Basic Information</h4>
-                                <form id="basic__information" @submit.prevent="updateCustomer">
-                                    <div class="mb-3">
-                                        <InputLabel for="name" value="Full Names" />
-                                        <TextInput id="name" v-model="form.name" type="text" class="mt-1 block w-full" required/>
-                                        <InputError class="mt-2" :message="form.errors.name" />
-                                    </div>
-                                    <div>
-                                        <InputLabel for="email" value="Email Address" />
-                                        <TextInput id="email" v-model="form.email" type="email" class="mt-1 block w-full" required/>
-                                        <InputError class="mt-2" :message="form.errors.email" />
-                                    </div>
-                                    <div>
-                                        <PrimaryButton class="my-4" :class="{ 'opacity-25':  form.processing }" :disabled="form.processing">
-                                            Update Customer Profile
-                                        </PrimaryButton>
-                                    </div>
-                                </form>
-                        </div>
-                   </div>
-                   <div class="col-sm-8">
+                   <div class="col-sm-12 mb-3">
                         <div class="py-1">
                             <main class="h-full overflow-y-auto">
                                     <div class="mx-auto grid">
@@ -189,6 +167,28 @@ const updateCustomer = () => {
         </div>
                         </div>
                     </div>
+                    <div class="col-sm-12">
+                            <div class="bg-white p-8 sm:rounded-lg">
+                                <h4>Basic Information</h4>
+                                <form id="basic__information" @submit.prevent="updateCustomer">
+                                    <div class="mb-3">
+                                        <InputLabel for="name" value="Full Names" />
+                                        <TextInput id="name" v-model="form.name" type="text" class="mt-1 block w-full" required/>
+                                        <InputError class="mt-2" :message="form.errors.name" />
+                                    </div>
+                                    <div>
+                                        <InputLabel for="email" value="Email Address" />
+                                        <TextInput id="email" v-model="form.email" type="email" class="mt-1 block w-full" required/>
+                                        <InputError class="mt-2" :message="form.errors.email" />
+                                    </div>
+                                    <div>
+                                        <PrimaryButton class="my-4" :class="{ 'opacity-25':  form.processing }" :disabled="form.processing">
+                                            Update Customer Profile
+                                        </PrimaryButton>
+                                    </div>
+                                </form>
+                        </div>
+                   </div>
                 </div>
             </div>
         </div>

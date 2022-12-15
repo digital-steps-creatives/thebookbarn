@@ -7,37 +7,71 @@ use Inertia\Inertia;
 use App\Models\Order;
 use App\Models\Customer;
 use App\Models\Affiliate;
+use App\Models\BookShop;
 use Jenssegers\Agent\Agent;
 use Illuminate\Http\Request;
+use Laravel\Fortify\Actions\AttemptToAuthenticate;
+use Laravel\Fortify\Actions\EnsureLoginIsNotThrottled;
+use Laravel\Fortify\Actions\PrepareAuthenticatedSession;
+use Laravel\Fortify\Actions\RedirectIfTwoFactorAuthenticatable;
+use Laravel\Fortify\Contracts\LoginResponse;
+use Laravel\Fortify\Contracts\LoginViewResponse;
+use Laravel\Fortify\Contracts\LogoutResponse;
 use Laravel\Fortify\Features;
+use Laravel\Fortify\Fortify;
+use Laravel\Fortify\Http\Requests\LoginRequest;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Spatie\QueryBuilder\QueryBuilder;
 use Spatie\QueryBuilder\AllowedFilter;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Contracts\Auth\StatefulGuard;
 use ProtoneMedia\LaravelQueryBuilderInertiaJs\InertiaTable;
 
 class AdminController extends Controller
 {   
-    
+     /**
+     * The guard implementation.
+     *
+     * @var \Illuminate\Contracts\Auth\StatefulGuard
+     */
+    protected $guard;
+
+    /**
+     * Create a new controller instance.
+     *
+     * @param  \Illuminate\Contracts\Auth\StatefulGuard  $guard
+     * @return void
+     */
+    public function __construct(StatefulGuard $guard) {
+        $this->guard = $guard;
+    }
+
 
     public function login()
     {
-        return Inertia::render('Admin/Auth/Login');
+        if (Auth::guard('administrator')->user()) {
+            return redirect()->route('admin.dashboard');
+        } else {
+            return Inertia::render('Admin/Auth/Login');
+        }
+        
     }
 
     
-    public function processLogin(Request $request)
+    public function processLogin(LoginRequest $request)
     {   
         $input = $request->all();
         $validator = Validator::make($request->all(), [
-            'email' => 'required|string|email|max:255',
-            'password' => 'required|string',
+            'email' => 'required',
+            'password' => 'required',
         ]);
-        if ($validator->fails())
-        {
-            return Redirect::back()->withErrors($validator)->withInput($request->except('password')); // send back the input (not the password) so that we can repopulate the form
+        if ($validator->fails()) {
+            return redirect()->back()
+                            ->withErrors($validator)
+                            ->withInput();
         }
         
         if(auth()->guard('administrator')->attempt(array('email' => $input['email'], 'password' => $input['password'])))
@@ -46,10 +80,31 @@ class AdminController extends Controller
         }
         return Redirect::back()->with('message','Credentials not matched in our records!');
     }
+
+
+     /**
+     * Destroy an authenticated session.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Laravel\Fortify\Contracts\LogoutResponse
+     */
+    public function destroy(Request $request): LogoutResponse {
+        $this->guard->logout();
+
+        $request->session()->invalidate();
+
+        $request->session()->regenerateToken();
+
+        return app(LogoutResponse::class);
+    }
+
+
     public function index()
     {
         return Inertia::render('Admin/Dashboard', [
-            'ordersPendingReview' => Order::where('status', 'waiting approval')->latest()->take(10)->get()
+            'ordersPendingReview' => Order::where('status', 'waiting approval')->latest()->take(10)->get(),
+            'newvendors' => BookShop::where('created_at', '>=', date('Y-m-d H:i:s',strtotime('-7 days')))->count(),
+            'newcustomers' => Customer::where('created_at', '>=', date('Y-m-d H:i:s', strtotime('-7 days')))->count()
         ]);
     }
 

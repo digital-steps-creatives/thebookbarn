@@ -171,8 +171,11 @@ const logout = () => {
                                         <DropdownLink :href="route('profile.show')">
                                             Profile
                                         </DropdownLink>
-                                        <DropdownLink :href="route('myorders')">
+                                        <DropdownLink :href="route('myorders')" v-if="!$page.props.user.role==='teacher' || !$page.props.user.role==='other'">
                                            My Orders
+                                        </DropdownLink>
+                                        <DropdownLink :href="route('affiliates.dashboard')" v-if="$page.props.user.role==='teacher' || $page.props.user.role==='other'">
+                                           My Dashboard
                                         </DropdownLink>
 
                                         <DropdownLink v-if="$page.props.jetstream.hasApiFeatures" :href="route('api-tokens.index')">

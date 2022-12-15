@@ -180,7 +180,7 @@ export default {
                                                 <span class="font-semibold text-sm mr-3">
                                                     Notifications ({{ $page.props.unreadNotifications }})
                                                 </span>
-                                                <span v-if="$page.props.notifications?.length" role="button" @click="markAllAsRead" class="font-medium ml-auto text-sm text-primary-500 hover:underline hover:text-primary-600">Mark As Read</span>
+                                                <span v-if="$page.props.notifications?.length" role="button" @click="clearAll" class="font-medium ml-auto text-sm text-primary-500 hover:underline hover:text-primary-600">Mark As Read</span>
                                             </div>
                                         </div>
 

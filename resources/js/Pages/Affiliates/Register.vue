@@ -47,7 +47,11 @@ const rejectTerms = () => {
             <div class="row">
                 <div class="col-sm-5">
                     <div class="bg-white p-5 shadow rounded">
-                        <h4 class="text-red-600 mb-3"> The Book Barn | Affiliates Registration</h4>
+                        <div class="w-full">
+                            <div class="filament-brand text-xl font-bold tracking-tight">
+                                Affiliates Registration
+                            </div>
+                        </div>
                         <hr>
                         <form @submit.prevent="submit">
                             <div>
@@ -242,7 +246,7 @@ const rejectTerms = () => {
                                 <h4>How much will I get paid?</h4>
                             </div>
                             <div class="col-sm-8">
-                                <p>It's a 10% commission for every order purchase and paid for using your unique link. For qualifications, check out our terms of service.</p>
+                                <p>It's a 10% commission on the administration cost for every order purchase and paid for using your unique link/code. For qualifications, check out our terms of service.</p>
                             </div>
                         </div>
                         <div class="row">

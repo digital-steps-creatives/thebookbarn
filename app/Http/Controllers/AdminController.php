@@ -7,6 +7,7 @@ use Inertia\Inertia;
 use App\Models\Order;
 use App\Models\Customer;
 use App\Models\Affiliate;
+use App\Models\BookShop;
 use Jenssegers\Agent\Agent;
 use Illuminate\Http\Request;
 use Laravel\Fortify\Actions\AttemptToAuthenticate;
@@ -101,7 +102,9 @@ class AdminController extends Controller
     public function index()
     {
         return Inertia::render('Admin/Dashboard', [
-            'ordersPendingReview' => Order::where('status', 'waiting approval')->latest()->take(10)->get()
+            'ordersPendingReview' => Order::where('status', 'waiting approval')->latest()->take(10)->get(),
+            'newvendors' => BookShop::where('created_at', '>=', date('Y-m-d H:i:s',strtotime('-7 days')))->count(),
+            'newcustomers' => Customer::where('created_at', '>=', date('Y-m-d H:i:s', strtotime('-7 days')))->count()
         ]);
     }
 

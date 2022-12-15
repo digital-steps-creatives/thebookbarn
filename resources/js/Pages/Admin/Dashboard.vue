@@ -3,7 +3,9 @@ import AppLayout from '@/Layouts/AdminLayout.vue';
 import { Head, Link } from '@inertiajs/inertia-vue3';
 export default {
     props:{
-        ordersPendingReview:Object
+        ordersPendingReview:Object,
+        newvendors: Object,
+        newcustomers: Object
     },
     components:{
         AppLayout, Link
@@ -32,7 +34,7 @@ export default {
                             <div class="flex items-center space-x-2 rtl:space-x-reverse text-sm font-medium text-gray-500">
                                 <span>New Vendors</span>
                             </div>
-                            <div class="text-3xl">0</div>
+                            <div class="text-3xl">{{ newvendors }}</div>
                         </div>
                     </div>
                     <div class="filament-stats-card relative p-6 rounded-2xl bg-purple-100 shadow filament-stats-overview-widget-card">
@@ -56,7 +58,7 @@ export default {
                             <div class="flex items-center space-x-2 rtl:space-x-reverse text-sm font-medium text-gray-500">
                                 <span>New Customers</span>
                             </div>
-                            <div class="text-3xl">0</div>
+                            <div class="text-3xl">{{ newcustomers }}</div>
                         </div>
                     </div>
                 </div>

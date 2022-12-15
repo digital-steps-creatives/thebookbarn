@@ -2,37 +2,76 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Affiliate;
+use Carbon\Carbon;
 use Inertia\Inertia;
 use App\Models\Order;
 use App\Models\Customer;
+use App\Models\Affiliate;
+use App\Models\BookShop;
+use Jenssegers\Agent\Agent;
 use Illuminate\Http\Request;
+use Laravel\Fortify\Actions\AttemptToAuthenticate;
+use Laravel\Fortify\Actions\EnsureLoginIsNotThrottled;
+use Laravel\Fortify\Actions\PrepareAuthenticatedSession;
+use Laravel\Fortify\Actions\RedirectIfTwoFactorAuthenticatable;
+use Laravel\Fortify\Contracts\LoginResponse;
+use Laravel\Fortify\Contracts\LoginViewResponse;
+use Laravel\Fortify\Contracts\LogoutResponse;
+use Laravel\Fortify\Features;
+use Laravel\Fortify\Fortify;
+use Laravel\Fortify\Http\Requests\LoginRequest;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Spatie\QueryBuilder\QueryBuilder;
 use Spatie\QueryBuilder\AllowedFilter;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Contracts\Auth\StatefulGuard;
 use ProtoneMedia\LaravelQueryBuilderInertiaJs\InertiaTable;
 
 class AdminController extends Controller
 {   
+     /**
+     * The guard implementation.
+     *
+     * @var \Illuminate\Contracts\Auth\StatefulGuard
+     */
+    protected $guard;
+
+    /**
+     * Create a new controller instance.
+     *
+     * @param  \Illuminate\Contracts\Auth\StatefulGuard  $guard
+     * @return void
+     */
+    public function __construct(StatefulGuard $guard) {
+        $this->guard = $guard;
+    }
+
 
     public function login()
     {
-        return Inertia::render('Admin/Auth/Login');
+        if (Auth::guard('administrator')->user()) {
+            return redirect()->route('admin.dashboard');
+        } else {
+            return Inertia::render('Admin/Auth/Login');
+        }
+        
     }
 
     
-    public function processLogin(Request $request)
+    public function processLogin(LoginRequest $request)
     {   
         $input = $request->all();
         $validator = Validator::make($request->all(), [
-            'email' => 'required|string|email|max:255',
-            'password' => 'required|string',
+            'email' => 'required',
+            'password' => 'required',
         ]);
-        if ($validator->fails())
-        {
-            return Redirect::back()->withErrors($validator)->withInput($request->except('password')); // send back the input (not the password) so that we can repopulate the form
+        if ($validator->fails()) {
+            return redirect()->back()
+                            ->withErrors($validator)
+                            ->withInput();
         }
         
         if(auth()->guard('administrator')->attempt(array('email' => $input['email'], 'password' => $input['password'])))
@@ -41,10 +80,31 @@ class AdminController extends Controller
         }
         return Redirect::back()->with('message','Credentials not matched in our records!');
     }
+
+
+     /**
+     * Destroy an authenticated session.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Laravel\Fortify\Contracts\LogoutResponse
+     */
+    public function destroy(Request $request): LogoutResponse {
+        $this->guard->logout();
+
+        $request->session()->invalidate();
+
+        $request->session()->regenerateToken();
+
+        return app(LogoutResponse::class);
+    }
+
+
     public function index()
     {
         return Inertia::render('Admin/Dashboard', [
-            'ordersPendingReview' => Order::where('status', 'waiting approval')->latest()->take(10)->get()
+            'ordersPendingReview' => Order::where('status', 'waiting approval')->latest()->take(10)->get(),
+            'newvendors' => BookShop::where('created_at', '>=', date('Y-m-d H:i:s',strtotime('-7 days')))->count(),
+            'newcustomers' => Customer::where('created_at', '>=', date('Y-m-d H:i:s', strtotime('-7 days')))->count()
         ]);
     }
 
@@ -139,6 +199,7 @@ class AdminController extends Controller
                 searchable: true
             );
             $table->column('status', 'Status');
+            $table->column('ref_code', 'Referal Code');
             $table->column(label: 'Actions');
         });
     }
@@ -148,5 +209,60 @@ class AdminController extends Controller
         return Inertia::render('Admin/Affiliates/Show', [
             'affiliate' =>  $findAffiliate->load('orders')
         ]);
+    }
+
+    public function profile(Request $request)
+    {
+        return Inertia::render('Admin/Profile/Show',  [
+            'confirmsTwoFactorAuthentication' => Features::optionEnabled(Features::twoFactorAuthentication(), 'confirm'),
+            'sessions' => $this->sessions($request)->all(),
+        ]);
+    }
+
+
+    /**
+     * Get the current sessions.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Support\Collection
+     */
+    public function sessions(Request $request)
+    {
+        if (config('session.driver') !== 'database') {
+            return collect();
+        }
+
+        return collect(
+            DB::connection(config('session.connection'))->table(config('session.table', 'sessions'))
+                    ->where('user_id', $request->user()->getAuthIdentifier())
+                    ->orderBy('last_activity', 'desc')
+                    ->get()
+        )->map(function ($session) use ($request) {
+            $agent = $this->createAgent($session);
+
+            return (object) [
+                'agent' => [
+                    'is_desktop' => $agent->isDesktop(),
+                    'platform' => $agent->platform(),
+                    'browser' => $agent->browser(),
+                ],
+                'ip_address' => $session->ip_address,
+                'is_current_device' => $session->id === $request->session()->getId(),
+                'last_active' => Carbon::createFromTimestamp($session->last_activity)->diffForHumans(),
+            ];
+        });
+    }
+
+    /**
+     * Create a new agent instance from the given session.
+     *
+     * @param  mixed  $session
+     * @return \Jenssegers\Agent\Agent
+     */
+    protected function createAgent($session)
+    {
+        return tap(new Agent, function ($agent) use ($session) {
+            $agent->setUserAgent($session->user_agent);
+        });
     }
 }

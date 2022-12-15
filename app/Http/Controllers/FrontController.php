@@ -7,7 +7,11 @@ use Inertia\Inertia;
 use App\Models\Order;
 use App\Dsc\OrderHandler;
 use App\Enums\OrderStatus;
+use App\Models\BookShop;
+use App\Models\Quotation;
+use App\Notifications\NotifyVendorOrderAccepted;
 use Illuminate\Http\Request;
+use Spatie\Searchable\Search;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
@@ -16,8 +20,16 @@ class FrontController extends Controller
     public function home()
     {   
         return Inertia::render('Home', [
-            'listavailablebooks' => Book::with('subject', 'classlevel')->where('availability', 1)->where('status', 1)->take(8)->get()
+            'listavailablebooks' => Book::with('subject', 'classlevel')->where('availability', 1)->where('status', 1)->take(12)->get()
         ]);
+    }
+
+    public function searchItems(Request $request)
+    {
+        $searchresults = (new Search())
+        ->registerModel(Book::class, ['name', 'product_type'])
+        ->search($request->input('query'));
+        return response()->json($searchresults);
     }
 
     public function cart()
@@ -28,7 +40,7 @@ class FrontController extends Controller
     public function Orders()
     {
         return Inertia::render('Orders',[
-            'myorders' => Order::with('customer', 'orderItems')->where('customer_id',  auth()->user()->id)->get()
+            'myorders' => Order::with('customer', 'orderItems')->where('customer_id',  auth()->user()->id)->paginate(10)
         ]);
     }
 
@@ -52,6 +64,10 @@ class FrontController extends Controller
         $order->sub_total = $request->sub_total;
         $order->total_discount = $request->total_discount;
         $order->save();
+        //notify vendor that their order has been accepted 
+        $user = Quotation::where('order_id', $order->id)->first();
+        $bookshop = BookShop::find($user->book_shop_id);
+        $bookshop->notify(new NotifyVendorOrderAccepted($order));
         return response()->json([
             'status' => 200,
             'message' => 'Quotation converted to Invoice Successfully',

@@ -23,7 +23,7 @@ const submit = () => {
     form.transform(data => ({
         ...data,
         remember_token: form.remember_token ? 'on' : '',
-    })).post(route('signin.customer.vendor'), {
+    })).post(route('login'), {
         onFinish: () => form.reset('password'),
     });
 };
@@ -43,7 +43,7 @@ const socialLoginfacebook = () => {
             <div class="row justify-content-center">
                 <div class="col-sm-5">
                     <div class="bg-white p-5 shadow rounded">
-                        <h4 class="text-primary">Welcome back! Sign in to continue!</h4>
+                        <h4 class="text-primary">Welcome back <br>Login</h4>
                         <hr>
                         <div class="mb-4">
                             <button @click="socialLogingoogle" class="social__auths px-6 py-3 mb-4 mx-auto rounded-md text-decoration-none">

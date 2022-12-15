@@ -45,8 +45,6 @@ export default {
                     audio: false,
                     video: true
                 });
-
-
                 navigator.mediaDevices
                     .getUserMedia(constraints)
                     .then(stream => {
@@ -55,7 +53,7 @@ export default {
                     })
                     .catch(error => {
             this.isLoading = false;
-                        alert("May the browser didn't support or there is some errors.");
+                        alert("Your browser doesn't support this feature or there is some errors.");
                     });
         },
         
@@ -157,7 +155,7 @@ export default {
                             <p class=" text-center visible sm:hidden text-white">Start here by taking a photo of your Book list</p>
                         </div>
                         <div class="upload__takephoto_section mt-5">
-                            <div class="border-dashed border-2 border-gray-400 rounded bg-green-100 p-3">
+                            <div class="border-dashed border-2 border-gray-400 rounded bg-green-100 p-4 pb-5">
                                 <div id="cameraview" class="visible sm:hidden">
                                     <div class="camera-button">
                                         <button type="button" class="block text-center w-full  rounded  text-white p-2.5" :class="{ 'bg-green-400 hover:bg-red-600' : !isCameraOpen, 'bg-red-600 hover:bg-green-400' : isCameraOpen}" @click="toggleCamera">
@@ -186,7 +184,7 @@ export default {
                                     
                                     <div v-if="isCameraOpen && !isLoading" class="camera-shoot">
                                         <button type="button" class="button" @click="takePhoto">
-                                        <img src="https://img.icons8.com/material-outlined/50/000000/camera--v2.png">
+                                            <img src="https://img.icons8.com/material-outlined/50/000000/camera--v2.png">
                                         </button>
                                     </div>
                                     

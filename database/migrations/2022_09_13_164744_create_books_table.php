@@ -21,9 +21,9 @@ return new class extends Migration
             $table->string('name');
             $table->foreignIdFor(Subject::class)->nullable();
             $table->foreignIdFor(ClassLevel::class)->nullable();
-            $table->boolean('availability')->nullable();
+            $table->enum('availability', ['true', 'false'])->nullable();
             $table->foreignIdFor(User::class, 'added_by');
-            $table->boolean('status')->default(1);
+            $table->enum('status', ['true', 'false'])->default('true');
             $table->string('featured_image');
             $table->enum('product_type', ['book', 'stationary', 'uniform'])->nullable();
             $table->timestamps();

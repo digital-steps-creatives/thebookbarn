@@ -18,6 +18,9 @@ defineProps({
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white pt-4 overflow-hidden shadow-xl sm:rounded-lg">
+                    <div class="toolbar px-4 justify-end flex">
+                        <Link :href="route('admin.add.product')" class="mb-2 btn btn-primary text-white">Add affiliate</Link>
+                    </div>
                     <Table :striped="true"
                             :prevent-overlapping-requests="false"
                             :input-debounce-ms="1000"

@@ -2,18 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use Validator;
 use Carbon\Carbon;
 use App\Dsc\Helper;
 use App\Models\Order;
 use App\Models\Payment;
+use App\Models\BookShop;
 use App\Models\Customer;
 use Faker\Provider\Uuid;
+use App\Models\Quotation;
 use Akaunting\Money\Money;
 use App\Enums\OrderStatus;
+use App\Notifications\NotifyVendorOrderPaid;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Log;
-use Validator;
 use SmoDav\Mpesa\Laravel\Facades\STK;
 use SmoDav\Mpesa\Laravel\Facades\Registrar;
 
@@ -41,6 +44,11 @@ class PaymentController extends Controller
         $quoteReference =  $request->invoice_no;
         $response = STK::push($finalAmount, $phone, $quoteReference, 'Payment for Order: ' . $quoteReference, 'staging');
         $order = Order::where('invoice_no', $request->invoice_no)->first();
+        $order->update([
+            'address' => $request->address,
+            'delivery_fee' => $request->delivery_fee,
+            'delivery_type' => $request->delivery_type
+        ]);
         if (isset($response->CheckoutRequestID)) {
             $py = Payment::firstOrNew(['mpesa_checkout_request_id' => $response->CheckoutRequestID]);
             $py->BillRefNumber = $quoteReference;
@@ -96,6 +104,16 @@ class PaymentController extends Controller
                 } else if ($mpesaResponse == 1) {
                     $message = 'Paid';
                     $ammountPaid = $pay->amount;
+                    //notify vendor that their order has been accepted 
+                    $order = Order::where('invoice_no', $request->invoice_no)->first();
+                    $user = Quotation::where('order_id', $order->id)->first();
+                    $bookshop = BookShop::find($user->book_shop_id);
+                    $bookshop->notify(new NotifyVendorOrderPaid($order));
+                    $order->update([
+                        'notify_admin' => true,
+                        'status' => OrderStatus::PAID,
+                        
+                    ]);
                 } else if ($mpesaResponse == 2) {
                     $message = 'Cancelled';
                     $ammountPaid = null;

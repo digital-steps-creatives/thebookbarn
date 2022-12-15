@@ -15,6 +15,7 @@ const form = useForm({
     type:'',
     address:'',
     email: '',
+    cellphone:'',
     password: '',
     password_confirmation: '',
     terms: false,
@@ -47,7 +48,7 @@ const rejectTerms = () => {
             <div class="row">
                 <div class="col-sm-5">
                     <div class="bg-white p-5 shadow rounded">
-                        <h4 class="text-red-600 mb-3">Register an Account</h4>
+                        <h4 class="mb-3">Register an Account</h4>
                         <hr>
                         <form @submit.prevent="submit">
                             <div>
@@ -76,7 +77,7 @@ const rejectTerms = () => {
                                 <InputError class="mt-2" :message="form.errors.email" />
                             </div>
                             <div class="mt-4">
-                                <InputLabel for="contact_name" value="Contact Name" />
+                                <InputLabel for="contact_name" value="Contact Person" />
                                 <TextInput
                                     id="contact_name"
                                     v-model="form.contact_name"
@@ -84,9 +85,21 @@ const rejectTerms = () => {
                                     class="mt-1 block w-full"
                                     required
                                     autofocus
-                                    autocomplete="contact_name"
                                 />
                                 <InputError class="mt-2" :message="form.errors.contact_name" />
+                            </div>
+                            <div class="mt-4">
+                                <InputLabel for="cellphone" value="Cellphonee Number" />
+                                <TextInput
+                                    id="cellphone"
+                                    v-model="form.cellphone"
+                                    type="text"
+                                    class="mt-1 block w-full"
+                                    required
+                                    autofocus
+                                />
+                                <InputError class="mt-2" :message="form.errors.cellphone" />
+                                <small>we will be sending SMS notifications about Orders</small>
                             </div>
                             <div class="mt-4">
                                 <InputLabel for="address" value="Business Address" />

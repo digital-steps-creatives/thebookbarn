@@ -43,7 +43,7 @@ const socialLoginfacebook = () => {
             <div class="row">
                 <div class="col-sm-5">
                     <div class="bg-white p-5 shadow rounded">
-                        <h4 class="text-red-600">Welcome back! Login to continue!</h4>
+                        <h4 class="text-red-600">Welcome back <br>Login!</h4>
                         
                         <hr>
                         <div v-if="status" class="mb-4 font-medium text-sm text-green-600">

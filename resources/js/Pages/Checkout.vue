@@ -15,6 +15,7 @@ export default {
             form:useForm({
                 address: null,
                 delivery_type: 'home',
+                delivery_fee:250,
                 name: this.user.name,
                 email:this.user.email,
                 phone:this.user.phone,
@@ -28,10 +29,11 @@ export default {
             this.loading = true;
             let payload = {
                 phone: this.form.phone,
-                amount: Math.round(this.orderItems.grand_total),
+                amount: Math.round(this.orderItems.grand_total + this.form.delivery_fee),
                 invoice_no:this.orderItems.invoice_no,
                 email:this.form.email,
                 delivery_type:this.form.delivery_type,
+                delivery_fee: this.form.delivery_fee,
                 address:this.form.address,
                 name:this.form.name
             }
@@ -71,7 +73,8 @@ export default {
         },
         checkPaymentStatus(checkoutId){
             let checkoutPayload = {
-                checkoutId: checkoutId
+                checkoutId: checkoutId,
+                invoice_no:this.orderItems.invoice_no,
             }
             window.axios.post(route('confirm.payment'), checkoutPayload)
             .then(response => {
@@ -152,25 +155,25 @@ export default {
                             </div>
                         </div>
                         <div class="row mb-3">
-                            <div class="col-4">
+                            <div class="col-6">
                                 <div class="items-center pl-4 rounded border-2 border-gray-200 focus:border-green-600 peer-checked:text-green-600 hover:text-gray-600 hover:bg-gray-200 ring-green-600">
                                         <input id="home" type="radio" value="home" name="delivery_type" v-model="form.delivery_type" class="w-4 h-4 text-green-600 bg-gray-100 border-gray-300 focus:ring-green-500 dark:focus:ring-green-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
                                         <label for="home" class="py-4 ml-2 w-full text-sm font-medium text-gray-900">Deliver at Home</label>
                                 </div>
                             </div>
-                            <div class="col-sm-4">
+                            <div class="col-sm-6">
                                     <div class=" items-center pl-4 rounded border-2 border-gray-200 peer-checked:border-green-600 peer-checked:text-green-600 hover:text-gray-600 hover:bg-gray-200 ring-green-600">
                                         <input id="school" type="radio" value="school" name="delivery_type" v-model="form.delivery_type" class="w-4 h-4 text-green-600 bg-gray-100 border-gray-300 focus:ring-green-500 dark:focus:ring-green-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
                                         <label for="school" class="py-4 ml-2 w-full text-sm font-medium text-gray-900">Deliver at School </label>
                                     </div>
-                            </div>
-                            <div class="col-4">
-                                <!-- Column Content -->
+                           </div>
+                             <!-- <div class="col-4">
+                               Column Content 
                                     <div class=" items-center pl-4 rounded border-2 border-gray-200 peer-checked:border-green-600 peer-checked:text-green-600 hover:text-gray-600 hover:bg-gray-200 ring-green-600">
                                         <input id="pickup" type="radio" value="pickup" name="delivery_type" v-model="form.delivery_type" class="w-4 h-4 text-green-600 bg-gray-100 border-gray-300 focus:ring-green-500 dark:focus:ring-green-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
                                         <label for="pickup" class="py-4 ml-2 w-full text-sm font-medium text-gray-900">I want to pick it myself</label>
                                     </div>
-                            </div>
+                            </div> -->
                         </div>
                         <div v-if="form.delivery_type">
                             <label for="message" class="block mb-2 text-sm font-medium text-gray-900"><span v-if="form.delivery_type ==='home'">Enter Home Address below</span><span v-else-if="form.delivery_type ==='school'">Enter Name of the School, Student, Admission Number, Class & Address below</span><span v-else>Enter Name of the City/Town you are in</span></label>
@@ -205,9 +208,15 @@ export default {
                                 <strong>Tax charged</strong> KES {{parseInt(orderItems.grand_total - orderItems.sub_total)}}
                             </p>
                             <p>
-                                <strong>Total</strong> KES {{orderItems.grand_total}}
+                                <strong>Delivery Fee</strong> KES {{ parseInt(this.form.delivery_fee) }}
+                            </p>
+                            <p>
+                                <strong>Total</strong> KES {{orderItems.grand_total + parseInt(this.form.delivery_fee)}}
                             </p>
                             <div class="mt-5">
+                                <div class="py-4">
+                                    Note: We are only delivering in Nairobi only
+                                </div>
                                 <button class="text-decoration-none px-6 py-3 hover:bg-green-400 font-semibold rounded-md bg-gray-600 text-white" @click="makePayment">
                                     <div v-if="loading" class="flex">
                                             <div class="spinner-border" role="status"></div>

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Inertia\Inertia;
 use App\Models\Affiliate;
+use App\Models\RefCode;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
@@ -117,6 +119,17 @@ class AffiliateController extends Controller
 
     public function createRef()
     {
+        $refcode = Str::random(5);
+        if ($refcode) {
+            if(!empty(RefCode::where('ref_code', $refcode)->first()))
+            {
+                return RefCode::create([
+                    'affiliate_id' => auth()->guard('affiliates')->user()->id,
+                    'ref_code' => $refcode,
+                    'status' => 'not used'
+                ]);
+            }
+        }
 
     }
 }

@@ -214,7 +214,7 @@ export default {
                                 <strong>Total</strong> KES {{orderItems.grand_total + parseInt(this.form.delivery_fee)}}
                             </p>
                             <div class="mt-5">
-                                <div class="py-4">
+                                <div class="py-4 alert alert-info">
                                     Note: We are only delivering in Nairobi only
                                 </div>
                                 <button class="text-decoration-none px-6 py-3 hover:bg-green-400 font-semibold rounded-md bg-gray-600 text-white" @click="makePayment">

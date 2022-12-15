@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class RefCode extends Model
 {
     use HasFactory;
+    protected $fillable= [
+        'affiliate_id',
+        'ref_code',
+        'status',
+    ];
 }

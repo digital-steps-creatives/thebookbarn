@@ -10,7 +10,6 @@ const generateCode = () => {
     axios.get(route('referral.code.create'))
     .then((response) => {
         generatedCode.value = response.data.referral;
-
     })
 };
 const form = useForm({
@@ -69,26 +68,27 @@ const form = useForm({
                         <div>
                             <h4 class="text-white">Referral Codes</h4>
                         </div>
+                        
+                   </div>
+                   
+                    <div class="px-5 py-4 pb-5 bg-white">
                         <div class="row">
                             <div class="col-sm-8">
 
                             </div>
                             <div class="col-sm-4">
                                 <h4>Generate Code</h4>
+                                <hr>
                                 <form>
                                     <div class="form-group">
-                                        <button class="btn btn-primary">Generate</button>
+                                        <button type="submit" class="btn btn-primary block mb-3 text-white" @click="generateCode">Generate ref code</button>
                                     </div>
-                                    <div class="code-generated p-3 bg-gray-800 text-center">
+                                    <div class="code-generated p-3 bg-gray-800 text-center rounded">
                                         {{ generatedCode }}
                                     </div>
                                 </form>
                             </div>
                         </div>
-                   </div>
-                   
-                    <div class="px-5 py-4 pb-5 bg-white">
-                           
                     </div>
                 </div>
             </div>

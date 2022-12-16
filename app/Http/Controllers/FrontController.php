@@ -5,15 +5,19 @@ namespace App\Http\Controllers;
 use App\Models\Book;
 use Inertia\Inertia;
 use App\Models\Order;
-use App\Dsc\OrderHandler;
-use App\Enums\OrderStatus;
 use App\Models\BookShop;
+use App\Dsc\OrderHandler;
 use App\Models\Quotation;
-use App\Notifications\NotifyVendorOrderAccepted;
+use App\Enums\OrderStatus;
 use Illuminate\Http\Request;
 use Spatie\Searchable\Search;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Spatie\QueryBuilder\QueryBuilder;
+use Spatie\QueryBuilder\AllowedFilter;
+use App\Notifications\NotifyVendorOrderAccepted;
+use ProtoneMedia\LaravelQueryBuilderInertiaJs\InertiaTable;
 
 class FrontController extends Controller
 {
@@ -90,5 +94,32 @@ class FrontController extends Controller
         ]);
     }
 
+    public function dashboard()
+    {   
+        $globalSearch = AllowedFilter::callback('global', function ($query, $value) {
+            $query->where(function ($query) use ($value) {
+                Collection::wrap($value)->each(function ($value) use ($query) {
+                    $query
+                        ->orWhere('invoice_no', 'LIKE', "%{$value}%")
+                        ->orWhere('status', 'LIKE', "%{$value}%");
+                });
+            });
+        });
+        
+        $orders = QueryBuilder::for(Order::class)
+        ->defaultSort('invoice_no')
+        ->allowedSorts(['invoice_no', 'status'])
+        ->allowedFilters(['invoice_no', 'status', $globalSearch])
+        ->paginate()
+        ->withQueryString();
+        return Inertia::render('Dashboard', [
+            'myorders' => $orders->load('customer', 'orderItems')->where('customer_id',  auth()->user()->id)
+        ])->table(function (InertiaTable $table) {
+            $table->withGlobalSearch();
+            $table->withGlobalSearch('Search through the data...');
+            $table->column('invoice_no', 'Order #');
+            $table->column('status', 'Status');
+        });
+    }
     
 }

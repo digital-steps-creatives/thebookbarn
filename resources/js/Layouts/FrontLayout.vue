@@ -11,7 +11,23 @@ import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
 import TheFooter from '@/Components/TheFooter.vue';
 import CartDropdown from '@/frontend/components/partials/CartDropdown.vue';
 import Search from '@/Components/MySearch.vue';
+import axios from 'axios'
+import Cookies from 'js-cookie'
 
+const via = new URL(location.href).searchParams.get('via')
+
+if (via) {
+	axios
+		.post(`/affiliate/${encodeURIcomponent(via.value)}`)
+		.then(response => {
+			Cookies.set('bookbarn_affiliate', response.data, { expires: 30, domain: '.bookbarn.school', secure: true, sameSite: 'lax' })
+		})
+		.catch(error => {
+			if (!error.response || error.response.status !== 404) return console.log('Something went wrong')
+
+			console.log('Affiliate does not exist. Register for our referral program here: https://bookbarn.school/affiliate')
+		})
+}
 defineProps({
     title: String,
 });

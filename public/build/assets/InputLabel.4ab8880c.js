@@ -1,1 +1,0 @@
-import{aS as e,ae as t,_ as o,aY as n}from"./runtime-dom.esm-bundler.585c24df.js";const l={class:"block font-medium text-sm text-gray-700"},r={key:0},c={key:1},u={__name:"InputLabel",props:{value:String},setup(a){return(s,_)=>(e(),t("label",l,[a.value?(e(),t("span",r,o(a.value),1)):(e(),t("span",c,[n(s.$slots,"default")]))]))}};export{u as _};

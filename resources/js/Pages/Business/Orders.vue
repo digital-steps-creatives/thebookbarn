@@ -3,6 +3,7 @@ import AppLayout from '@/Layouts/VendorsLayout.vue';
 import Welcome from '@/Components/Welcome.vue';
 import moment from 'moment';
 import { Head, Link } from '@inertiajs/inertia-vue3';
+import Pagination from '@/Components/Pagination.vue'
 
 defineProps({
     orders:Object
@@ -36,7 +37,7 @@ const dateTime = (value) => {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr  v-for="(item, index) in orders" :key="index" class="bg-white border-b">
+                                        <tr  v-for="(item, index) in orders.data" :key="index" class="bg-white border-b">
                                             <th scope="row" class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap">{{item.invoice_no}}</th>
                                             <td class="py-4 px-6">{{item.order_items?.length}}</td>
                                             <td class="py-4 px-6">{{dateTime(item.created_at)}}</td>
@@ -60,6 +61,11 @@ const dateTime = (value) => {
                         </div>
                 </div>
             </div>
+            <div class="row justify-content-center">
+                    <div class="col">
+                        <Pagination :links="orders.links"/>
+                    </div>
+                </div>
        </div>
     </AppLayout>
 </template>

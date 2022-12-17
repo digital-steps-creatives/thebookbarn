@@ -157,7 +157,7 @@ class VendorController extends Controller
     public function orders()
     {
         return Inertia::render('Business/Orders', [
-            'orders' => Order::with('customer', 'orderItems')->where('status', OrderStatus::WAITINGQUOTATIONS)->get()
+            'orders' => Order::with('customer', 'orderItems')->where('status', OrderStatus::WAITINGQUOTATIONS)->paginate(10)
         ]);
     }
 

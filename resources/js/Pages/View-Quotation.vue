@@ -61,7 +61,7 @@ const discountTotal = computed(() => {
 })
 const taxTotal = computed(() => {
     var total = (subTotal.value - discountTotal.value) * (quotation.taxRate / 100);
-    return total;
+    return Math.round(total);
 })
 const grandTotal = computed(() => {
     var total = (subTotal.value - discountTotal.value) + taxTotal.value;

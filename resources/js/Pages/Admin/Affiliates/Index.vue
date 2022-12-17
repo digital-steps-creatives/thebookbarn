@@ -31,6 +31,11 @@ defineProps({
                                 View
                             </a>
                         </template>
+                        <template #cell(code)="{ item: affiliate }">
+                           <div v-for="ref_code in affiliate.referrals" :key="ref_code.id">
+                            {{ref_code.ref_code}}
+                           </div>
+                        </template>
                     </Table>
                 </div>
             </div>

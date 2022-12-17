@@ -185,7 +185,7 @@ class AdminController extends Controller
             ->withQueryString();
 
         return Inertia::render('Admin/Affiliates/Index',[
-            'affiliates' => $affiliates
+            'affiliates' => $affiliates->load('referrals')
         ])->table(function (InertiaTable $table) {
             $table->withGlobalSearch();
             $table->withGlobalSearch('Search through the data...');
@@ -199,7 +199,7 @@ class AdminController extends Controller
                 searchable: true
             );
             $table->column('status', 'Status');
-            $table->column('ref_code', 'Referal Code');
+            $table->column(label: 'Code');
             $table->column(label: 'Actions');
         });
     }

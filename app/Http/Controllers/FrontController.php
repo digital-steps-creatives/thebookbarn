@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\Book;
 use Inertia\Inertia;
 use App\Models\Order;
@@ -110,16 +111,34 @@ class FrontController extends Controller
         ->defaultSort('invoice_no')
         ->allowedSorts(['invoice_no', 'status'])
         ->allowedFilters(['invoice_no', 'status', $globalSearch])
-        ->paginate()
+        ->paginate(10)
         ->withQueryString();
         return Inertia::render('Dashboard', [
-            'myorders' => $orders->load('customer', 'orderItems')->where('customer_id',  auth()->user()->id)
+            'orders' => $orders->load('customer', 'orderItems')->where('customer_id',  auth()->user()->id),
+            'deliveriesCount' => $orders->where('is_delivered', 1)->count(),
+            'quotsCount' => $orders->where('status', OrderStatus::PENDINGCUSTOMER)->count(),
+            'greetings' => $this->greetings(),
         ])->table(function (InertiaTable $table) {
             $table->withGlobalSearch();
             $table->withGlobalSearch('Search through the data...');
             $table->column('invoice_no', 'Order #');
+            $table->column(label: 'Quantity');
             $table->column('status', 'Status');
+            $table->column('created_at', 'Date');
+            $table->column(label: 'Actions');
         });
+    }
+
+    public function greetings()
+    {
+        $hour = Carbon::now()->format('H');
+        if ($hour < 12) {
+            return 'Good morning';
+        }
+        if ($hour < 17) {
+            return 'Good afternoon';
+        }
+        return 'Good evening';
     }
     
 }

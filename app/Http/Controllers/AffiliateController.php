@@ -2,19 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use Inertia\Inertia;
 use App\Models\RefCode;
 use App\Models\Affiliate;
-use Carbon\Carbon;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Hash;
 use Spatie\QueryBuilder\QueryBuilder;
 use Spatie\QueryBuilder\AllowedFilter;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Contracts\Auth\StatefulGuard;
-use Illuminate\Support\Collection;
 use Laravel\Fortify\Http\Requests\LoginRequest;
 use ProtoneMedia\LaravelQueryBuilderInertiaJs\InertiaTable;
 

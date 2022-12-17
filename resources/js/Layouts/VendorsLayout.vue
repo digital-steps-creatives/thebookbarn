@@ -78,7 +78,7 @@ export default {
 
                             <!-- Navigation Links -->
                             <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                                <NavLink :href="route('dashboard')" :active="route().current('dashboard')" class="text-decoration-none">
+                                <NavLink :href="route('vendor.dashboard')" :active="route().current('vendor.dashboard')" class="text-decoration-none">
                                     Dashboard
                                 </NavLink>
                                 <NavLink :href="route('orders.index')" :active="route().current('orders.index')" class="text-decoration-none">

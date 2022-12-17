@@ -60,7 +60,7 @@ const discountTotal = computed(() => {
 })
 const taxTotal = computed(() => {
     var total = (subTotal.value - discountTotal.value) * (quotation.taxRate / 100);
-    return total;
+    return Math.round(total);
 })
 const commissionTotal = computed(() => {
     var total = (subTotal.value - discountTotal.value) * (quotation.commissionRate / 100);
@@ -94,7 +94,7 @@ const saveQuote = () => {
         </template>
 
         <div class="py-12">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div >
                 <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                     <div id="invoice-app">
                         <div class="header">
@@ -118,24 +118,24 @@ const saveQuote = () => {
                                 <option value="KES">Kenya Shilling</option>
                             </select>
                         </div>
-                        <table class="responsive-table">
+                        <table class="responsive-table table">
                             <thead>
                                 <tr>
                                     <th>No</th>
-                                    <th>Book/Item</th>
-                                    <th>Price/unite</th>
-                                    <th>Quantity</th>
-                                    <th>Total</th>
-                                    <th></th>
+                                    <th style="width: 40%;">Book/Item</th>
+                                    <th style="width: 20%;">Price/unite</th>
+                                    <th style="width: 15%;">Quantity</th>
+                                    <th style="width: 10%;" >Total</th>
+                                    <th style="width: 10%;" ></th>
                                 </tr>
                             </thead>
                             <tr v-for="(item, index) in quotation.items" :key="index">
                                 <td data-label="No">{{ index + 1 }}</td>
-                                <td data-label="Item"><input type="text" v-model="item.product.name" /></td>
-                                <td data-label="Price/unite"><div class="cell-with-input">{{ quotation.invoiceCurrency.symbol }} <input type="number" min="0" v-model="item.amount" /></div></td>
-                                <td data-label="Quantity"><input type="number" min="0" v-model="item.quantity" /></td>
+                                <td data-label="Item"><input type="text" v-model="item.product.name"/></td>
+                                <td data-label="Price/unite"><div class="cell-with-input">{{ quotation.invoiceCurrency.symbol }} <input type="number" min="0" v-model="item.amount"></div></td>
+                                <td data-label="Quantity"><input type="number" min="0" v-model="item.quantity" style="width: 30%;text-align: center;"/></td>
                                 <td data-label="Total">{{ decimalDigits(item.amount  * item.quantity) }}</td>
-                                <td class="text-right"><button class="btn btn-danger btn-sm" v-on:click="deleteItem(index)">Delete item</button></td>
+                                <td class="text-right"><button class="text-red-600 hover:text-red-900" v-on:click="deleteItem(index)">Delete item</button></td>
                             </tr>
                         </table>
                        

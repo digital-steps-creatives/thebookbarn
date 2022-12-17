@@ -11,25 +11,10 @@ import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
 import TheFooter from '@/Components/TheFooter.vue';
 import CartDropdown from '@/frontend/components/partials/CartDropdown.vue';
 import Search from '@/Components/MySearch.vue';
-import axios from 'axios'
-import Cookies from 'js-cookie'
 
-const via = new URL(location.href).searchParams.get('via')
-
-if (via) {
-	axios
-		.post(`/affiliate/${encodeURIcomponent(via.value)}`)
-		.then(response => {
-			Cookies.set('bookbarn_affiliate', response.data, { expires: 30, domain: '.bookbarn.school', secure: true, sameSite: 'lax' })
-		})
-		.catch(error => {
-			if (!error.response || error.response.status !== 404) return console.log('Something went wrong')
-
-			console.log('Affiliate does not exist. Register for our referral program here: https://bookbarn.school/affiliate')
-		})
-}
 defineProps({
-    title: String,
+    title: String,  
+    greetings: String
 });
 
 const showingNavigationDropdown = ref(false);
@@ -68,21 +53,25 @@ const logout = () => {
                             </div>
                         </div>
                         <!-- Navigation Links -->
-                        <div class="col-sm-6 hidden sm:block">
+                        <div class="col-sm-5 hidden sm:block">
                                 <div class="relative mt-4 hidden sm:block">
                                     <Search />
                                    
                                 </div>
                         </div>
 
-                        <div class="col-sm-3 col-4">
+                        <div class="col-sm-4 col-4">
                             <div class="flex justify-between">
                             <div class="sm:mt-4 mt-4 relative">
                                 <div class="flex justify-between">
                                     <CartDropdown  class="sm:py-3 sm:pt-0"/>
-                                    <div class="sm:py-3 sm:pt-0">
+                                    <div class="sm:py-3 sm:pt-0 flex">
                                         <Link class="mr-2 flex text-decoration-none sm:my-3" :href="route('login')"  v-if="!$page.props.user">
                                             <span class="text-green-500 hover:text-red-500">Log In</span>
+                                        </Link>
+                                        <span class="px-2 pt-2.5">|</span>
+                                        <Link class="mr-2 flex text-decoration-none sm:my-3" :href="route('affiliates.landing')"  v-if="!$page.props.user">
+                                            <span class="text-green-500 hover:text-red-500">Affiliates Log In</span>
                                         </Link>
                                     </div>
                                 </div>
@@ -91,7 +80,7 @@ const logout = () => {
                                     <template #trigger>
                                         <span class="inline-flex rounded-md">
                                             <button type="button" class="inline-flex items-center px-3 py-3 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:bg-gray-50 hover:text-gray-700 focus:outline-none focus:bg-gray-50 active:bg-gray-50 transition">
-                                                {{ $page.props.user.current_team.name }}
+                                               {{greetings}} {{ $page.props.user.current_team.name }}
 
                                                 <svg
                                                     class="ml-2 -mr-0.5 h-4 w-4"

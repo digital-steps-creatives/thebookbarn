@@ -54,6 +54,7 @@ class OrderController extends BaseController
         });
         event(new CreateOrder($success['order']));
             //send an sms to admin notify about the order
+            
             $this->sendSMStoAdmin($success['order']);
             //notify the vendors via sms channel
             $this->sendSMStoVendors($success['order']);
@@ -121,7 +122,7 @@ class OrderController extends BaseController
         if ($vendorscellPhone) {
             foreach ($vendorscellPhone as $phone) {
                 $SMSpayload = [
-                    'message' => env('APP_NAME'). '- A Customer has requested for a quotation for Order ID '. $payload['order']->invoice_no . ' Thank you for using '. env('APP_NAME'). route('view.order.status', $payload['order']->id),
+                    'message' => env('APP_NAME'). '- A Customer has requested for a quotation for Order ID '. $payload->invoice_no . ' Thank you for using '. env('APP_NAME'). route('view.order.status', $payload->id),
                     'recipient' => Helper::formatMobileNumber($phone->cellphone)
                 ];
                 $sendsms= SMSHelper::sendSMS($SMSpayload);
@@ -132,12 +133,13 @@ class OrderController extends BaseController
 
 
    public function sendSMStoAdmin($payload)
-   {
+   {    
+        
         $adminsCellphone = User::whereIn('role', ['administrator', 'super-admin', 'manager'])->select('cellphone', 'email')->get();
         if ($adminsCellphone) {
             foreach ($adminsCellphone as $phone) {
                 $SMSpayload = [
-                    'message' => 'Hello there, a quotation request has been placed with order number '. $payload['order']->invoice_no,
+                    'message' => 'Hello there, a quotation request has been placed with order number '. $payload->invoice_no,
                     'recipient' => Helper::formatMobileNumber($phone->cellphone)
                 ];
                 $sendsms= SMSHelper::sendSMS($SMSpayload);

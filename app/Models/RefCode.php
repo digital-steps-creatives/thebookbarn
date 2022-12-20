@@ -14,6 +14,7 @@ class RefCode extends Model
         'status',
     ];
 
+
     public function scopeAffiliate($query)
     {
         return $query->where('affiliate_id', auth()->guard('affiliates')->user()->id);

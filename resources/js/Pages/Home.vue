@@ -83,7 +83,7 @@
                                 <h2 class="display-5 mt-4 mb-3 text-white fw-bold">Make more Money from the Refferals</h2>
                             <!-- para  -->
                             <p class="lead text-white-50 px-lg-8 mb-6">Interested? Become a partner</p>
-                            <Link :href="route('affiliates.landing')" class="bg-red-500 py-3 px-12 rounded-lg text-white hover:bg-red-700 text-decoration-none">Get started now</Link>
+                            <Link :href="route('affiliates.register')" class="bg-red-500 py-3 px-12 rounded-lg text-white hover:bg-red-700 text-decoration-none">Get started now</Link>
                         </div>
                     </div>
                 </div>

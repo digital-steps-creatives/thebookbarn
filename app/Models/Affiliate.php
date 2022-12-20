@@ -13,7 +13,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class Affiliate extends Authenticatable
-{
+{   
+
+
     use HasApiTokens;
     use HasFactory;
     use HasProfilePhoto;
@@ -72,5 +74,8 @@ class Affiliate extends Authenticatable
         return $query->where('status', 'active');
     }
 
-    
+    public function referrals()
+    {
+        return $this->hasMany(RefCode::class, 'affiliate_id');
+    }
 }

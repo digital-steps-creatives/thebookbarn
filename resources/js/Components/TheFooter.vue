@@ -48,7 +48,7 @@
             
             <div class="container">
                 <div class="row justify-content-center py-3">
-                    <div class="col-4">
+                    <div class="col-sm-4 col-12">
                         <span>The Bookbarn | © 2022 All Rights Reserved</span>
                     </div>
                 </div>

@@ -8,6 +8,7 @@ use App\Http\Controllers\FrontController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Auth\SocialController;
+use App\Http\Controllers\PaymentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -52,6 +53,8 @@ Route::prefix('backoffice')->group( function(){
         Route::get('orders/convert/order/{order}', [AdminController::class, 'convertImagesOrder'])->name('orders.convert.order');
         Route::get('manage-affiliates', [AdminController::class, 'affiliates'])->name('admin.affiliates');
         Route::get('view/affiliate/{affiliate}', [AdminController::class, 'showAffiliate'])->name('admin.view.affiliate');
+        Route::get('payments', [AdminController::class, 'getPayments'])->name('admin.view.payment');
+        Route::post('register-payment-urls', [PaymentController::class, 'registerURLS'])->name('register.mpesa.urls');
         /**
          * Products
          */

@@ -29,7 +29,6 @@
         "psr/simple-cache": "^2.0",
         "pusher/pusher-php-server": "^7.2",
         "safaricom/mpesa": "^1.0",
-        "smodav/mpesa": "^6.1",
         "spatie/laravel-query-builder": "^5.0",
         "spatie/laravel-searchable": "^1.11",
         "tightenco/ziggy": "^1.0"

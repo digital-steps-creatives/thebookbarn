@@ -2,12 +2,15 @@
 
 namespace App\Dsc;
 
+use Carbon\Carbon;
+use GuzzleHttp\Client;
 use App\Models\BookShop;
 use App\Models\Customer;
-use Carbon\Carbon;
+use Illuminate\Support\Facades\Http;
 
 class Helper
 {
+    public $requestTime;
 
     public function __construct()
     {
@@ -108,42 +111,31 @@ class Helper
             return $trimed_number;
         }
     }
+
     public static function global_Curl_post($data, $url)
     {
-        $server = env('SAFARICOM_API') !== null ? env('SAFARICOM_API') : 'https://sandbox.safaricom.co.ke';
+        $server = config('mpesa.url'). $url;
         $token = self::generateAccessToken();
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, ($server . '/' . $url));
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:application/json','Authorization:Bearer '.$token));
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_TIMEOUT, 3000);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_FRESH_CONNECT, true);
-
-        $response = json_decode(curl_exec($ch));
-
-        //dd($response);
-
-        curl_close($ch);
-
-        return $response;
+       
+        $curl_response = Http::withToken($token)->post($server, $data);
+        return $curl_response->body();
     }
+    
     public static function generateAccessToken()
     {
-        $consumer_key= 'OSGHjreXoAoBnlJsfYFA7lRA4soUaVPz';
-        $consumer_secret= 'kmriYXlBh81p3l6J';
-        $credentials = base64_encode($consumer_key.":".$consumer_secret);
-        $url = "https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials";
-        $curl = curl_init();
-        curl_setopt($curl, CURLOPT_URL, $url);
-        curl_setopt($curl, CURLOPT_HTTPHEADER, array("Authorization: Basic ".$credentials));
-        curl_setopt($curl, CURLOPT_HEADER,false);
-        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        $curl_response = curl_exec($curl);
-        $access_token=json_decode($curl_response);
-        return $access_token->access_token;
+        $consumer_key= config('mpesa.consumer_key');
+        $consumer_secret= config('mpesa.consumer_secret');
+        
+        $url = config('mpesa.type') == 'sandbox'
+        ? 'https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials'
+        : 'https://api.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials';
+
+        
+        $response = Http::withBasicAuth($consumer_key, $consumer_secret)->get($url);
+       
+
+        // return $response;
+        return $response['access_token'];
     }
 
     /**
@@ -151,11 +143,12 @@ class Helper
      * */
     public static function lipaNaMpesaPassword()
     {
-        $lipa_time = Carbon::rawParse('now')->format('YmdHms');
-        $passkey = "bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919";
-        $BusinessShortCode = 174379;
+        $lipa_time = date('YmdHis');
+        $passkey = config('mpesa.passkey');
+        $BusinessShortCode = config('mpesa.shortcode');
         $timestamp =$lipa_time;
         $lipa_na_mpesa_password = base64_encode($BusinessShortCode.$passkey.$timestamp);
+        
         return $lipa_na_mpesa_password;
     }
     

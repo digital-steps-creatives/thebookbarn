@@ -265,4 +265,9 @@ class AdminController extends Controller
             $agent->setUserAgent($session->user_agent);
         });
     }
+
+    public function getPayments()
+    {
+        return Inertia::render('Admin/AdminPayments');
+    }
 }

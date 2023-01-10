@@ -21,7 +21,9 @@ export default {
                 phone:this.user.phone,
             }),
             loading:false,
-            checkoutId:null
+            checkoutId:null,
+            paymentResponse:false,
+            paymentMessage:'Transaction Pending'
         }
     },
     methods: {
@@ -72,6 +74,7 @@ export default {
             })
         },
         checkPaymentStatus(checkoutId){
+            this.paymentResponse = true;
             let checkoutPayload = {
                 checkoutId: checkoutId,
                 invoice_no:this.orderItems.invoice_no,
@@ -79,27 +82,17 @@ export default {
             window.axios.post(route('confirm.payment'), checkoutPayload)
             .then(response => {
                 console.log(response)
-                if (response.data.data.status ===1) {
-                    Swal.fire({
-                        title: 'Payment confirmed Successfully',
-                        icon: 'success',
-                        timerProgressBar: true,
-                        showConfirmButton: false,
-                    })
+                
+                if (response.data.status ===1) {
+                    this.paymentMessage = response.message;
                     window.location.href= route('myorders');
-                } else if(response.data.data.status ===0) {
-                    Swal.fire({
-                        title: 'Payment not confirmed',
-                        icon: 'warning',
-                        timerProgressBar: false,
-                        showConfirmButton: true,
-                        confirmButtonText: 'Confirm Payment',
-                    }).then((result) => {
-                        /* Read more about isConfirmed, isDenied below */
-                        if (result.isConfirmed) {
-                            this.checkPaymentStatus(this.checkoutId);
-                        } 
-                        });
+                } else if(response.data.status ===5) {
+                    this.paymentMessage = response.message;
+                    this.checkPaymentStatus(this.checkoutId);
+                }
+                else if(response.data.status ===1032) {
+                    this.paymentMessage = response.message;
+                    //this.checkPaymentStatus(this.checkoutId);
                 }
             })
         }
@@ -232,5 +225,39 @@ export default {
                 </div>
             </div>
         </div>
+        <div v-if="paymentResponse" class="overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center flex">
+      <div class="relative w-auto my-6 mx-auto max-w-3xl">
+        <!--content-->
+        <div class="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
+          <!--header-->
+          <div class="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
+            <h3 class="text-3xl font-semibold">
+              Check Payment Status
+            </h3>
+            <button class="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none" v-on:click="toggleModal()">
+              <span class="bg-transparent text-black opacity-5 h-6 w-6 text-2xl block outline-none focus:outline-none">
+                ×
+              </span>
+            </button>
+          </div>
+          <!--body-->
+          <div class="relative p-6 flex-auto">
+            <p class="my-4 text-slate-500 text-lg leading-relaxed">
+              {{ paymentMessage }}
+            </p>
+          </div>
+          <!--footer-->
+          <div class="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
+            <button id="retry-payment" class="text-red-500 bg-transparent border border-solid border-red-500 hover:bg-red-500 hover:text-white active:bg-red-600 font-bold uppercase text-sm px-6 py-3 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="button" @click="makePayment">
+              Retry Payment
+            </button>
+            <button class="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="button" @click="checkPaymentStatus(checkoutId)" id="confirm-payment">
+              Confirm Payment again
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div v-if="paymentResponse" class="opacity-25 fixed inset-0 z-40 bg-black"></div>
     </AppLayout>
 </template>

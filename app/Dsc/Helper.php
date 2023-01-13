@@ -133,7 +133,7 @@ class Helper
         
         $response = Http::withBasicAuth($consumer_key, $consumer_secret)->get($url);
        
-        
+
         // return $response;
         return $response['access_token'];
     }

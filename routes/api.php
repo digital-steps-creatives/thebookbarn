@@ -43,6 +43,7 @@ Route::prefix('v1')->group( function(){
         Route::post('transaction/confirmation',[PaymentController::class, 'paymentStatus'])->name('confirm.payment');
         Route::post('register/urls',[PaymentController::class, 'mpesaRegisterUrls'])->name('register.urls');
         Route::post('confirmation',[PaymentController::class, 'confirmation'])->name('confirmation.url');
+        Route::post('mpesa-callback', [PaymentController::class, 'callback'])->name('mpesa.callback');
     });
 });
 Route::group(['middleware' => 'auth:sanctum'], function () {

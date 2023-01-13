@@ -54,7 +54,8 @@ class PaymentController extends Controller
             'AccountReference' => $quoteReference,
             'TransactionDesc' => 'Payment for Order: ' .$quoteReference
         ];
-        $response = Helper::global_Curl_post($payload, $url);
+        $method = 'post';
+        $response = Helper::global_Curl_post($payload, $url, $method);
         
         $order = Order::where('invoice_no', $request->invoice_no)->first();
         $order->update([
@@ -101,8 +102,10 @@ class PaymentController extends Controller
             'Timestamp' => date('YmdHis'),
             'CheckoutRequestID' => $request->checkoutId
         ];
-        $response = Helper::global_Curl_post($payload, $url);
+        $method = 'post';
+        $response = Helper::global_Curl_post($payload, $url, $method);
         $checkResponse = json_decode($response);
+        //dd($checkResponse);
         $order = Order::where('invoice_no', $request->invoice_no)->first();
         if (isset($checkResponse->ResponseCode)) {
             if ($checkResponse->ResultCode =="0") {
@@ -119,7 +122,7 @@ class PaymentController extends Controller
                 ]);
                 return response()->json([
                     'status' => 1,
-                    'message' => $checkResponse->ResultDesc
+                    'message' => $checkResponse
                 ]);
             } elseif ($checkResponse->ResultCode =="1032") {
                 $update = Payment::where('order_id', $order->id)->update(array('status' => 2));
@@ -144,15 +147,8 @@ class PaymentController extends Controller
 
     public function callback(Request $request) {
 
-        $response = json_decode($request->getContent());
-        Log::info(json_encode($response));
-        $resData = $response->Body->stkCallback->CallbackMetadata;
-        $resCode = $response->Body->stkCallback->ResultCode;
-        $resMessage = $response->Body->stkCallback->ResultDesc;
-        $amountPaid = $resData->Item[0]->Value;
-        $mpesaTransactionId = $resData->Item[1]->Value;
-        $paymentPhoneNumber = $resData->Item[3]->Value;
-        return;
+        Log::info("----- STK endpoint hit -----");
+        Log::info($request->all());
     }
 
 
@@ -189,7 +185,8 @@ class PaymentController extends Controller
         );
 
         $url = '/c2b/v1/registerurl';
-        $response = Helper::global_Curl_post($body, $url);
+        $method = 'get';
+        $response = Helper::global_Curl_post($body, $url, $method);
 
         return response()->json([
             'status' => 200,

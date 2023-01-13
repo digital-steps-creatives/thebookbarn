@@ -56,7 +56,6 @@ const logout = () => {
                         <div class="col-sm-5 hidden sm:block">
                                 <div class="relative mt-4 hidden sm:block">
                                     <Search />
-                                   
                                 </div>
                         </div>
 
@@ -65,7 +64,8 @@ const logout = () => {
                             <div class="sm:mt-4 mt-4 relative">
                                 <div class="flex justify-between">
                                     <CartDropdown  class="sm:py-3 sm:pt-0"/>
-                                    <div class="sm:py-3 sm:pt-0 flex">
+                                    <div class="sm:py-3 sm:pt-0 hidden sm:block">
+                                       <div class="flex">
                                         <Link class="mr-2 flex text-decoration-none sm:my-3" :href="route('login')"  v-if="!$page.props.user">
                                             <span class="text-green-500 hover:text-red-500">Log In</span>
                                         </Link>
@@ -73,6 +73,7 @@ const logout = () => {
                                         <Link class="mr-2 flex text-decoration-none sm:my-3" :href="route('affiliates.landing')"  v-if="!$page.props.user">
                                             <span class="text-green-500 hover:text-red-500">Affiliates Log In</span>
                                         </Link>
+                                       </div>
                                     </div>
                                 </div>
                                 <!-- Teams Dropdown -->
@@ -231,12 +232,18 @@ const logout = () => {
                        </div>
                     </div>
                 </div>
-
+                
                 <!-- Responsive Navigation Menu -->
                 <div :class="{'block': showingNavigationDropdown, 'hidden': ! showingNavigationDropdown}" class="sm:hidden">
                     <div class="pt-2 pb-3 space-y-1">
-                        <ResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')">
+                        <ResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')" v-if="$page.props.user">
                             Dashboard
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')" v-if="!$page.props.user">
+                            Customer Login
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink :href="route('affiliates.landing')" :active="route().current('affiliates.landing')" v-if="!$page.props.user">
+                            Affiliate Login
                         </ResponsiveNavLink>
                     </div>
 

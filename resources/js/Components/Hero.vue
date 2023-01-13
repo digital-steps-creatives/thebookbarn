@@ -3,7 +3,7 @@ import axios from 'axios';
 import { ref } from 'vue';
 import { Inertia } from '@inertiajs/inertia';
 import { Link, useForm } from '@inertiajs/inertia-vue3';
-
+import Search from '@/Components/MySearch.vue';
 
 export default {
     data() {
@@ -24,7 +24,7 @@ export default {
         }
     },
     components:{
-        Link
+        Link, Search
     },
     methods: {
         toggleCamera() {
@@ -147,7 +147,13 @@ export default {
             <div class="my-8 relative rounded-lg bg-green-700 container mx-auto flex flex-col items-center pt-12 sm:pt-24 pb-24 sm:pb-32 md:pb-20 lg:pb-20 xl:pb-20">
                 <img class="mr-2 lg:mr-12 mt-2 lg:mt-12 absolute right-0 top-0"  src="https://tuk-cdn.s3.amazonaws.com/can-uploader/center_aligned_with_image-svg2.svg" alt="bg"/>
                 <img class="ml-2 lg:ml-12 mb-2 lg:mb-12 absolute bottom-0 left-0" src="https://tuk-cdn.s3.amazonaws.com/can-uploader/center_aligned_with_image-svg3.svg" alt="bg"/>
+               
                 <div class="row justify-content-center">
+                    <div class="col-12">
+                        <div class="my-12 block sm:hidden">
+                            <Search />
+                        </div>
+                    </div>
                     <div class="col-sm-8">
                         <div class="">
                             <h4 class="text-primary font-medium mb-4 text-lg font-sans sm:text-2xl text-center">Sign up offer!</h4>

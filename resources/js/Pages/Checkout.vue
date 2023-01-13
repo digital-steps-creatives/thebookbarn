@@ -85,7 +85,7 @@ export default {
                 
                 if (response.data.status ===1) {
                     this.paymentMessage = response.message;
-                    window.location.href= route('myorders');
+                    //window.location.href= route('myorders');
                 } else if(response.data.status ===5) {
                     this.paymentMessage = response.message;
                     this.checkPaymentStatus(this.checkoutId);

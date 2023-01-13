@@ -112,12 +112,12 @@ class Helper
         }
     }
 
-    public static function global_Curl_post($data, $url)
+    public static function global_Curl_post($data, $url, $method)
     {
         $server = config('mpesa.url'). $url;
         $token = self::generateAccessToken();
-       
-        $curl_response = Http::withToken($token)->post($server, $data);
+        //dd($data);
+        $curl_response = Http::withToken($token)->$method($server, $data);
         return $curl_response->body();
     }
     
@@ -133,7 +133,7 @@ class Helper
         
         $response = Http::withBasicAuth($consumer_key, $consumer_secret)->get($url);
        
-
+        
         // return $response;
         return $response['access_token'];
     }

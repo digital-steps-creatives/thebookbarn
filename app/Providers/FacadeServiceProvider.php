@@ -27,5 +27,9 @@ class FacadeServiceProvider extends ServiceProvider
         App::bind('helper', function() {
             return new \App\Dsc\Helper;
         });
+
+        App::bind('response', function () {
+            return new \App\Dsc\Response;
+        });
     }
 }

@@ -5,30 +5,31 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use Inertia\Inertia;
 use App\Models\Order;
+use App\Models\BookShop;
 use App\Models\Customer;
 use App\Models\Affiliate;
-use App\Models\BookShop;
 use Jenssegers\Agent\Agent;
 use Illuminate\Http\Request;
-use Laravel\Fortify\Actions\AttemptToAuthenticate;
-use Laravel\Fortify\Actions\EnsureLoginIsNotThrottled;
-use Laravel\Fortify\Actions\PrepareAuthenticatedSession;
-use Laravel\Fortify\Actions\RedirectIfTwoFactorAuthenticatable;
-use Laravel\Fortify\Contracts\LoginResponse;
-use Laravel\Fortify\Contracts\LoginViewResponse;
-use Laravel\Fortify\Contracts\LogoutResponse;
-use Laravel\Fortify\Features;
 use Laravel\Fortify\Fortify;
-use Laravel\Fortify\Http\Requests\LoginRequest;
+use Laravel\Fortify\Features;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 use Spatie\QueryBuilder\QueryBuilder;
 use Spatie\QueryBuilder\AllowedFilter;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Contracts\Auth\StatefulGuard;
+use Laravel\Fortify\Contracts\LoginResponse;
+use Laravel\Fortify\Contracts\LogoutResponse;
+use Laravel\Fortify\Http\Requests\LoginRequest;
+use Laravel\Fortify\Contracts\LoginViewResponse;
+use Laravel\Fortify\Actions\AttemptToAuthenticate;
+use Laravel\Fortify\Actions\EnsureLoginIsNotThrottled;
+use Laravel\Fortify\Actions\PrepareAuthenticatedSession;
 use ProtoneMedia\LaravelQueryBuilderInertiaJs\InertiaTable;
+use Laravel\Fortify\Actions\RedirectIfTwoFactorAuthenticatable;
 
 class AdminController extends Controller
 {   
@@ -101,8 +102,10 @@ class AdminController extends Controller
 
     public function index()
     {
+        $getTransactions = Http::get('https://malipo.bookbarn.school/api/malipo/v1/transactions/all');
         return Inertia::render('Admin/Dashboard', [
             'ordersPendingReview' => Order::where('status', 'waiting approval')->latest()->take(10)->get(),
+            'recentPayments' => $getTransactions->json(),
             'newvendors' => BookShop::where('created_at', '>=', date('Y-m-d H:i:s',strtotime('-7 days')))->count(),
             'newcustomers' => Customer::where('created_at', '>=', date('Y-m-d H:i:s', strtotime('-7 days')))->count()
         ]);
@@ -267,7 +270,10 @@ class AdminController extends Controller
     }
 
     public function getPayments()
-    {
-        return Inertia::render('Admin/AdminPayments');
+    {   
+        $getTransactions = Http::get('https://malipo.bookbarn.school/api/malipo/v1/transactions/all');
+        return Inertia::render('Admin/AdminPayments', [
+            'recentPayments' => $getTransactions->json(),
+        ]);
     }
 }

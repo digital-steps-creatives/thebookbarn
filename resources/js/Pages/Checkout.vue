@@ -27,45 +27,59 @@ export default {
         }
     },
     methods: {
-        makePayment(){
-            this.loading = true;
-            let payload = {
-                phone: this.form.phone,
-                amount: Math.round(this.orderItems.grand_total + this.form.delivery_fee),
-                invoice_no:this.orderItems.invoice_no,
-                email:this.form.email,
-                delivery_type:this.form.delivery_type,
-                delivery_fee: this.form.delivery_fee,
-                address:this.form.address,
-                name:this.form.name
-            }
-            window.axios.post(route('make.mpesa.payment'), payload)
-            .then(response => {
-                console.log(response.data.status);
-                this.checkoutId = response.data.checkoutId;
-                if (response.data.status ===200) {
-                    Swal.fire({
-                        title: response.data.message,
-                        icon: 'success',
-                        timerProgressBar: false,
-                        showConfirmButton: true,
-                        confirmButtonText: 'Confirm Payment',
-                    }).then((result) => {
-                        /* Read more about isConfirmed, isDenied below */
-                        if (result.isConfirmed) {
-                            this.checkPaymentStatus(response.data.checkoutId);
-                            
-                        } else if (result.isDenied) {
-                            Swal.fire('Changes are not saved', '', 'info')
-                        }
+        async makePayment(){
+                this.loading = true;
+                try {
+                    let payload = {
+                        phone: this.form.phone,
+                        amount: Math.round(this.orderItems.grand_total + this.form.delivery_fee),
+                        invoice_no:this.orderItems.invoice_no,
+                        email:this.form.email,
+                        delivery_type:this.form.delivery_type,
+                        delivery_fee: this.form.delivery_fee,
+                        address:this.form.address,
+                        name:this.form.name
+                    }
+                    const response = await axios.post(route('make.mpesa.payment'), payload);
+                    if (response.data.status ==200) {
+                        Swal.fire({
+                            title: response.data.message,
+                            icon: 'success',
+                            timer: 2000,
+                            timerProgressBar: true,
+                            showConfirmButton: false
+                        })
+                    } else if(response.data.status ==='not found') {
+                        Swal.fire({
+                            title: response.data.message,
+                            icon: 'warning',
+                            timer: 2000,
+                            timerProgressBar: true,
+                            showConfirmButton: false
                         });
+                        window.location.reload();
+                    } else {
                     
-                    
-                    this.loading = false;
-                } else {
-                    
+                        Swal.fire({
+                            title: response.data.message,
+                            timer: 2000,
+                            icon: 'error',
+                            timerProgressBar: true,
+                            showConfirmButton: false,
+                        });
+                        window.location.reload();
                 }
-            })
+
+			} catch (error) {
+				console.log(error);
+                Swal.fire({
+                    title: error,
+                    timer: 2000,
+                    icon: 'error',
+                    timerProgressBar: true,
+                    showConfirmButton: false,
+                });
+			}
         },
         registerurl(){
             window.axios.post(route('register.urls'))

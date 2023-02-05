@@ -6,6 +6,7 @@ use Validator;
 use Carbon\Carbon;
 use App\Dsc\Helper;
 use App\Models\Order;
+use GuzzleHttp\Client;
 use App\Models\Payment;
 use App\Models\BookShop;
 use App\Models\Customer;
@@ -13,10 +14,10 @@ use Faker\Provider\Uuid;
 use App\Models\Quotation;
 use Akaunting\Money\Money;
 use App\Enums\OrderStatus;
-use App\Notifications\NotifyVendorOrderPaid;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
+use App\Facades\Response;
 use Illuminate\Support\Facades\Log;
+use App\Notifications\NotifyVendorOrderPaid;
 
 class PaymentController extends Controller
 {   
@@ -40,22 +41,28 @@ class PaymentController extends Controller
         $finalAmount = env('APP_ENV') == 'local' ? 1 : round($request->amount);
         $phone = Helper::formatMobileNumber($request->phone);
         $quoteReference =  $request->invoice_no;
-        $url = '/stkpush/v1/processrequest';
         $payload = [
-            'BusinessShortCode' => config('mpesa.shortcode'),
-            'Password' => Helper::lipaNaMpesaPassword(),
-            'Timestamp' => date('YmdHis'),
-            'TransactionType' => 'CustomerPayBillOnline',
-            'Amount' => $finalAmount,
-            'PartyA' => $phone,
-            'PartyB' => config('mpesa.shortcode'),
-            'PhoneNumber' => $phone,
-            'CallBackURL' => route('mpesa.callback'),
-            'AccountReference' => $quoteReference,
+            'transaction_type' => 'CustomerPayBillOnline',
+            'amount' => $finalAmount,
+            'phone' => $phone,
+            'policy_number' => $quoteReference,
             'TransactionDesc' => 'Payment for Order: ' .$quoteReference
         ];
-        $method = 'post';
-        $response = Helper::global_Curl_post($payload, $url, $method);
+       
+        $client = new Client();
+        $url = '/api/malipo/v1/stk/payment';
+        $server = config('mpesa.url'). $url;
+        $stkPushResponse = $client->post($server, [
+            'headers' => [
+                'Content-Type' => 'application/json',
+                'Accept' => 'application/json',
+            ],
+            'body' => json_encode($payload)
+        ]);
+       
+        $responsePayload = json_decode($stkPushResponse->getBody()->getContents());
+        
+        $stkResponse = (isset($responsePayload->response->ResponseCode) ? $responsePayload->response : []);
         
         $order = Order::where('invoice_no', $request->invoice_no)->first();
         $order->update([
@@ -63,29 +70,26 @@ class PaymentController extends Controller
             'delivery_fee' => $request->delivery_fee,
             'delivery_type' => $request->delivery_type
         ]);
-        $checkResponse = json_decode($response);
-        //dd(($checkResponse->CheckoutRequestID));
-        if (isset($checkResponse->CheckoutRequestID)) {
-            $py = Payment::firstOrNew(['mpesa_checkout_request_id' => $checkResponse->CheckoutRequestID]);
-            $py->BillRefNumber = $quoteReference;
-            $py->invoice_number = $quoteReference;
-            $py->payment_mode = 'mpesa';
-            $py->amount = $finalAmount;
-            $py->status = 0;//0:Not Paid, 1:Paid, 2:Cancelled
-            $py->mpesa_checkout_request_id = $checkResponse->CheckoutRequestID;
-            $py->customer_id = $customerId->id;
-            $py->trans_type = OrderStatus::TRANSACTION_TYPE;
-            $py->order_id = $order->id;
-            $py->save();
-        }
-        if(!empty($checkResponse)){
-            
-            return response()->json([
-                'checkoutId' => $checkResponse->CheckoutRequestID,
-                'message' => 'Mpesa Express initiated successfully, check your phone',
-                'status' => 200
+
+        if (!empty($stkResponse)) {
+
+            $update = Payment::where('order_id', $order->id)->update([
+                'mpesa_checkout_request_id' => $stkResponse->CheckoutRequestID,
+                'merchant_request_id' => $stkResponse->MerchantRequestID,
+                'status' => 0
             ]);
+
+            if ($update) {
+                $response = $this->stkPushStatusHealth($stkResponse->MerchantRequestID, $stkResponse->CheckoutRequestID, $order->customer->email, $order->invoice_no);
+            } else {
+                $response = Response::error('Error pushing STK 1', '403');
+            }
+        } else {
+            $response = Response::error('Error pushing STK 2', '403');
         }
+
+        return $response;
+        
     }
     
 
@@ -96,6 +100,7 @@ class PaymentController extends Controller
         ];
         $validator = Validator::make($request->all(), $rules);
         $url = '/stkpushquery/v1/query';
+        
         $payload = [
             'BusinessShortCode' => config('mpesa.shortcode'),
             'Password' => Helper::lipaNaMpesaPassword(),
@@ -104,52 +109,31 @@ class PaymentController extends Controller
         ];
         $method = 'post';
         $response = Helper::global_Curl_post($payload, $url, $method);
-        $checkResponse = json_decode($response);
+        $stkResponse = json_decode($response);
         //dd($checkResponse);
         $order = Order::where('invoice_no', $request->invoice_no)->first();
-        if (isset($checkResponse->ResponseCode)) {
-            if ($checkResponse->ResultCode =="0") {
-                //notify vendor that their order has been accepted 
-                
-                $user = Quotation::where('order_id', $order->id)->first();
-                $bookshop = BookShop::find($user->book_shop_id);
-                $bookshop->notify(new NotifyVendorOrderPaid($order));
-                $update = Payment::where('order_id', $order->id)->update(array('status' => 1));
-                $order->update([
-                    'notify_admin' => true,
-                    'status' => OrderStatus::PAID,
-                            
-                ]);
-                return response()->json([
-                    'status' => 1,
-                    'message' => $checkResponse
-                ]);
-            } elseif ($checkResponse->ResultCode =="1032") {
-                $update = Payment::where('order_id', $order->id)->update(array('status' => 2));
-                return response()->json([
-                    'status' => 1032,
-                    'message' => $checkResponse->ResultDesc
-                ]);
-            } 
-        }
-        if (isset($checkResponse->errorCode)) {
-            if ($checkResponse->errorCode == "500.001.1001") {//The transaction is being processed
-                $response = 0;
-                return response()->json([
-                    'status' => 5,
-                    'message' => 'The transaction is being processed'
-                ]);
+        
+        if(!empty($stkResponse)){
+
+            $update = Payment::where('order_id', $order->id)->update([
+                'mpesa_checkout_request_id' => $stkResponse->CheckoutRequestID,
+                'merchant_request_id'=> $stkResponse->MerchantRequestID,
+                'status' => 0
+            ]);
+
+            if ($update) {
+                $response = $this->stkPushStatusHealth($stkResponse->MerchantRequestID, $stkResponse->CheckoutRequestID, $order->customer->email, $order->invoice_no);
+            }
+            else {
+                $response = Response::error('Error pushing STK 1', '403');
             }
         }
-       
-        return $response;               
+        else {
+            $response = Response::error('Error pushing STK 2', '403');
+        }
+
+        return $response;           
     } 
-
-    public function callback(Request $request) {
-
-        Log::info("----- STK endpoint hit -----");
-        Log::info($request->all());
-    }
 
 
     private function updateCustomer($customer)
@@ -168,47 +152,74 @@ class PaymentController extends Controller
         return $user;
     }
 
-    /**
-     *  M-pesa Validation Method
-     * Safaricom will only call your validation if you have requested by writing an official letter to them
-     */
-    /**
-     * Register URL
-     */
-    public function registerURLS()
+    public static function eshop_health_stk_verify($payload, $url)
     {
-        $body = array(
-            'ShortCode' => config('mpesa.shortcode'),
-            'ResponseType' => 'Completed',
-            'ConfirmationURL' => route('confirmation.url'),
-            'ValidationURL' => route('validation.url')
-        );
+        $client = new Client();
 
-        $url = '/c2b/v1/registerurl';
-        $method = 'get';
-        $response = Helper::global_Curl_post($body, $url, $method);
+        $response =  $client->get($url, [
+                'headers' => [
+                    'Content-Type' => 'application/json',
+                    'Accept' => 'application/json',
+                ],
+                'body' => json_encode($payload)
+            ]);
 
-        return response()->json([
-            'status' => 200,
-            'message' => $response
-        ]);
+        
+
+        $responsePayload = json_decode($response->getBody()->getContents());
+
+        return $responsePayload;
     }
 
-
-    /**
-     * M-pesa Register Validation and Confirmation method
-     */
-    public function validation(Request $request)
+    private function stkPushStatusHealth($merchantID, $checkoutID, $email, $order)
     {
-        Log::info('Validation endpoint hit');
-        Log::info($request->all());
-        return;
-    }
+        for ($try = 1; $try <= 29; $try++) {
 
-    public function confirmation(Request $request){
-        Log::info('Confirmation endpoint hit');
-        Log::info($request->all());
-        return;
+            $payload = [
+                "MerchantRequestID" => $merchantID,
+                "CheckoutRequestID" => $checkoutID
+            ];
+
+            $url = 'api/malipo/v1/stk/payment/confirmation';
+            $server = config('mpesa.url'). $url;
+            sleep(30);
+        
+            $payStat = self::eshop_health_stk_verify($payload, $server);
+           
+
+            if (isset($payStat->MpesaReceiptNumber)) {
+
+
+                       // $company = $this->getLoggedInUserCompany();
+
+                        $updateOrder = Order::where('invoice_no', $order)->first();
+                        $updateOrder->update(['status' => 'paid']);
+                        //update the payments table
+                        Payment::where('order_id', $updateOrder->id)->update(['status' => 1]);
+
+                        $user = Quotation::where('order_id', $order->id)->first();
+                        $bookshop = BookShop::find($user->book_shop_id);
+                        $bookshop->notify(new NotifyVendorOrderPaid($order));
+                        $updateOrder->update([
+                            'notify_admin' => true,
+                            'status' => OrderStatus::PAID,
+                                    
+                        ]);
+                      //  $this->makeInvoice($order, $company);
+
+                        //Reduce Inventory Items
+                        // $orderedItems = OrderItem::where('order_id', $updateOrder->id)->get();
+                        // foreach ($orderedItems as $shopitems) {
+                        //     DB::table('products')->where('id', $shopitems->product_id)->decrement('quantity', $shopitems->quantity);
+                        // }
+
+                        return Response::success('Congratulations, we have received your payment and will email your receipt shortly to ' . $email);
+                   
+            } else {
+                return Response::error(['cancel' => 'You Cancelled the transaction from your phone. Please try again']);
+            }
+            return Response::error(['paymentStatusError' => 'System Error occured while checking your payment status. Please try again later']);
+        }
     }
-   
+    
 }

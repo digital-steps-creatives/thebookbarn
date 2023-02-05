@@ -37,13 +37,8 @@ Route::prefix('orders')->group( function() {
 });
 Route::prefix('v1')->group( function(){
     Route::prefix('payments')->group( function(){
-        Route::post('access-token', [PaymentController::class, 'generateAccessToken'])->name('getToken');
         Route::post('stk/push', [PaymentController::class, 'customerMpesaSTKPush'])->name('make.mpesa.payment');
-        Route::post('validation', [PaymentController::class, 'validation'])->name('validation.url');
         Route::post('transaction/confirmation',[PaymentController::class, 'paymentStatus'])->name('confirm.payment');
-        Route::post('register/urls',[PaymentController::class, 'mpesaRegisterUrls'])->name('register.urls');
-        Route::post('confirmation',[PaymentController::class, 'confirmation'])->name('confirmation.url');
-        Route::post('mpesa-callback', [PaymentController::class, 'callback'])->name('mpesa.callback');
     });
 });
 Route::group(['middleware' => 'auth:sanctum'], function () {

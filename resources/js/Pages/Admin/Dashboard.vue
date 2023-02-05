@@ -5,7 +5,8 @@ export default {
     props:{
         ordersPendingReview:Object,
         newvendors: Object,
-        newcustomers: Object
+        newcustomers: Object,
+        recentPayments: Object,
     },
     components:{
         AppLayout, Link
@@ -62,8 +63,8 @@ export default {
                         </div>
                     </div>
                 </div>
-                <div class="grid grid-cols-1 filament-widgets-container gap-4 lg:gap-8 mb-6">
-                    <div></div>
+                <div class="grid grid-cols-2 filament-widgets-container gap-4 lg:gap-8 mb-6">
+                    
                     <div class="border border-gray-300 shadow-sm bg-white rounded-xl filament-tables-container">
                         <div class="px-2 pt-2">
                             <div class="filament-tables-header px-4 py-2 mb-2">
@@ -72,7 +73,8 @@ export default {
                                 </div>
                             </div>
                         </div>
-                        <div class="filament-tables-table-container overflow-x-auto relative border-t">
+                        <div class="block w-full">
+                            <div class="filament-tables-table-container overflow-x-auto relative border-t">
                                     <table class="filament-tables-table w-full text-left rtl:text-right divide-y table-auto text-sm">
                                         <thead>
                                             <tr class="bg-teal-100">
@@ -94,6 +96,40 @@ export default {
                                         </tbody>
                                     </table>
                             </div>
+                        </div>
+                    </div>
+                    <div class="border border-gray-300 shadow-sm bg-white rounded-xl filament-tables-container">
+                        <div class="px-2 pt-2">
+                            <div class="filament-tables-header px-4 py-2 mb-2">
+                                <div class="flex flex-col gap-4 md:justify-between md:items-start md:flex-row md:-mr-2">
+                                    <h2 class="filament-tables-header-heading text-xl font-bold tracking-tight">Recent Payments</h2>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="block w-full">
+                            <div class="filament-tables-table-container overflow-x-auto relative border-t">
+                                    <table class="filament-tables-table w-full text-left rtl:text-right divide-y table-auto text-sm">
+                                        <thead>
+                                            <tr class="bg-teal-100">
+                                                <td class="filament-tables-header-cell p-0"><span class="flex items-center w-full px-4 py-2 whitespace-nowrap space-x-1 rtl:space-x-reverse font-medium text-sm text-gray-600 cursor-default">Id</span></td>
+                                                <td class="filament-tables-header-cell p-0"><span class="flex items-center w-full px-4 py-2 whitespace-nowrap space-x-1 rtl:space-x-reverse font-medium text-sm text-gray-600 cursor-default">Transaction #</span></td>
+                                                <td class="filament-tables-header-cell p-0"><span class="flex items-center w-full px-4 py-2 whitespace-nowrap space-x-1 rtl:space-x-reverse font-medium text-sm text-gray-600 cursor-default">Amount</span></td>
+                                                <td class="filament-tables-header-cell p-0"><span class="flex items-center w-full px-4 py-2 whitespace-nowrap space-x-1 rtl:space-x-reverse font-medium text-sm text-gray-600 cursor-default">Phone</span></td>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="divide-y whitespace-nowrap">
+                                            <tr class="filament-tables-row transition" v-for="(item, index) in recentPayments.pay.data" :key="index">
+                                                <td class="filament-tables-cell"><div class="px-4 py-3">{{index + 1}}</div></td>
+                                                <td class="filament-tables-cell"><div class="px-4 py-3">{{item.MpesaReceiptNumber}}</div></td>
+                                                <td class="filament-tables-cell"><div class="px-4 py-3">{{item.Amount}}</div></td>
+                                                <td class="filament-tables-cell">
+                                                    <div class="px-4 py-3"> {{item.PhoneNumber}}</div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

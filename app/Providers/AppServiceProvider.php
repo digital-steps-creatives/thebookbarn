@@ -28,8 +28,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {   
-        URL::forceScheme('https');
-        $this->app['request']->server->set('HTTPS','on');
+        // URL::forceScheme('https');
+        // $this->app['request']->server->set('HTTPS','on');
         // Filament::serving(function () {
         //     Filament::registerTheme(
         //         app(Vite::class)('resources/css/bookbarn.css'),

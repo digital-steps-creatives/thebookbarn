@@ -180,7 +180,7 @@ class PaymentController extends Controller
                 "CheckoutRequestID" => $checkoutID
             ];
 
-            $url = 'api/malipo/v1/stk/payment/confirmation';
+            $url = '/api/malipo/v1/stk/payment/confirmation';
             $server = config('mpesa.url'). $url;
             sleep(30);
         
@@ -197,9 +197,9 @@ class PaymentController extends Controller
                         //update the payments table
                         Payment::where('order_id', $updateOrder->id)->update(['status' => 1]);
 
-                        $user = Quotation::where('order_id', $order->id)->first();
+                        $user = Quotation::where('order_id', $updateOrder->id)->first();
                         $bookshop = BookShop::find($user->book_shop_id);
-                        $bookshop->notify(new NotifyVendorOrderPaid($order));
+                        $bookshop->notify(new NotifyVendorOrderPaid($updateOrder));
                         $updateOrder->update([
                             'notify_admin' => true,
                             'status' => OrderStatus::PAID,

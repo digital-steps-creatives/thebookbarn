@@ -102,7 +102,8 @@ class AdminController extends Controller
 
     public function index()
     {
-        $getTransactions = Http::get('https://malipo.bookbarn.school/api/malipo/v1/transactions/all');
+        $getTransactions = Http::get(config('mpesa.url').'/api/malipo/v1/transactions/all');
+        
         return Inertia::render('Admin/Dashboard', [
             'ordersPendingReview' => Order::where('status', 'waiting approval')->latest()->take(10)->get(),
             'recentPayments' => $getTransactions->json(),

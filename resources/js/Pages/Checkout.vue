@@ -48,7 +48,8 @@ export default {
                             timer: 2000,
                             timerProgressBar: true,
                             showConfirmButton: false
-                        })
+                        });
+                        window.location.href= route('myorders');
                     } else if(response.data.status ==='not found') {
                         Swal.fire({
                             title: response.data.message,

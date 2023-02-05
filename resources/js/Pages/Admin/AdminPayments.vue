@@ -33,7 +33,7 @@
                                                 <tr class="filament-tables-row transition" v-for="(item, index) in recentPayments.pay.data" :key="index">
                                                     <td class="filament-tables-cell"><div class="px-4 py-3">{{index + 1}}</div></td>
                                                     <td class="filament-tables-cell"><div class="px-4 py-3">{{item.MpesaReceiptNumber}}</div></td>
-                                                    <td class="filament-tables-cell"><div class="px-4 py-3">{{item.Amount}}</div></td>
+                                                    <td class="filament-tables-cell"><div class="px-4 py-3">{{currencyFormat(item.Amount)}}</div></td>
                                                     <td class="filament-tables-cell">
                                                         <div class="px-4 py-3"> {{item.PhoneNumber}}</div>
                                                     </td>
@@ -95,6 +95,12 @@ export default {
         },
         dateTime(value) {
             return moment(value).format("DD-MM-YYYY");
+        },
+        roundFormat: function (value, decimals) {
+            return Number(Math.round(value+'e'+decimals)+'e-'+decimals).toFixed(decimals);
+        },
+        currencyFormat: function (value, decimals, symbol='KES ') {
+            return symbol + this.roundFormat(value,2);
         },
     },
 }

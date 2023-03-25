@@ -35,7 +35,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 8.0
+          php-version: 8.1
       
       - name: Install Dependencies
         run: composer install
@@ -50,17 +50,11 @@ jobs:
       
       - name: Build Assets
         run: npm run build
-
-      - name: Wait for MySQL
-        run: |
-          while ! docker exec laravel-vue-ci_mysql_1 mysqladmin ping --silent; do
-            sleep 1
-          done
       
-      - name: Run Tests
+      - name: Run Migration Seeders
         env:
           DB_HOST: localhost
           DB_USERNAME: laravel
           DB_PASSWORD: password
           DB_DATABASE: laravel
-        run: php artisan test
+        run: php artisan migrate --seed

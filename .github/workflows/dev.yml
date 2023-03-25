@@ -18,10 +18,10 @@ jobs:
         env:
           MYSQL_ROOT_PASSWORD: password
           MYSQL_DATABASE: laravel
-          MYSQL_USER: laravel
+          MYSQL_USER: laraveluser
           MYSQL_PASSWORD: password
         ports:
-          - 3306
+          - 3306:3306
         options: >-
           --health-cmd="mysqladmin ping"
           --health-interval=10s
@@ -40,15 +40,6 @@ jobs:
       - name: Install Dependencies
         run: composer install
 
-      - name: Copy .env
-        run: php -r "file_exists('.env') || copy('.env.example', '.env');" # If .env exist, we use that, if otherwise, copy .env.example to .env and use that instead
-
-      - name: Generate key
-        run: php artisan key:generate
-      - name: Change Directory Permissions
-        run: chmod -R 777 storage bootstrap/cache
-      - name: Clear Config
-        run: php artisan config:clear
       
       - name: Install Node.js
         uses: actions/setup-node@v2
@@ -61,11 +52,29 @@ jobs:
       - name: Build Assets
         run: npm run build
       
-      - name: Run Migration Seeders
+      - name: Create Database
         env:
           DB_HOST: localhost
-          DB_USERNAME: ${{ job.services.mysql.MYSQL_USER }}
-          DB_PASSWORD: ${{ job.services.mysql.MYSQL_PASSWORD }}
-          DB_DATABASE: ${{ job.services.mysql.MYSQL_DATABASE }}
-          DB_PORT: ${{ job.services.mysql.ports[3306] }}
+          DB_USERNAME: root
+          DB_PASSWORD: password
+        run: |
+          mysql -u${{ env.DB_USERNAME }} -p${{ env.DB_PASSWORD }} -h${{ env.DB_HOST }} -e "CREATE DATABASE laravel"
+
+      - name: Copy .env.example to .env
+        run: cp .env.example .env
+
+      - name: Set Application Key
+        run: php artisan key:generate
+
+      - name: Change Directory Permissions
+        run: chmod -R 777 storage bootstrap/cache
+      - name: Clear Config
+        run: php artisan config:clear
+
+      - name: Run Migrations
+        env:
+          DB_HOST: localhost
+          DB_USERNAME: laraveluser
+          DB_PASSWORD: password
+          DB_DATABASE: laravel
         run: php artisan migrate --seed --force

@@ -16,10 +16,8 @@ jobs:
       mysql:
         image: mysql:8.0
         env:
-          MYSQL_ROOT_PASSWORD: password
-          MYSQL_DATABASE: laravel
-          MYSQL_USER: laraveluser
-          MYSQL_PASSWORD: password
+          MYSQL_ALLOW_EMPTY_PASSWORD: yes
+          MYSQL_DATABASE: bookbarn
         ports:
           - 3306:3306
         options: >-
@@ -51,14 +49,6 @@ jobs:
       
       - name: Build Assets
         run: npm run build
-      
-      - name: Create Database
-        env:
-          DB_HOST: localhost
-          DB_USERNAME: root
-          DB_PASSWORD: password
-        run: |
-          mysql -u${{ job.services.mysql.MYSQL_USER }} -p${{ job.services.mysql.MYSQL_PASSWORD }} -h${{ env.DB_HOST }} -e "CREATE DATABASE laravel"
 
       - name: Copy .env.example to .env
         run: cp .env.example .env
@@ -73,8 +63,8 @@ jobs:
 
       - name: Run Migrations
         env:
-          DB_HOST: localhost
-          DB_USERNAME: laraveluser
-          DB_PASSWORD: password
-          DB_DATABASE: laravel
+          DB_HOST: 127.0.0.1
+          DB_USERNAME: root
+          DB_PASSWORD: ''
+          DB_DATABASE: bookbarn
         run: php artisan migrate --seed --force

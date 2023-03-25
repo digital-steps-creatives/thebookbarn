@@ -21,7 +21,7 @@ jobs:
           MYSQL_USER: laravel
           MYSQL_PASSWORD: password
         ports:
-          - 3306:3306
+          - 3306
         options: >-
           --health-cmd="mysqladmin ping"
           --health-interval=10s
@@ -64,7 +64,8 @@ jobs:
       - name: Run Migration Seeders
         env:
           DB_HOST: localhost
-          DB_USERNAME: laravel
-          DB_PASSWORD: password
-          DB_DATABASE: laravel
+          DB_USERNAME: ${{ job.services.mysql.MYSQL_USER }}
+          DB_PASSWORD: ${{ job.services.mysql.MYSQL_PASSWORD }}
+          DB_DATABASE: ${{ job.services.mysql.MYSQL_DATABASE }}
+          DB_PORT: ${{ job.services.mysql.ports[3306] }}
         run: php artisan migrate --seed --force

@@ -149,7 +149,7 @@ export default {
                                                                 <div class="relative p-6 flex-auto">
                                                                     <div class="flex w-full">
                                                                         <div class="grid gap-4 grid-cols-3 grid-rows-3">
-                                                                            <div class="col-span-3">
+                                                                            <div>
                                                                                 <h4>Order Items</h4>
                                                                                 <table class="filament-tables-table w-full text-left rtl:text-right divide-y table-auto text-sm">
                                                                                     <thead>
@@ -169,10 +169,10 @@ export default {
                                                                                     </tbody>
                                                                                 </table>
                                                                             </div>
-                                                                            <div class="col-span-2">
+                                                                            <div>
                                                                                 <Search />
                                                                             </div>
-                                                                            <div class="col-span-2">hi</div>
+                                                                            <div>hi</div>
                                                                         </div>
                                                                     </div>
                                                                     

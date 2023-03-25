@@ -58,7 +58,7 @@ jobs:
           DB_USERNAME: root
           DB_PASSWORD: password
         run: |
-          mysql -u${{ job.services.mysql.MYSQL_USER[laraveluser] }} -p${{ job.services.mysql.MYSQL_PASSWORD[password] }} -h${{ env.DB_HOST }} -e "CREATE DATABASE laravel"
+          mysql -u${{ job.services.mysql.MYSQL_USER }} -p${{ job.services.mysql.MYSQL_PASSWORD }} -h${{ env.DB_HOST }} -e "CREATE DATABASE laravel"
 
       - name: Copy .env.example to .env
         run: cp .env.example .env

@@ -32,6 +32,7 @@ Route::prefix('content')->group( function(){
 Route::prefix('orders')->group( function() {
     Route::post('create', [OrderController::class, 'store'])->name('orders.store');
     Route::get('list', [OrderController::class, 'index']);
+    Route::post('update/{order}', [OrderController::class, 'update'])->name('orders.update');
     Route::post('/accept/quote/{order}', [FrontController::class, 'acceptOrder'])->name('accept.order.final');
     
 });

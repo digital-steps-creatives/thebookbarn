@@ -3,6 +3,7 @@
 namespace App\Traits;
 
 use App\Dsc\SMSHelper;
+use App\Enums\OrderStatus;
 use App\Models\Order;
 use App\Events\CreateOrder;
 use App\Models\User;
@@ -47,30 +48,30 @@ trait InteractsWithOrder
      */
     public function updateOrder(Order $order, $request)
     {
+        //dd($request->all());
         $items = collect($request->input('items'));
-        // if (isset($items->pluck('id')[0])) {
-        //     $order->orderItems()->whereNotIn('id', $items->pluck('id')->reject(function ($id) {
-        //         return empty($id);
-        //     }))->delete();
-        // } else {
-        //     $order->orderItems()->delete();
-        // }
+        if (isset($items->pluck('id')[0])) {
+            $order->orderItems()->whereNotIn('id', $items->pluck('id')->reject(function ($id) {
+                return empty($id);
+            }))->delete();
+        } else {
+            $order->orderItems()->delete();
+        }
 
-        $items->each(function ($item) use ($order) {
-            $order->orderItems()->updateOrCreate(
+        foreach ($request->orderItems as $item) {
+            $order->orderItems()->create(
                 [
-                    'id' => $item['id'] ?? null
-                ],
-                [   
-                    'rate' => $item['amount'],
-                    'quantity' =>  $item['quantity'],
-                    'amount'   =>  $item['amount']
+                    'book_id'        => $item['book_id'],
+                    'quantity'         => $item['quantity'],
                 ]
             );
-        });
+        }
+        $order->update([
+            'status' => OrderStatus::WAITINGQUOTATIONS
+        ]);
 
         // Update totals
-        $order->updateTotals();
+        //$order->updateTotals();
 
         return $order;
     }

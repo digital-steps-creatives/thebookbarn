@@ -52,7 +52,7 @@ class OrderController extends BaseController
             return $success;
 
         });
-        event(new CreateOrder($success['order']));
+            event(new CreateOrder($success['order']));
             //send an sms to admin notify about the order
             
             $this->sendSMStoAdmin($success['order']);
@@ -74,6 +74,26 @@ class OrderController extends BaseController
         return $this->sendResponse($success, 'Order created successfully');
        
    }
+
+   /**
+     * Update the order
+     *
+     * @param \App\Http\Requests\OrderRequest $request
+     * @param \App\Models\Order               $order
+     * @param \App\Library\OrderHandler       $orderHandler
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function update(OrderRequest $request, Order $order, OrderHandler $orderHandler)
+    {
+        // if ($order->status != OrderStatus::PENDING()) {
+        //     return Response::unauthorized('Sorry, you can not update it now.', 403);
+        // }
+        $success = DB::transaction(function () use ($request, $orderHandler, $order) {
+            $orderHandler->updateOrder($order, $request);
+        });
+
+        return $this->sendResponse($success, 'Order updated successfully');
+    }
 
 
    public function queueOrder(Request $request)

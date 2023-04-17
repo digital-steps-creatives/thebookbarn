@@ -54,6 +54,7 @@ createInertiaApp({
                   }
             }))
             .use(store)
+            .use(bootstrap)
             .use(ZiggyVue, Ziggy)
             .use(VueCameraLib)
             .use(VueInstantSearch)

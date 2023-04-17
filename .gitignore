@@ -3,3 +3,5 @@ vendor
 .env
 yarn.lock
 composer.lock
+public/hot
+public/build
